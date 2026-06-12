@@ -30,12 +30,13 @@ require_once __DIR__ . '/notion-config.php';
 $name = trim("$firstName $lastName");
 
 $properties = [
-    'Project Name'  => ['title' => [['text' => ['content' => $name]]]],
-    'Contact Email' => ['email' => $email],
-    'Status'        => ['status' => ['name' => 'Not Contacted']],
+    'Name'    => ['title' => [['text' => ['content' => $name]]]],
+    'Email'   => ['email' => $email],
+    'Status'  => ['select' => ['name' => 'Not Contacted']],
+    'Message' => ['rich_text' => [['type' => 'text', 'text' => ['content' => $message]]]],
 ];
 if ($company) {
-    $properties['Client'] = ['rich_text' => [['type' => 'text', 'text' => ['content' => $company]]]];
+    $properties['Company'] = ['rich_text' => [['type' => 'text', 'text' => ['content' => $company]]]];
 }
 
 $body = [
