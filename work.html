@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Work — DAKE Visuals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;0,900;1,700;1,900&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --white: #ffffff; --black: #000000; --gray: #545454; --blue: #35529d; --cream: #fff3d3; }
+    html { scroll-behavior: smooth; scrollbar-gutter: stable; }
+    body { font-family: 'Lato', sans-serif; background: var(--gray); color: var(--white); overflow-x: hidden; }
+    #navbar { background: var(--gray); border-bottom: 1px solid rgba(255,255,255,0.08); position: relative; z-index: 200; height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 4%; }
+    .nav-logo { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: 1.1rem; letter-spacing: 0.03em; text-transform: uppercase; color: var(--white); text-decoration: none; }
+    .nav-center { display: flex; gap: 0.3rem; list-style: none; }
+    .nav-center a { font-family: 'Lato', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.7); text-decoration: none; padding: 0.35rem 0.85rem; border-radius: 999px; border: 1.5px solid transparent; transition: color 0.2s, border-color 0.2s; }
+    .nav-center a:hover { color: var(--white); border-color: rgba(255,255,255,0.4); }
+    .nav-center a.active { color: var(--white); border-color: rgba(255,255,255,0.7); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--white); }
+    .mobile-menu { display: none; position: fixed; top: 70px; left: 0; right: 0; background: var(--gray); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 1.5rem 4%; z-index: 199; flex-direction: column; gap: 1.2rem; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); text-decoration: none; }
+    .work-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+    .project-card { cursor: pointer; position: relative; overflow: hidden; display: block; text-decoration: none; outline: 1px solid rgba(255,255,255,0.06); }
+    .project-thumb { width: 100%; aspect-ratio: 4/3; background: var(--black); position: relative; overflow: hidden; }
+    .project-thumb-bg { width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .project-card:hover .project-thumb-bg { transform: scale(1.04); }
+    .project-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 50%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.8rem; opacity: 0; transition: opacity 0.4s; }
+    .project-card:hover .project-overlay { opacity: 1; }
+    .project-category { font-family: 'Lato', sans-serif; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-bottom: 0.35rem; }
+    .project-title { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 1.1rem; color: var(--white); letter-spacing: -0.02em; }
+    footer { background: var(--cream); border-top: 1px solid rgba(0,0,0,0.08); padding: 60px 4% 40px; }
+    .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .footer-col h4 { font-family: 'Lato', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 1.2rem; }
+    .footer-contact-person p { font-family: 'Lato',sans-serif; font-weight: 700; font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--black); margin-bottom: 0.3rem; }
+    .footer-contact-person a { display: block; font-family: 'Lato',sans-serif; font-size: 0.85rem; color: var(--gray); text-decoration: none; transition: color 0.2s; margin-bottom: 0.15rem; }
+    .footer-contact-person a:hover { color: var(--black); }
+    .footer-nav { display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-nav a { font-family: 'Lato', sans-serif; font-size: 0.88rem; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+    .footer-nav a:hover { color: var(--black); }
+    .footer-socials { display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-socials a { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+    .footer-socials a:hover { color: var(--black); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; flex-wrap: wrap; gap: 1rem; }
+    .footer-logo-bottom { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: 1rem; letter-spacing: 0.03em; text-transform: uppercase; color: rgba(0,0,0,0.3); }
+    .footer-copy { font-family: 'Lato', sans-serif; font-size: 0.75rem; color: var(--gray); }
+    .footer-legal { display: flex; gap: 1.5rem; }
+    .footer-legal a { font-family: 'Lato', sans-serif; font-size: 0.72rem; color: var(--gray); text-decoration: none; }
+    .footer-legal a:hover { color: var(--black); }
+    [data-animate] { opacity: 0; transform: translateY(36px); transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1); will-change: opacity, transform; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+    [data-animate].in-view { opacity: 1; transform: translate(0,0); will-change: auto; }
+    @media (max-width: 900px) { .nav-center { display: none; } .hamburger { display: flex; } .work-grid { grid-template-columns: 1fr; } .footer-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; gap: 2rem; } }
+  
+    @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    body { animation: pageFadeIn 0.18s ease-out; }
+  </style>
+</head>
+<body>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html" onclick="closeMobile()">Home</a>
+    <a href="work.html" onclick="closeMobile()">Work</a>
+    <a href="bts.html" onclick="closeMobile()">BTS</a>
+    <a href="about.html" onclick="closeMobile()">About</a>
+    <a href="contact.html" onclick="closeMobile()">Contact</a>
+  </div>
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">DAKE VISUALS</a>
+    <ul class="nav-center">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="work.html" class="active">Work</a></li>
+      <li><a href="bts.html">BTS</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="work-grid">
+
+    <a class="project-card" href="projects/the-play-off.html" data-animate>
+      <div class="project-thumb">
+        <img src="Videos/Thumbnails/theplayoffcover.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <img src="Videos/Thumbnails/The play off.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(1.3)">
+        <div class="project-overlay">
+          <p class="project-category">Brand Film — Sport</p>
+          <p class="project-title">The Play Off</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/enjoyment-of-sound.html" data-animate>
+      <div class="project-thumb">
+        <img src="Videos/Thumbnails/Enjoyment of sound.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <div class="project-overlay">
+          <p class="project-category">Brand Film — Lifestyle</p>
+          <p class="project-title">Enjoyment of Sound</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/hjortborg-design.html" data-animate>
+      <div class="project-thumb">
+        <img src="Videos/Thumbnails/Nordic stealth.png" style="width:100%;height:100%;object-fit:cover;display:block">
+        <div class="project-overlay">
+          <p class="project-category">Coming soon</p>
+          <p class="project-title">Nordic Stealth</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/dwecks-principle.html" data-animate>
+      <div class="project-thumb">
+        <img src="Videos/Thumbnails/dwecks-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <img src="Videos/Thumbnails/Dwecks Principle.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <div class="project-overlay">
+          <p class="project-category">Brand Film — Performance</p>
+          <p class="project-title">Dweck's Principle</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/need-for-speed.html" data-animate>
+      <div class="project-thumb">
+        <img src="Videos/Thumbnails/need for speed - card.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <img src="Videos/Thumbnails/Need for speed.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(1.3)">
+        <div class="project-overlay">
+          <p class="project-category">Automotive — Event</p>
+          <p class="project-title">NEED FOR SPEED</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/jakob-juul.html" data-animate>
+      <div class="project-thumb">
+        <img src="billeder/compressed/Jakob website billeder/IMG_4321.JPG" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35);pointer-events:none"></div>
+        <img src="Videos/Thumbnails/Jakob.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(1.25)">
+        <div class="project-overlay">
+          <p class="project-category">Documentary — The Process</p>
+          <p class="project-title">Jakob Juul x Psykiatrifonden</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/icefit.html" data-animate>
+      <div class="project-thumb">
+        <img src="Videos/Thumbnails/icefit interviews.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <img src="Videos/Thumbnails/ICEFIT WHITE PNG.png" style="position:absolute;inset:0;width:70%;height:70%;top:15%;left:15%;object-fit:contain;pointer-events:none">
+        <div class="project-overlay">
+          <p class="project-category">Interview — Fitness</p>
+          <p class="project-title">ICEFIT</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/evie-cosmetics.html" data-animate>
+      <div class="project-thumb">
+        <img src="Videos/Thumbnails/evie-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <img src="Videos/Thumbnails/evie-logo.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none">
+        <div class="project-overlay">
+          <p class="project-category">Brand Film — Beauty</p>
+          <p class="project-title">Evie Cosmetics</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/take-one.html" data-animate>
+      <div class="project-thumb">
+        <img src="Videos/Thumbnails/TAKE ONE.png" style="width:100%;height:100%;object-fit:cover;display:block">
+        <div class="project-overlay">
+          <p class="project-category">Coming soon — BTS Film</p>
+          <p class="project-title">Take One</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/conquer-the-mountain.html" data-animate>
+      <div class="project-thumb">
+        <img src="Videos/Thumbnails/conquer-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <img src="Videos/Thumbnails/Conquer The Mountain.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <div class="project-overlay">
+          <p class="project-category">Action Sport — AI</p>
+          <p class="project-title">Conquer The Mountain</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/dirtbike.html" data-animate>
+      <div class="project-thumb">
+        <img src="Videos/Thumbnails/dirtbike-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <img src="Videos/Thumbnails/DIRTBIKE.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <div class="project-overlay">
+          <p class="project-category">Action Sport — AI</p>
+          <p class="project-title">Dirtbike</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/casablanca.html" data-animate>
+      <div class="project-thumb">
+        <img src="Videos/Thumbnails/casablanca-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <img src="Videos/Thumbnails/Casablanca.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <div class="project-overlay">
+          <p class="project-category">Brand Film — Fashion</p>
+          <p class="project-title">Casablanca</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/mad-hos-mads.html" data-animate>
+      <div class="project-thumb">
+        <img src="billeder/compressed/madhosmads website billeder/1A0A5256.JPG" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35);pointer-events:none"></div>
+        <img src="Videos/Thumbnails/madhosmads.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none">
+        <div class="project-overlay">
+          <p class="project-category">Content — Food &amp; Lifestyle</p>
+          <p class="project-title">Mad Hos Mads</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/icefit-2.html" data-animate>
+      <div class="project-thumb">
+        <img src="Videos/Thumbnails/icefit.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <img src="Videos/Thumbnails/ICEFIT WHITE PNG.png" style="position:absolute;inset:0;width:70%;height:70%;top:15%;left:15%;object-fit:contain;pointer-events:none">
+        <div class="project-overlay">
+          <p class="project-category">Brand Film — Fitness</p>
+          <p class="project-title">ICEFIT</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/humble-barbers.html" data-animate>
+      <div class="project-thumb">
+        <img src="billeder/compressed/Humble Barbers website billeder/DSC00036.JPG" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <div class="project-overlay">
+          <p class="project-category">Brand Film — Lifestyle</p>
+          <p class="project-title">Humble Barbers</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/bliss-budget.html" data-animate>
+      <div class="project-thumb">
+        <img src="billeder/compressed/Bliss website billeder/Skærmbillede 2026-06-10 kl. 20.24.03.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;object-position:0% center">
+        <img src="Videos/Thumbnails/1.05_BLISS_SGA_Logo-kopi.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(0.32)">
+        <div class="project-overlay">
+          <p class="project-category">Documentary — Product Launch</p>
+          <p class="project-title">Bliss Budget</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/pace-club.html" data-animate>
+      <div class="project-thumb">
+        <img src="billeder/compressed/paceclub/_DSC0018.JPG" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <img src="Videos/Thumbnails/Pace Club.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(1.35)">
+        <div class="project-overlay">
+          <p class="project-category">Brand Film — Fitness</p>
+          <p class="project-title">Pace Club</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/groft.html" data-animate>
+      <div class="project-thumb">
+        <img src="billeder/compressed/Groft website bileder/Skærmbillede 2026-06-04 kl. 12.17.41.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35);pointer-events:none"></div>
+        <img src="Videos/Thumbnails/Groft.png" style="position:absolute;inset:0;width:85%;height:85%;top:7.5%;left:7.5%;object-fit:contain;pointer-events:none">
+        <div class="project-overlay">
+          <p class="project-category">Brand Film — Sourdough Bakery</p>
+          <p class="project-title">Groft</p>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col"><h4>Contact</h4><div class="footer-contact-person"><p>DAKE Visuals</p><a href="mailto:dake@dakevisuals.com">dake@dakevisuals.com</a><a href="tel:+4553399909">+45 53 39 99 09</a><a href="#">Aarhus, Denmark</a></div></div>
+      <div class="footer-col"><h4>Navigate</h4><nav class="footer-nav"><a href="work.html">Work</a><a href="about.html">About</a><a href="bts.html">BTS</a><a href="contact.html">Contact</a></nav></div>
+      <div class="footer-col"><h4>Follow</h4><div class="footer-socials"><a href="https://www.instagram.com/dake.visuals/" target="_blank">Instagram</a></div></div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-logo-bottom">DAKE VISUALS</span>
+      <span class="footer-copy">© 2026 DAKE Visuals. All rights reserved.</span>
+      <div class="footer-legal"><a href="#">Privacy Policy</a><a href="#">Terms</a></div>
+    </div>
+  </footer>
+
+  <script>
+    const animObserver = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); animObserver.unobserve(e.target); } }); }, { threshold: 0.1 });
+    document.querySelectorAll('[data-animate]').forEach((el, i) => {
+      el.style.transitionDelay = ((i % 3) * 0.1) + 's';
+      animObserver.observe(el);
+    });
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+    function closeMobile() { mobileMenu.classList.remove('open'); }
+
+    // Save scroll position when clicking a project card
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('click', () => {
+        sessionStorage.setItem('workScrollY', window.scrollY);
+      });
+    });
+
+    // Restore scroll position when coming back from a project
+    const savedY = sessionStorage.getItem('workScrollY');
+    if (savedY !== null) {
+      sessionStorage.removeItem('workScrollY');
+      // Wait for layout then jump instantly (no smooth scroll)
+      requestAnimationFrame(() => {
+        document.documentElement.style.scrollBehavior = 'auto';
+        window.scrollTo(0, parseInt(savedY));
+        document.documentElement.style.scrollBehavior = '';
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nordic Stealth — DAKE Visuals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;0,900;1,700;1,900&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --white: #ffffff; --black: #000000; --gray: #545454; --blue: #35529d; --cream: #fff3d3; }
+    html { scroll-behavior: smooth; scrollbar-gutter: stable; }
+    body { font-family: 'Lato', sans-serif; background: var(--cream); color: var(--black); overflow-x: hidden; }
+    #navbar { position: relative; z-index: 200; height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 4%; background: var(--gray); border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .nav-logo { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: 1.1rem; letter-spacing: 0.03em; text-transform: uppercase; color: var(--white); text-decoration: none; }
+    .nav-center { display: none !important; }
+    .hamburger { display: none !important; }
+    .nav-center a { font-family: 'Lato', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.7); text-decoration: none; padding: 0.35rem 0.85rem; border-radius: 999px; border: 1.5px solid transparent; transition: color 0.2s, border-color 0.2s; }
+    .nav-center a:hover { color: var(--white); border-color: rgba(255,255,255,0.4); }
+    .nav-center a.active { color: var(--white); border-color: rgba(255,255,255,0.7); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--white); }
+    .mobile-menu { display: none; position: fixed; top: 70px; left: 0; right: 0; background: var(--gray); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 1.5rem 4%; z-index: 199; flex-direction: column; gap: 1.2rem; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); text-decoration: none; }
+    .project-header { background: var(--gray); padding: 2rem 4% 1.5rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; }
+    .project-meta-items { display: flex; gap: 2.5rem; flex-wrap: wrap; flex-shrink: 0; }
+    .project-meta-item label { display: block; font-family: 'Lato', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 0.25rem; }
+    .project-meta-item span { font-family: 'Lato', sans-serif; font-size: 0.88rem; font-weight: 700; color: var(--white); }
+    .project-hero-wrap { background: var(--gray); padding: 1.5rem 4%; position: relative; }
+    .project-hero { width: 70%; aspect-ratio: 16/9; overflow: hidden; position: relative; margin: 0 auto; background: #000000; display: flex; align-items: center; justify-content: center; }
+    .project-hero-placeholder { font-family: 'Lato', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.2); text-align: center; padding: 1rem; }
+    .back-link { position: absolute; top: 1.5rem; left: 4%; font-family: 'Lato', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.55); text-decoration: none; display: inline-flex; align-items: center; gap: 0.45rem; transition: color 0.2s; z-index: 2; }
+    .back-link:hover { color: var(--white); }
+    .back-link::before { content: '←'; }
+    .project-hero-title { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(2rem, 5vw, 4.5rem); letter-spacing: -0.02em; color: var(--white); line-height: 1; text-transform: uppercase; }
+    .project-section-label { font-family: 'Lato', sans-serif; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 1.2rem; display: block; }
+    .project-frames { background: var(--gray); padding: 50px 22%; }
+    .project-frames .project-section-label { color: rgba(255,255,255,0.35); }
+    .frames-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin-top: 1.5rem; }
+    .frame-item { aspect-ratio: 1/1; overflow: hidden; background: #3a3a3a; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
+    .frame-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.4s ease; }
+    .frame-item:hover img { transform: scale(1.07); filter: brightness(1.08); }
+    .frame-item::after { content: ""; position: absolute; inset: 0; background: transparent; transition: background 0.3s ease; pointer-events: none; }
+    .frame-item:hover::after { background: rgba(255,255,255,0.04); }
+    .frame-placeholder { font-family: 'Lato', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.15); }
+    footer { background: var(--cream); border-top: 1px solid rgba(0,0,0,0.08); padding: 60px 4% 40px; }
+    .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .footer-col h4 { font-family: 'Lato', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 1.2rem; }
+    .footer-contact-person p { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--black); margin-bottom: 0.3rem; }
+    .footer-contact-person a { display: block; font-family: 'Lato', sans-serif; font-size: 0.85rem; color: var(--gray); text-decoration: none; transition: color 0.2s; margin-bottom: 0.15rem; }
+    .footer-contact-person a:hover { color: var(--black); }
+    .footer-nav { display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-nav a { font-family: 'Lato', sans-serif; font-size: 0.88rem; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+    .footer-nav a:hover { color: var(--black); }
+    .footer-socials { display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-socials a { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+    .footer-socials a:hover { color: var(--black); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; flex-wrap: wrap; gap: 1rem; }
+    .footer-logo-bottom { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: 1rem; letter-spacing: 0.03em; text-transform: uppercase; color: rgba(0,0,0,0.3); }
+    .footer-copy { font-family: 'Lato', sans-serif; font-size: 0.75rem; color: var(--gray); }
+    .footer-legal { display: flex; gap: 1.5rem; }
+    .footer-legal a { font-family: 'Lato', sans-serif; font-size: 0.72rem; color: var(--gray); text-decoration: none; }
+    .footer-legal a:hover { color: var(--black); }
+    [data-animate] { opacity: 0; transform: translateY(32px); transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1); }
+    [data-animate].in-view { opacity: 1; transform: translate(0,0); }
+    @media (max-width: 900px) { .nav-center { display: none; } .hamburger { display: flex; } .frames-grid { grid-template-columns: repeat(2, 1fr); } .footer-grid { grid-template-columns: 1fr 1fr; } .project-hero { width: 90%; } }
+    @media (max-width: 600px) { .frames-grid { grid-template-columns: 1fr; } .footer-grid { grid-template-columns: 1fr; gap: 2rem; } .footer-bottom { flex-direction: column; align-items: flex-start; } .project-hero { width: 90%; } }
+      video::-webkit-media-controls-fullscreen-button { display: none !important; }
+  
+    @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    body { animation: pageFadeIn 0.18s ease-out; }
+  </style>
+</head>
+<body>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../index.html" onclick="closeMobile()">Home</a>
+    <a href="../work.html" onclick="closeMobile()">Work</a>
+    <a href="../bts.html" onclick="closeMobile()">BTS</a>
+    <a href="../about.html" onclick="closeMobile()">About</a>
+    <a href="../contact.html" onclick="closeMobile()">Contact</a>
+  </div>
+  <nav id="navbar">
+    <a href="../index.html" class="nav-logo">DAKE VISUALS</a>
+    <ul class="nav-center">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../work.html" class="active">Work</a></li>
+      <li><a href="../bts.html">BTS</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="project-header">
+    <h1 class="project-hero-title">Nordic Stealth</h1>
+    <div class="project-meta-items">
+      <div class="project-meta-item"><label>Category</label><span>Brand Film</span></div>
+      <div class="project-meta-item"><label>Industry</label><span>Design</span></div>
+    </div>
+  </div>
+
+  <div class="project-hero-wrap">
+    <a href="../work.html" class="back-link">All Work</a>
+    <div class="project-hero">
+      <!-- Replace with: <video controls controlsList="nofullscreen" playsinline src="../Videos/Hjortborg Design.mp4" style="width:100%;height:100%;object-fit:cover;display:block"></video> -->
+      <p class="project-hero-placeholder">Video coming soon</p>
+    </div>
+  </div>
+
+  <section class="project-frames">
+    <span class="project-section-label">Frames</span>
+    <div class="frames-grid">
+      <div class="frame-item"><span class="frame-placeholder">Frame</span></div>
+      <div class="frame-item"><span class="frame-placeholder">Frame</span></div>
+      <div class="frame-item"><span class="frame-placeholder">Frame</span></div>
+      <div class="frame-item"><span class="frame-placeholder">Frame</span></div>
+      <div class="frame-item"><span class="frame-placeholder">Frame</span></div>
+      <div class="frame-item"><span class="frame-placeholder">Frame</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col"><h4>Contact</h4><div class="footer-contact-person"><p>DAKE Visuals</p><a href="mailto:dake@dakevisuals.com">dake@dakevisuals.com</a><a href="tel:+4553399909">+45 53 39 99 09</a></div></div>
+      <div class="footer-col"><h4>Navigate</h4><nav class="footer-nav"><a href="../work.html">Work</a><a href="../about.html">About</a><a href="../contact.html">Contact</a></nav></div>
+      <div class="footer-col"><h4>Follow</h4><div class="footer-socials"><a href="https://www.instagram.com/dake.visuals/" target="_blank">Instagram</a></div></div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-logo-bottom">DAKE VISUALS</span>
+      <span class="footer-copy">© 2026 DAKE Visuals. All rights reserved.</span>
+      <div class="footer-legal"><a href="#">Privacy Policy</a><a href="#">Terms</a></div>
+    </div>
+  </footer>
+  <script>
+    const animObserver = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); animObserver.unobserve(e.target); } }); }, { threshold: 0.1 });
+    document.querySelectorAll('[data-animate]').forEach(el => animObserver.observe(el));
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+    function closeMobile() { mobileMenu.classList.remove('open'); }
+  </script>
+</body>
+</html>

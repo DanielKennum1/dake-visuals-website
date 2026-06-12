@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — DAKE Visuals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;0,900;1,700;1,900&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --white: #ffffff; --black: #000000; --gray: #545454; --blue: #35529d; --cream: #fff3d3; }
+    html { scroll-behavior: smooth; scrollbar-gutter: stable; }
+    body { font-family: 'Lato', sans-serif; background: var(--gray); color: var(--white); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+    #navbar { background: var(--gray); border-bottom: 1px solid rgba(255,255,255,0.1); position: relative; z-index: 200; height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 4%; }
+    .nav-logo { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: 1.1rem; letter-spacing: 0.03em; text-transform: uppercase; color: var(--white); text-decoration: none; }
+    .nav-center { display: flex; gap: 0.3rem; list-style: none; }
+    .nav-center a { font-family: 'Lato', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.7); text-decoration: none; padding: 0.35rem 0.85rem; border-radius: 999px; border: 1.5px solid transparent; transition: color 0.2s, border-color 0.2s; }
+    .nav-center a:hover { color: var(--white); border-color: rgba(255,255,255,0.4); }
+    .nav-center a.active { color: var(--white); border-color: rgba(255,255,255,0.7); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--white); }
+    .mobile-menu { display: none; position: fixed; top: 70px; left: 0; right: 0; background: var(--gray); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 1.5rem 4%; z-index: 199; flex-direction: column; gap: 1.2rem; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); text-decoration: none; }
+    main { flex: 1; padding-top: 0; display: flex; flex-direction: column; }
+    .contact-headline-wrap { overflow: hidden; display: block; }
+    .contact-headline { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: clamp(3rem, 10vw, 7rem); line-height: 1.0; letter-spacing: -0.02em; text-transform: uppercase; color: var(--white); display: block; transform: translateY(110%); animation: titleSlide 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; }
+    @keyframes titleSlide { to { transform: translateY(0); } }
+    .contact-hero { padding: 10px 4% 60px; max-width: 900px; }
+    .contact-body { display: grid; grid-template-columns: 1.4fr 1fr; gap: 6rem; padding: 0 4% 120px; align-items: start; }
+    .contact-form { display: flex; flex-direction: column; gap: 0; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .field { display: flex; flex-direction: column; border-bottom: 1px solid rgba(255,255,255,0.2); padding: 1.4rem 0 0.6rem; transition: border-color 0.2s; }
+    .field:focus-within { border-color: rgba(255,255,255,0.8); }
+    .field label { font-family: 'Lato', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 0.5rem; transition: color 0.2s; }
+    .field:focus-within label { color: rgba(255,255,255,0.9); }
+    .field input, .field textarea { font-family: 'Lato', sans-serif; font-size: 1rem; color: var(--white); background: transparent; border: none; outline: none; width: 100%; resize: none; padding: 0; }
+    .field textarea { min-height: 100px; line-height: 1.6; }
+    .field input::placeholder, .field textarea::placeholder { color: rgba(255,255,255,0.2); }
+    .form-submit { padding-top: 3rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
+    .btn-submit { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.9rem 2.2rem; border-radius: 999px; border: 1.5px solid rgba(255,255,255,0.6); color: var(--white); background: transparent; cursor: pointer; transition: background 0.2s, border-color 0.2s, color 0.2s; }
+    .btn-submit:hover { background: var(--white); border-color: var(--white); color: var(--gray); }
+    .form-success { display: none; padding: 3rem 0; }
+    .form-success.visible { display: block; }
+    .form-success p { font-family: 'Tinos', serif; font-style: italic; font-size: 1.3rem; color: var(--cream); line-height: 1.6; }
+    .contact-sidebar { padding-top: 1.4rem; display: flex; flex-direction: column; gap: 3rem; }
+    .sidebar-block h4 { font-family: 'Lato', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 1rem; }
+    .sidebar-block p, .sidebar-block a { font-family: 'Lato', sans-serif; font-size: 0.9rem; color: rgba(255,255,255,0.85); text-decoration: none; line-height: 1.8; display: block; transition: color 0.2s; }
+    .sidebar-block a:hover { color: var(--white); }
+    .sidebar-divider { width: 40px; height: 1px; background: rgba(255,255,255,0.15); }
+    .sidebar-socials { display: flex; flex-direction: column; gap: 0.4rem; }
+    .sidebar-socials a { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
+    .sidebar-socials a:hover { color: var(--white); }
+    .btn-calendly { display: inline-block; margin-top: 1.2rem; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.7rem 1.6rem; border-radius: 999px; border: 1.5px solid rgba(255,255,255,0.4); color: var(--white); background: transparent; cursor: pointer; transition: background 0.2s, border-color 0.2s; text-decoration: none; }
+    .btn-calendly:hover { background: rgba(255,255,255,0.12); border-color: var(--white); }
+    footer { background: var(--cream); border-top: 1px solid rgba(0,0,0,0.08); padding: 60px 4% 40px; margin-top: auto; }
+    .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .footer-col h4 { font-family: 'Lato', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 1.2rem; }
+    .footer-contact-person { margin-bottom: 1.5rem; }
+    .footer-contact-person p { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--black); margin-bottom: 0.3rem; }
+    .footer-contact-person a { display: block; font-family: 'Lato', sans-serif; font-size: 0.85rem; color: var(--gray); text-decoration: none; transition: color 0.2s; margin-bottom: 0.15rem; }
+    .footer-contact-person a:hover { color: var(--black); }
+    .footer-nav { display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-nav a { font-family: 'Lato', sans-serif; font-size: 0.88rem; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+    .footer-nav a:hover { color: var(--black); }
+    .footer-socials { display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-socials a { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+    .footer-socials a:hover { color: var(--black); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; flex-wrap: wrap; gap: 1rem; }
+    .footer-logo-bottom { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: 1rem; letter-spacing: 0.03em; text-transform: uppercase; color: rgba(0,0,0,0.3); }
+    .footer-copy { font-family: 'Lato', sans-serif; font-size: 0.75rem; color: var(--gray); }
+    .footer-legal { display: flex; gap: 1.5rem; }
+    .footer-legal a { font-family: 'Lato', sans-serif; font-size: 0.72rem; color: var(--gray); text-decoration: none; }
+    .footer-legal a:hover { color: var(--black); }
+    [data-animate] { opacity: 0; transform: translateY(36px); transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1); }
+    [data-animate].in-view { opacity: 1; transform: translate(0,0); }
+    .contact-form { opacity: 0; transform: translateX(-60px); transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s, transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s; }
+    .contact-sidebar { opacity: 0; transform: translateX(60px); transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1) 0.4s, transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.4s; }
+    .contact-form.slide-in, .contact-sidebar.slide-in { opacity: 1; transform: translateX(0); }
+    @media (max-width: 900px) { .nav-center { display: none; } .hamburger { display: flex; } .contact-body { grid-template-columns: 1fr; gap: 4rem; } .footer-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; gap: 0; } .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; } .footer-bottom { flex-direction: column; align-items: flex-start; } }
+  
+    @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    body { animation: pageFadeIn 0.18s ease-out; }
+  </style>
+</head>
+<body>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html" onclick="closeMobile()">Home</a>
+    <a href="work.html" onclick="closeMobile()">Work</a>
+    <a href="bts.html" onclick="closeMobile()">BTS</a>
+    <a href="about.html" onclick="closeMobile()">About</a>
+    <a href="contact.html" onclick="closeMobile()">Contact</a>
+  </div>
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">DAKE VISUALS</a>
+    <ul class="nav-center">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="work.html">Work</a></li>
+      <li><a href="bts.html">BTS</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </nav>
+
+  <main>
+    <div class="contact-hero">
+      <div class="contact-headline-wrap"><h1 class="contact-headline">Contact</h1></div>
+    </div>
+    <div class="contact-body">
+      <form class="contact-form" id="contactForm">
+        <div class="form-row">
+          <div class="field"><label for="firstName">First name</label><input type="text" id="firstName" name="firstName" placeholder="Your first name" autocomplete="given-name" required /></div>
+          <div class="field"><label for="lastName">Last name</label><input type="text" id="lastName" name="lastName" placeholder="Your last name" autocomplete="family-name" required /></div>
+        </div>
+        <div class="field"><label for="email">Email address</label><input type="email" id="email" name="_replyto" placeholder="hello@yourcompany.com" autocomplete="email" required /></div>
+        <div class="field"><label for="company">Company / Brand</label><input type="text" id="company" name="company" placeholder="Your company name" /></div>
+        <div class="field"><label for="message">Message</label><textarea id="message" name="message" placeholder="Tell us about your project…" rows="5" required></textarea></div>
+        <input type="hidden" name="_subject" value="New enquiry from DAKE Visuals website" />
+        <div class="form-submit"><button type="submit" class="btn-submit">Send message</button></div>
+        <div class="form-success" id="formSuccess"><p>Thanks — we've received your message<br>and will be in touch shortly.</p></div>
+      </form>
+      <aside class="contact-sidebar">
+        <div class="sidebar-block">
+          <h4>Direct contact</h4>
+          <a href="mailto:dake@dakevisuals.com">dake@dakevisuals.com</a>
+          <a href="tel:+4553399909">+45 53 39 99 09</a>
+          <a href="https://calendly.com/dake-dakevisuals/30min" target="_blank" rel="noopener" class="btn-calendly">Book a call</a>
+        </div>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-block">
+          <h4>Based in</h4>
+          <p>Aarhus, Denmark</p>
+          <p style="margin-top:0.3rem; opacity:0.6;">Available worldwide</p>
+        </div>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-block">
+          <h4>Follow</h4>
+          <div class="sidebar-socials"><a href="https://www.instagram.com/dake.visuals/" target="_blank" rel="noopener">Instagram</a></div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col"><h4>Contact</h4><div class="footer-contact-person"><p>DAKE Visuals</p><a href="mailto:dake@dakevisuals.com">dake@dakevisuals.com</a><a href="tel:+4553399909">+45 53 39 99 09</a><a href="#">Aarhus, Denmark</a></div></div>
+      <div class="footer-col"><h4>Navigate</h4><nav class="footer-nav"><a href="work.html">Work</a><a href="about.html">About</a><a href="bts.html">BTS</a><a href="contact.html">Contact</a></nav></div>
+      <div class="footer-col"><h4>Follow</h4><div class="footer-socials"><a href="https://www.instagram.com/dake.visuals/" target="_blank">Instagram</a></div></div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-logo-bottom">DAKE VISUALS</span>
+      <span class="footer-copy">© 2026 DAKE Visuals. All rights reserved.</span>
+      <div class="footer-legal"><a href="#">Privacy Policy</a><a href="#">Terms</a></div>
+    </div>
+  </footer>
+
+  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+  <script>
+    const animObserver = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); animObserver.unobserve(e.target); } }); }, { threshold: 0.1 });
+    document.querySelectorAll('[data-animate]').forEach(el => animObserver.observe(el));
+    // Slide in form + sidebar
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      document.querySelector('.contact-form').classList.add('slide-in');
+      document.querySelector('.contact-sidebar').classList.add('slide-in');
+    }));
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+    function closeMobile() { mobileMenu.classList.remove('open'); }
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = this.querySelector('.btn-submit');
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+      try {
+        const res = await fetch('https://formspree.io/dake@dakevisuals.com', { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } });
+        if (res.ok) {
+          this.querySelectorAll('.field, .form-submit').forEach(el => { el.style.opacity = '0'; el.style.pointerEvents = 'none'; });
+          document.getElementById('formSuccess').classList.add('visible');
+        } else { btn.textContent = 'Send message'; btn.disabled = false; alert('Something went wrong. Please email us directly at dake@dakevisuals.com'); }
+      } catch { btn.textContent = 'Send message'; btn.disabled = false; alert('Something went wrong. Please email us directly at dake@dakevisuals.com'); }
+    });
+  </script>
+</body>
+</html>
