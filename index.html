@@ -223,6 +223,7 @@
       background: #c8bfad;
       border-radius: 4px;
       overflow: hidden;
+      position: relative;
     }
     .definition-term {
       font-family: 'Lato', sans-serif;
@@ -577,6 +578,8 @@
     [data-animate="from-right"] { transform: translateX(40px); }
     [data-animate].in-view { opacity: 1; transform: translate(0,0); }
 
+    .content-placeholder-label { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Lato',sans-serif; font-size:0.65rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.3); pointer-events:none; }
+
     /* ─── RESPONSIVE ─── */
     @media (max-width: 900px) {
       .nav-center, .nav-right { display: none; }
@@ -588,7 +591,22 @@
       .footer-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 600px) {
+      /* Hero — full bleed, no rounded card */
+      .hero { padding: 0; }
+      .hero-media { border-radius: 0; }
+
+      /* Definition section — stack text above photos, photos stacked 1 column */
+      .definition-body { grid-template-columns: 1fr; gap: 2rem; padding: 50px 5% 40px; }
+      .definition-photo { grid-template-columns: 1fr; }
+
+      /* Testimonial — stack photo below text, smaller */
+      .testimonial-layout { flex-direction: column; }
+      .testimonial-photo { width: 100%; height: 180px; border-radius: 4px; }
+
+      /* Work cards */
       .work-card { flex: 0 0 280px; }
+
+      /* Footer */
       .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       .footer-bottom { flex-direction: column; align-items: flex-start; }
     }
@@ -626,7 +644,10 @@
           <span></span><span></span><span></span>
         </button>
       </nav>
-      <video autoplay muted loop playsinline src="Videos/Showreel.m4v" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video>
+      <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+        <source src="Videos/Compressed/Showreel.mp4" type="video/mp4">
+        <source src="Videos/Showreel.m4v" type="video/mp4">
+      </video>
       <div class="hero-scroll">
         <span>Scroll down</span>
         <div class="hero-scroll-line"></div>
@@ -642,8 +663,8 @@
       <p class="definition-text">Is a creative agency based in Aarhus, Denmark, working with brands that want to elevate their online presence. Combining <em>cinematic craft</em> with strategic storytelling to create visuals that move people.</p>
     </div>
     <div class="definition-photo" data-animate="from-right">
-      <div class="definition-photo-sq"></div>
-      <div class="definition-photo-sq"></div>
+      <div class="definition-photo-sq"><span class="content-placeholder-label" style="color:rgba(0,0,0,0.25)">Content Placeholder</span></div>
+      <div class="definition-photo-sq"><span class="content-placeholder-label" style="color:rgba(0,0,0,0.25)">Content Placeholder</span></div>
     </div>
   </section>
 
@@ -663,7 +684,7 @@
       <div class="service-col" data-animate style="transition-delay:0.15s">
         <p class="service-num">02</p>
         <h3>Create</h3>
-        <p class="service-tagline">Every frame with feeling</p>
+        <p class="service-tagline">Every frame with intent</p>
         <ul>
           <li>Scriptwriting & Pre-Production</li>
           <li>Production</li>
@@ -752,7 +773,7 @@
 
   <!-- ─── IMAGE STRIP ─── -->
   <div style="width:100%;aspect-ratio:21/4;background:#1a1a1a;overflow:hidden;position:relative;">
-    <!-- Replace with: <img src="your-photo.jpg" style="width:100%;height:100%;object-fit:cover"> -->
+    <span class="content-placeholder-label">Content Placeholder</span>
   </div>
 
   <!-- ─── TESTIMONIALS ─── -->
@@ -766,7 +787,7 @@
             <p class="testimonial-company">Founder — ICEFIT The Box</p>
             <p class="testimonial-quote">[ Testimonial coming soon ]</p>
           </div>
-          <div class="testimonial-photo"></div>
+          <div class="testimonial-photo" style="position:relative;"><span class="content-placeholder-label">Content Placeholder</span></div>
         </div>
       </div>
       <div class="testimonial-item">
@@ -776,7 +797,7 @@
             <p class="testimonial-company">Co-founder — RFSPORT</p>
             <p class="testimonial-quote">[ Testimonial coming soon ]</p>
           </div>
-          <div class="testimonial-photo"></div>
+          <div class="testimonial-photo" style="position:relative;"><span class="content-placeholder-label">Content Placeholder</span></div>
         </div>
       </div>
       <div class="testimonial-item">
@@ -786,7 +807,7 @@
             <p class="testimonial-company">Founder — Nordic Stealth</p>
             <p class="testimonial-quote">[ Testimonial coming soon ]</p>
           </div>
-          <div class="testimonial-photo"></div>
+          <div class="testimonial-photo" style="position:relative;"><span class="content-placeholder-label">Content Placeholder</span></div>
         </div>
       </div>
       <div class="testimonial-item">

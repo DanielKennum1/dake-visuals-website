@@ -27,13 +27,14 @@ if (!$firstName || !$email || !$message) {
 
 require_once __DIR__ . '/notion-config.php';
 
-$name = trim("$firstName $lastName");
+$personName = trim("$firstName $lastName");
+$pageTitle  = $company ?: $personName;
 
 $properties = [
-    'Name'    => ['title' => [['text' => ['content' => $name]]]],
-    'Email'   => ['email' => $email],
-    'Status'  => ['select' => ['name' => 'Not Contacted']],
-    'Message' => ['rich_text' => [['type' => 'text', 'text' => ['content' => $message]]]],
+    'Name'   => ['title' => [['text' => ['content' => $pageTitle]]]],
+    'Email'  => ['email' => $email],
+    'Status' => ['select' => ['name' => 'Not Contacted']],
+    'Person' => ['rich_text' => [['type' => 'text', 'text' => ['content' => $personName]]]],
 ];
 if ($company) {
     $properties['Company'] = ['rich_text' => [['type' => 'text', 'text' => ['content' => $company]]]];
