@@ -408,7 +408,7 @@
       padding: 80px 4% 90px;
     }
     .testimonials > .label { margin-bottom: 4rem; color: rgba(255,255,255,0.4); letter-spacing: 0.3em; }
-    .testimonials-slider { overflow: hidden; }
+    .testimonials-slider { overflow: visible; }
     .testimonial-item { display: none; }
     .testimonial-item.active { display: block; }
     .testimonial-quote {
@@ -446,12 +446,36 @@
       align-items: start;
     }
     .testimonial-text { display: flex; flex-direction: column; gap: 0.5rem; }
-    .testimonial-photo {
+    .testimonial-photo-wrap {
+      position: relative;
       width: 75%;
+    }
+    .testimonial-photo {
+      width: 100%;
       aspect-ratio: 4/3;
       background: rgba(255,255,255,0.1);
       overflow: hidden;
       border-radius: 4px;
+    }
+    .testimonial-avatar {
+      position: absolute;
+      top: -70px;
+      left: -70px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid var(--gray);
+      background: #3a3a3a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+    .testimonial-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
     .testimonial-dots { display: flex; gap: 0.8rem; margin-top: 2.5rem; }
     .dot {
@@ -602,6 +626,7 @@
 
       /* Testimonial — stack photo below text, smaller */
       .testimonial-layout { flex-direction: column; }
+      .testimonial-photo-wrap { width: 100%; }
       .testimonial-photo { width: 100%; height: 180px; border-radius: 4px; }
 
       /* Work cards */
@@ -789,7 +814,10 @@
             <p class="testimonial-company">Founder — ICEFIT The Box</p>
             <p class="testimonial-quote">[ Testimonial coming soon ]</p>
           </div>
-          <div class="testimonial-photo" style="position:relative;"><span class="content-placeholder-label">Content Placeholder</span></div>
+          <div class="testimonial-photo-wrap">
+            <div class="testimonial-photo" style="position:relative;"><span class="content-placeholder-label">Content Placeholder</span></div>
+            <div class="testimonial-avatar"><span style="font-family:'Lato',sans-serif;font-size:0.42rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);">Photo</span></div>
+          </div>
         </div>
       </div>
       <div class="testimonial-item">
@@ -799,7 +827,10 @@
             <p class="testimonial-company">Co-founder — RFSPORT</p>
             <p class="testimonial-quote">[ Testimonial coming soon ]</p>
           </div>
-          <div class="testimonial-photo" style="position:relative;"><span class="content-placeholder-label">Content Placeholder</span></div>
+          <div class="testimonial-photo-wrap">
+            <div class="testimonial-photo" style="position:relative;"><span class="content-placeholder-label">Content Placeholder</span></div>
+            <div class="testimonial-avatar"><span style="font-family:'Lato',sans-serif;font-size:0.42rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);">Photo</span></div>
+          </div>
         </div>
       </div>
       <div class="testimonial-item">
@@ -809,7 +840,10 @@
             <p class="testimonial-company">Founder — Nordic Stealth</p>
             <p class="testimonial-quote">[ Testimonial coming soon ]</p>
           </div>
-          <div class="testimonial-photo" style="position:relative;"><span class="content-placeholder-label">Content Placeholder</span></div>
+          <div class="testimonial-photo-wrap">
+            <div class="testimonial-photo" style="position:relative;"><span class="content-placeholder-label">Content Placeholder</span></div>
+            <div class="testimonial-avatar"><span style="font-family:'Lato',sans-serif;font-size:0.42rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);">Photo</span></div>
+          </div>
         </div>
       </div>
       <div class="testimonial-item">
@@ -819,7 +853,10 @@
             <p class="testimonial-company">Founder — Evie Cosmetics</p>
             <p class="testimonial-quote">We had a great experience working with Daniel. He was efficient, well-prepared, and exceptionally good at quickly understanding our vision, look and feel we wanted for our brand. At the same time, he was able to think outside the box and bring creative ideas to the table that elevated the final result. He was open to our ideas while also contributing plenty of valuable input throughout the process. In addition, he created a comfortable and relaxed atmosphere during the shoot, which made the entire experience both easy and enjoyable. Daniel is incredibly friendly, professional, and easy to work with, and we can warmly recommend him to anyone looking for a talented and reliable collaborator.</p>
           </div>
-          <div class="testimonial-photo"><img src="billeder/compressed/Evie Cosmetics website billeder/_A0A5069.JPG" style="width:100%;height:100%;object-fit:cover;"></div>
+          <div class="testimonial-photo-wrap">
+            <div class="testimonial-photo"><img src="billeder/compressed/Evie Cosmetics website billeder/_A0A5069.JPG" style="width:100%;height:100%;object-fit:cover;"></div>
+            <div class="testimonial-avatar"><span style="font-family:'Lato',sans-serif;font-size:0.42rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);">Photo</span></div>
+          </div>
         </div>
       </div>
     </div>
