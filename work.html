@@ -23,7 +23,7 @@
     .mobile-menu { display: none; position: fixed; top: 70px; left: 0; right: 0; background: var(--gray); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 1.5rem 4%; z-index: 199; flex-direction: column; gap: 1.2rem; }
     .mobile-menu.open { display: flex; }
     .mobile-menu a { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); text-decoration: none; }
-    .work-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+    .work-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
     .project-card { cursor: pointer; position: relative; overflow: hidden; display: block; text-decoration: none; outline: 1px solid rgba(255,255,255,0.06); }
     .project-thumb { width: 100%; aspect-ratio: 4/3; background: var(--black); position: relative; overflow: hidden; }
     .project-thumb-bg { width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94); }
@@ -52,8 +52,8 @@
     .footer-legal a:hover { color: var(--black); }
     [data-animate] { opacity: 0; transform: translateY(36px); transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1); will-change: opacity, transform; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
     [data-animate].in-view { opacity: 1; transform: translate(0,0); will-change: auto; }
-    @media (max-width: 900px) { .nav-center { display: none; } .hamburger { display: flex; } .work-grid { grid-template-columns: 1fr; } .footer-grid { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; gap: 2rem; } }
+    @media (max-width: 900px) { .nav-center { display: none; } .hamburger { display: flex; } .work-grid { grid-template-columns: repeat(2, 1fr); } .footer-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .work-grid { grid-template-columns: 1fr; } .footer-grid { grid-template-columns: 1fr; gap: 2rem; } }
   
     @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
     body { animation: pageFadeIn 0.18s ease-out; }
@@ -320,7 +320,7 @@
   <script>
     const animObserver = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); animObserver.unobserve(e.target); } }); }, { threshold: 0.1 });
     document.querySelectorAll('[data-animate]').forEach((el, i) => {
-      el.style.transitionDelay = ((i % 3) * 0.1) + 's';
+      el.style.transitionDelay = ((i % 4) * 0.08) + 's';
       animObserver.observe(el);
     });
     const hamburger = document.getElementById('hamburger');
