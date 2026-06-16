@@ -3,5 +3,10 @@
     "allow": [
       "Bash(python3)"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "hostinger-hosting",
+    "hostinger-domains",
+    "hostinger-dns"
+  ]
 }
