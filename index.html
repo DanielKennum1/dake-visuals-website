@@ -319,7 +319,7 @@
 
     /* ─── WORK CAROUSEL ─── */
     .work {
-      background: var(--gray);
+      background: var(--cream);
       padding: 80px 0 80px 4%;
       overflow: hidden;
     }
@@ -330,7 +330,7 @@
       padding-right: 4%;
       margin-bottom: 2.5rem;
     }
-    .work-header h2 { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: clamp(1.6rem,4vw,2.8rem); letter-spacing:-0.02em; line-height:1.1; color: var(--white); text-transform: uppercase; }
+    .work-header h2 { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: clamp(1.6rem,4vw,2.8rem); letter-spacing:-0.02em; line-height:1.1; color: var(--black); text-transform: uppercase; }
 
     .work-track {
       display: flex;
@@ -343,10 +343,10 @@
     .work-track::-webkit-scrollbar { display: none; }
 
     .work .btn-outline {
-      border-color: rgba(255,255,255,0.4);
-      color: var(--white);
+      border-color: rgba(0,0,0,0.4);
+      color: var(--black);
     }
-    .work .btn-outline:hover { background: var(--white); color: var(--gray); }
+    .work .btn-outline:hover { background: var(--black); color: var(--cream); }
 
     .work-card {
       flex: 0 0 340px;
@@ -385,29 +385,29 @@
       font-weight: 700;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
+      color: rgba(0,0,0,0.5);
       margin-bottom: 0.3rem;
     }
     .work-card-title {
       font-family: 'Inter', sans-serif;
       font-weight: 700;
       font-size: 1rem;
-      color: var(--white);
+      color: var(--black);
       margin-bottom: 0.2rem;
     }
     .work-card-sub {
       font-family: 'Tinos', serif;
       font-style: italic;
       font-size: 0.9rem;
-      color: rgba(255,255,255,0.5);
+      color: rgba(0,0,0,0.5);
     }
 
     /* ─── TESTIMONIALS ─── */
     .testimonials {
-      background: var(--gray);
+      background: var(--cream);
       padding: 80px 4% 90px;
     }
-    .testimonials > .label { margin-bottom: 4rem; color: rgba(255,255,255,0.4); letter-spacing: 0.3em; }
+    .testimonials > .label { margin-bottom: 4rem; color: rgba(0,0,0,0.4); letter-spacing: 0.3em; }
     .testimonials-slider { overflow: visible; }
     .testimonial-item { display: none; }
     .testimonial-item.active { display: block; }
@@ -415,7 +415,7 @@
       font-family: 'Tinos', serif;
       font-style: italic;
       font-size: clamp(0.75rem, 1.3vw, 0.95rem);
-      color: rgba(255,255,255,0.9);
+      color: rgba(0,0,0,0.85);
       line-height: 1.75;
       max-width: 780px;
       margin-bottom: 2.5rem;
@@ -428,12 +428,12 @@
       font-size: 0.78rem;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--white);
+      color: var(--black);
     }
     .testimonial-company {
       font-family: 'Lato', sans-serif;
       font-size: 0.72rem;
-      color: rgba(255,255,255,0.4);
+      color: rgba(0,0,0,0.4);
       margin-top: 0.3rem;
       margin-bottom: 1.5rem;
       letter-spacing: 0.12em;
@@ -453,7 +453,7 @@
     .testimonial-photo {
       width: 100%;
       aspect-ratio: 4/3;
-      background: rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.06);
       overflow: hidden;
       border-radius: 4px;
     }
@@ -465,7 +465,7 @@
       height: 200px;
       border-radius: 50%;
       overflow: hidden;
-      border: 3px solid var(--gray);
+      border: 3px solid var(--cream);
       background: #3a3a3a;
       display: flex;
       align-items: center;
@@ -483,13 +483,13 @@
     .dot {
       width: 32px; height: 32px;
       border-radius: 50%;
-      border: 1.5px solid rgba(255,255,255,0.2);
+      border: 1.5px solid rgba(0,0,0,0.2);
       background: transparent;
       cursor: pointer;
       font-family: 'Lato', sans-serif;
       font-size: 0.65rem;
       font-weight: 700;
-      color: rgba(255,255,255,0.4);
+      color: rgba(0,0,0,0.4);
       display: flex; align-items: center; justify-content: center;
       transition: border-color 0.3s, color 0.3s;
       position: relative;
@@ -500,14 +500,14 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: var(--white);
+      background: var(--black);
       transform: scaleX(0);
       transform-origin: left;
       z-index: -1;
     }
     .dot.active::before { animation: dotFill 10s linear forwards; }
     @keyframes dotFill { to { transform: scaleX(1); } }
-    .dot.active, .dot:hover { border-color: var(--white); color: var(--gray); }
+    .dot.active, .dot:hover { border-color: var(--black); color: var(--cream); }
 
     /* ─── CTA SECTION ─── */
     .cta-section {
@@ -825,7 +825,7 @@
             <p class="testimonial-quote">[ Testimonial coming soon ]</p>
           </div>
           <div class="testimonial-photo-wrap">
-            <div class="testimonial-photo" style="position:relative;"><span class="content-placeholder-label">Content Placeholder</span></div>
+            <div class="testimonial-photo" style="position:relative;"><span class="content-placeholder-label" style="color:rgba(0,0,0,0.25)">Content Placeholder</span></div>
             <div class="testimonial-avatar"><img src="Testimonial Portraits/Nikolja.png" style="width:100%;height:100%;object-fit:cover;"></div>
           </div>
         </div>
@@ -838,7 +838,7 @@
             <p class="testimonial-quote">[ Testimonial coming soon ]</p>
           </div>
           <div class="testimonial-photo-wrap">
-            <div class="testimonial-photo" style="position:relative;"><span class="content-placeholder-label">Content Placeholder</span></div>
+            <div class="testimonial-photo" style="position:relative;"><span class="content-placeholder-label" style="color:rgba(0,0,0,0.25)">Content Placeholder</span></div>
             <div class="testimonial-avatar"><span style="font-family:'Lato',sans-serif;font-size:0.42rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);">Photo</span></div>
           </div>
         </div>
