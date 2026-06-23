@@ -408,106 +408,58 @@
       padding: 80px 4% 90px;
     }
     .testimonials-title { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: clamp(1.6rem,4vw,2.8rem); letter-spacing:-0.02em; line-height:1.1; color: var(--black); text-transform: uppercase; margin-bottom: 4rem; }
-    .testimonials-slider { overflow: visible; }
-    .testimonial-item { display: none; }
-    .testimonial-item.active { display: block; }
-    .testimonial-quote {
-      font-family: 'Tinos', serif;
-      font-style: italic;
-      font-size: clamp(0.75rem, 1.3vw, 0.95rem);
-      color: rgba(0,0,0,0.85);
-      line-height: 1.75;
-      max-width: 780px;
-      margin-bottom: 2.5rem;
-    }
-    .testimonial-quote::before { content: '\201C'; margin-right: 0.1em; opacity: 0.4; }
-    .testimonial-quote::after { content: '\201D'; margin-left: 0.1em; opacity: 0.4; }
-    .testimonial-author {
-      font-family: 'Lato', sans-serif;
-      font-weight: 700;
-      font-size: 0.78rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--black);
-    }
-    .testimonial-company {
-      font-family: 'Lato', sans-serif;
-      font-size: 0.72rem;
-      color: rgba(0,0,0,0.4);
-      margin-top: 0.3rem;
-      margin-bottom: 1.5rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-    .testimonial-layout {
+    .testimonials-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: start;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      align-items: stretch;
     }
-    .testimonial-text { display: flex; flex-direction: column; gap: 0.5rem; }
-    .testimonial-photo-wrap {
-      position: relative;
-      width: 75%;
+    .testimonial-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 2rem 1.8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
     }
-    .testimonial-photo {
-      width: 100%;
-      aspect-ratio: 4/3;
-      background: rgba(0,0,0,0.06);
-      overflow: hidden;
-      border-radius: 4px;
+    .testimonial-card-quote {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.85rem;
+      color: rgba(0,0,0,0.75);
+      line-height: 1.6;
+      margin-bottom: 2rem;
     }
-    .testimonial-avatar {
-      position: absolute;
-      top: -50px;
-      left: -50px;
-      width: 200px;
-      height: 200px;
+    .testimonial-card-footer {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    .testimonial-card-avatar {
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
       overflow: hidden;
-      border: 3px solid var(--cream);
       background: #3a3a3a;
+      flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 2;
     }
-    .testimonial-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transform: scale(1.4);
-      transform-origin: center center;
-    }
-    .testimonial-dots { display: flex; gap: 0.8rem; margin-top: 2.5rem; }
-    .dot {
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(0,0,0,0.2);
-      background: transparent;
-      cursor: pointer;
+    .testimonial-card-name {
       font-family: 'Lato', sans-serif;
-      font-size: 0.65rem;
       font-weight: 700;
-      color: rgba(0,0,0,0.4);
-      display: flex; align-items: center; justify-content: center;
-      transition: border-color 0.3s, color 0.3s;
-      position: relative;
-      overflow: hidden;
-      z-index: 0;
+      font-size: 0.85rem;
+      color: var(--black);
     }
-    .dot::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--black);
-      transform: scaleX(0);
-      transform-origin: left;
-      z-index: -1;
+    .testimonial-card-company {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.78rem;
+      color: rgba(0,0,0,0.5);
+      margin-top: 0.15rem;
     }
-    .dot.active::before { animation: dotFill 10s linear forwards; }
-    @keyframes dotFill { to { transform: scaleX(1); } }
-    .dot.active, .dot:hover { border-color: var(--black); color: var(--cream); }
+    @media (max-width: 900px) { .testimonials-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .testimonials-grid { grid-template-columns: 1fr; } }
 
     /* ─── CTA SECTION ─── */
     .cta-section {
@@ -803,65 +755,47 @@
   <!-- ─── TESTIMONIALS ─── -->
   <section class="testimonials">
     <h2 class="testimonials-title">What clients say</h2>
-    <div class="testimonials-slider">
-      <div class="testimonial-item active">
-        <div class="testimonial-layout">
-          <div class="testimonial-text">
-            <p class="testimonial-author">Carl</p>
-            <p class="testimonial-company">Founder — ICEFIT The Box</p>
-            <p class="testimonial-quote">[ Testimonial coming soon ]</p>
-          </div>
-          <div class="testimonial-photo-wrap">
-            <div class="testimonial-photo"><img src="billeder/compressed/ICEFIT Hype core website billeder/N07A7389.JPG" style="width:100%;height:100%;object-fit:cover;"></div>
-            <div class="testimonial-avatar"><img src="Testimonial Portraits/Carl.png" style="width:100%;height:100%;object-fit:cover;"></div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <p class="testimonial-card-quote">[ Testimonial coming soon ]</p>
+        <div class="testimonial-card-footer">
+          <div class="testimonial-card-avatar"><img src="Testimonial Portraits/Carl.png" style="width:100%;height:100%;object-fit:cover;"></div>
+          <div>
+            <p class="testimonial-card-name">Carl</p>
+            <p class="testimonial-card-company">Founder — ICEFIT The Box</p>
           </div>
         </div>
       </div>
-      <div class="testimonial-item">
-        <div class="testimonial-layout">
-          <div class="testimonial-text">
-            <p class="testimonial-author">Nikolaj</p>
-            <p class="testimonial-company">Co-founder — RFSPORT</p>
-            <p class="testimonial-quote">[ Testimonial coming soon ]</p>
-          </div>
-          <div class="testimonial-photo-wrap">
-            <div class="testimonial-photo" style="position:relative;"><span class="content-placeholder-label" style="color:rgba(0,0,0,0.25)">Content Placeholder</span></div>
-            <div class="testimonial-avatar"><img src="Testimonial Portraits/Nikolja.png" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="testimonial-card">
+        <p class="testimonial-card-quote">[ Testimonial coming soon ]</p>
+        <div class="testimonial-card-footer">
+          <div class="testimonial-card-avatar"><img src="Testimonial Portraits/Nikolja.png" style="width:100%;height:100%;object-fit:cover;"></div>
+          <div>
+            <p class="testimonial-card-name">Nikolaj</p>
+            <p class="testimonial-card-company">Co-founder — RFSPORT</p>
           </div>
         </div>
       </div>
-      <div class="testimonial-item">
-        <div class="testimonial-layout">
-          <div class="testimonial-text">
-            <p class="testimonial-author">Jakob</p>
-            <p class="testimonial-company">Founder — Nordic Stealth</p>
-            <p class="testimonial-quote">[ Testimonial coming soon ]</p>
-          </div>
-          <div class="testimonial-photo-wrap">
-            <div class="testimonial-photo" style="position:relative;"><span class="content-placeholder-label" style="color:rgba(0,0,0,0.25)">Content Placeholder</span></div>
-            <div class="testimonial-avatar"><span style="font-family:'Lato',sans-serif;font-size:0.42rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);">Photo</span></div>
+      <div class="testimonial-card">
+        <p class="testimonial-card-quote">[ Testimonial coming soon ]</p>
+        <div class="testimonial-card-footer">
+          <div class="testimonial-card-avatar"><span style="font-family:'Lato',sans-serif;font-size:0.42rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(0,0,0,0.3);">Photo</span></div>
+          <div>
+            <p class="testimonial-card-name">Jakob</p>
+            <p class="testimonial-card-company">Founder — Nordic Stealth</p>
           </div>
         </div>
       </div>
-      <div class="testimonial-item">
-        <div class="testimonial-layout">
-          <div class="testimonial-text">
-            <p class="testimonial-author">Jasmin</p>
-            <p class="testimonial-company">Founder — Evie Cosmetics</p>
-            <p class="testimonial-quote">We had a great experience working with Daniel. He was efficient, well-prepared, and exceptionally good at quickly understanding our vision, look and feel we wanted for our brand. At the same time, he was able to think outside the box and bring creative ideas to the table that elevated the final result. He was open to our ideas while also contributing plenty of valuable input throughout the process. In addition, he created a comfortable and relaxed atmosphere during the shoot, which made the entire experience both easy and enjoyable. Daniel is incredibly friendly, professional, and easy to work with, and we can warmly recommend him to anyone looking for a talented and reliable collaborator.</p>
-          </div>
-          <div class="testimonial-photo-wrap">
-            <div class="testimonial-photo"><img src="billeder/compressed/Evie Cosmetics website billeder/_A0A5069.JPG" style="width:100%;height:100%;object-fit:cover;"></div>
-            <div class="testimonial-avatar"><img src="Testimonial Portraits/Jasmin.png" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="testimonial-card">
+        <p class="testimonial-card-quote">We had a great experience working with Daniel. He was efficient, well-prepared, and exceptionally good at quickly understanding our vision, look and feel we wanted for our brand. At the same time, he was able to think outside the box and bring creative ideas to the table that elevated the final result.</p>
+        <div class="testimonial-card-footer">
+          <div class="testimonial-card-avatar"><img src="Testimonial Portraits/Jasmin.png" style="width:100%;height:100%;object-fit:cover;"></div>
+          <div>
+            <p class="testimonial-card-name">Jasmin</p>
+            <p class="testimonial-card-company">Founder — Evie Cosmetics</p>
           </div>
         </div>
       </div>
-    </div>
-    <div class="testimonial-dots">
-      <button class="dot active" onclick="setSlide(0)">1</button>
-      <button class="dot" onclick="setSlide(1)">2</button>
-      <button class="dot" onclick="setSlide(2)">3</button>
-      <button class="dot" onclick="setSlide(3)">4</button>
     </div>
   </section>
 
@@ -951,43 +885,6 @@
     }, { threshold: 0.12 });
     document.querySelectorAll('[data-animate]').forEach(el => animObserver.observe(el));
 
-    // Testimonial slider
-    let currentSlide = 0;
-    let testimonialTimer;
-
-    function setSlide(i, userTriggered = true) {
-      const items = document.querySelectorAll('.testimonial-item');
-      const dots = document.querySelectorAll('.dot');
-      if (i === currentSlide) return;
-
-      items.forEach((el, idx) => {
-        el.classList.toggle('active', idx === i);
-      });
-      dots.forEach((el, idx) => {
-        if (idx === i) {
-          el.classList.remove('active');
-          void el.offsetWidth; // force reflow to restart fill animation
-          el.classList.add('active');
-        } else {
-          el.classList.remove('active');
-        }
-      });
-      currentSlide = i;
-
-      if (userTriggered) restartTestimonialTimer();
-    }
-
-    function nextSlide() {
-      const total = document.querySelectorAll('.testimonial-item').length;
-      setSlide((currentSlide + 1) % total, false);
-    }
-
-    function restartTestimonialTimer() {
-      clearInterval(testimonialTimer);
-      testimonialTimer = setInterval(nextSlide, 10000);
-    }
-
-    restartTestimonialTimer();
   </script>
 </body>
 </html>
