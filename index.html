@@ -173,6 +173,35 @@
     }
     @keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
 
+    .hero-services {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 2.5rem;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .hero-services-label {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+    .hero-services-list {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+
     /* ─── SHARED SECTION STYLES ─── */
     .section-pad { padding: 100px 4%; }
 
@@ -631,6 +660,16 @@
       <div class="hero-scroll">
         <span>Scroll down</span>
         <div class="hero-scroll-line"></div>
+      </div>
+      <div class="hero-services">
+        <span class="hero-services-label">What we do:</span>
+        <div class="hero-services-list">
+          <span>Photo</span>
+          <span style="color:rgba(255,255,255,0.2)">·</span>
+          <span>Video</span>
+          <span style="color:rgba(255,255,255,0.2)">·</span>
+          <span>& Editing</span>
+        </div>
       </div>
     </div>
   </section>
