@@ -15,6 +15,10 @@
     #navbar { position: relative; z-index: 200; height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 4%; background: var(--gray); border-bottom: 1px solid rgba(255,255,255,0.1); }
     .nav-logo { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: 1.1rem; letter-spacing: 0.03em; text-transform: uppercase; color: var(--white); text-decoration: none; }
     .nav-center { display: none !important; }
+    .hamburger { display: none !important; }
+    .nav-center a { font-family: 'Lato', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.7); text-decoration: none; padding: 0.35rem 0.85rem; border-radius: 999px; border: 1.5px solid transparent; transition: color 0.2s, border-color 0.2s; }
+    .nav-center a:hover { color: var(--white); border-color: rgba(255,255,255,0.4); }
+    .nav-center a.active { color: var(--white); border-color: rgba(255,255,255,0.7); }
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
     .hamburger span { display: block; width: 22px; height: 2px; background: var(--white); }
     .mobile-menu { display: none; position: fixed; top: 70px; left: 0; right: 0; background: var(--gray); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 1.5rem 4%; z-index: 199; flex-direction: column; gap: 1.2rem; }
@@ -24,21 +28,15 @@
     .project-meta-items { display: flex; gap: 2.5rem; flex-wrap: wrap; flex-shrink: 0; }
     .project-meta-item label { display: block; font-family: 'Lato', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 0.25rem; }
     .project-meta-item span { font-family: 'Lato', sans-serif; font-size: 0.88rem; font-weight: 700; color: var(--white); }
-    .project-hero-wrap { background: var(--gray); padding: 1.5rem 4%; position: relative; }
+    .project-hero-wrap { background: var(--gray); padding: 1.5rem 4% 4rem; position: relative; }
     .project-hero-trio { display: flex; gap: 0.75rem; width: 75%; margin: 0 auto; }
     .project-hero { flex: 1; aspect-ratio: 9/16; overflow: hidden; position: relative; background: #000000; }
     .back-link { position: absolute; top: 1.5rem; left: 4%; font-family: 'Lato', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.55); text-decoration: none; display: inline-flex; align-items: center; gap: 0.45rem; transition: color 0.2s; z-index: 2; }
     .back-link:hover { color: var(--white); }
     .back-link::before { content: '←'; }
     .project-hero-title { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(2rem, 5vw, 4.5rem); letter-spacing: -0.02em; color: var(--white); line-height: 1; text-transform: uppercase; }
-    .project-section-label { font-family: 'Lato', sans-serif; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 1.2rem; display: block; }
-    .project-frames { background: var(--gray); padding: 50px 22%; }
-    .frames-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin-top: 1.5rem; }
-    .frame-item { aspect-ratio: 1/1; overflow: hidden; background: #3a3a3a; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
-    .frame-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.4s ease; }
-    .frame-item:hover img { transform: scale(1.07); filter: brightness(1.08); }
-    .frame-item::after { content: ""; position: absolute; inset: 0; background: transparent; transition: background 0.3s ease; pointer-events: none; }
-    .frame-item:hover::after { background: rgba(255,255,255,0.04); }
+    [data-animate] { opacity: 0; transform: translateY(32px); transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1); }
+    [data-animate].in-view { opacity: 1; transform: translate(0,0); }
     footer { background: var(--cream); border-top: 1px solid rgba(0,0,0,0.08); padding: 60px 4% 40px; }
     .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(0,0,0,0.08); }
     .footer-col h4 { font-family: 'Lato', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 1.2rem; }
@@ -57,12 +55,9 @@
     .footer-legal { display: flex; gap: 1.5rem; }
     .footer-legal a { font-family: 'Lato', sans-serif; font-size: 0.72rem; color: var(--gray); text-decoration: none; }
     .footer-legal a:hover { color: var(--black); }
-    [data-animate] { opacity: 0; transform: translateY(32px); transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1); }
-    [data-animate].in-view { opacity: 1; transform: translate(0,0); }
     video::-webkit-media-controls-fullscreen-button { display: none !important; }
-    @media (max-width: 900px) { .nav-center { display: none; } .hamburger { display: flex; } .frames-grid { grid-template-columns: repeat(2, 1fr); } .footer-grid { grid-template-columns: 1fr 1fr; } .project-hero-trio { width: 95%; } }
-    @media (max-width: 600px) { .frames-grid { grid-template-columns: repeat(2, 1fr); } .footer-grid { grid-template-columns: 1fr; gap: 2rem; } .footer-bottom { flex-direction: column; align-items: flex-start; } .project-hero-trio { width: 100%; flex-direction: column; } }
-
+    @media (max-width: 900px) { .nav-center { display: none; } .hamburger { display: flex; } .footer-grid { grid-template-columns: 1fr 1fr; } .project-hero-trio { width: 95%; } }
+    @media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; gap: 2rem; } .footer-bottom { flex-direction: column; align-items: flex-start; } .project-hero-trio { width: 100%; flex-direction: column; } }
     @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
     body { animation: pageFadeIn 0.18s ease-out; }
   </style>
@@ -97,21 +92,10 @@
     <a href="../work.html" class="back-link">All Work</a>
     <div class="project-hero-trio">
       <div class="project-hero">
-        <iframe src="https://player.vimeo.com/video/1201380435?h=761f97932f&badge=0&autopause=0&fs=0&title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; picture-in-picture" style="position:absolute;inset:0;width:100%;height:100%;border:none;"></iframe>
-      </div>
-      <div class="project-hero">
-        <iframe src="https://player.vimeo.com/video/1201380436?h=353201280a&badge=0&autopause=0&fs=0&title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; picture-in-picture" style="position:absolute;inset:0;width:100%;height:100%;border:none;"></iframe>
-      </div>
-      <div class="project-hero">
-        <iframe src="https://player.vimeo.com/video/1201380437?h=dc509c4609&badge=0&autopause=0&fs=0&title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; picture-in-picture" style="position:absolute;inset:0;width:100%;height:100%;border:none;"></iframe>
-      </div>
-    </div>
-    <div class="project-hero-trio" style="margin-top:0.75rem;">
-      <div class="project-hero">
         <iframe src="https://player.vimeo.com/video/1201389087?h=e32e16ca24&badge=0&autopause=0&fs=0&title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; picture-in-picture" style="position:absolute;inset:0;width:100%;height:100%;border:none;"></iframe>
       </div>
       <div class="project-hero">
-        <iframe src="https://player.vimeo.com/video/1201389267?h=d97dae5fac&badge=0&autopause=0&fs=0&title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; picture-in-picture" style="position:absolute;inset:0;width:100%;height:100%;border:none;"></iframe>
+        <iframe src="https://player.vimeo.com/video/1205222883?h=fcf2944794&badge=0&autopause=0&fs=0&title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; picture-in-picture" style="position:absolute;inset:0;width:100%;height:100%;border:none;"></iframe>
       </div>
       <div class="project-hero">
         <iframe src="https://player.vimeo.com/video/1201389058?h=b3eb50272b&badge=0&autopause=0&fs=0&title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; picture-in-picture" style="position:absolute;inset:0;width:100%;height:100%;border:none;"></iframe>
