@@ -397,6 +397,11 @@
       });
     });
 
+    // Force fresh render when page is restored from bfcache (fixes animation seam glitch)
+    window.addEventListener('pageshow', (e) => {
+      if (e.persisted) window.location.reload();
+    });
+
     // Restore scroll position when coming back from a project
     const savedY = sessionStorage.getItem('workScrollY');
     if (savedY !== null) {
