@@ -1,3 +1,14 @@
+# Video MIME types — required for iOS Safari autoplay
+AddType video/mp4 .mp4 .m4v
+AddType video/quicktime .mov
+
+# Enable byte-range requests so iOS can stream video
+<IfModule mod_headers.c>
+  <FilesMatch "\.(mp4|m4v|mov)$">
+    Header set Accept-Ranges bytes
+  </FilesMatch>
+</IfModule>
+
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType text/html "access plus 0 seconds"
