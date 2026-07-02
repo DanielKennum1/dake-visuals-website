@@ -13,6 +13,8 @@
     html { scroll-behavior: smooth; scrollbar-gutter: stable; }
     body { font-family: 'Lato', sans-serif; background: var(--gray); color: var(--black); overflow-x: hidden; }
     #navbar { position: relative; z-index: 200; height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 4%; background: var(--gray); border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .btn-book { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; padding: 0.45rem 1.1rem; border: 1.5px solid rgba(255,255,255,0.5); border-radius: 999px; color: var(--white); background: transparent; transition: background 0.2s, border-color 0.2s; white-space: nowrap; }
+    .btn-book:hover { background: var(--white); color: var(--black); border-color: var(--white); }
     .nav-logo { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: 1.1rem; letter-spacing: 0.03em; text-transform: uppercase; color: var(--white); text-decoration: none; }
     .nav-center { display: none !important; }
     .hamburger { display: none !important; }
@@ -58,6 +60,15 @@
     video::-webkit-media-controls-fullscreen-button { display: none !important; }
     @media (max-width: 900px) { .nav-center { display: none; } .hamburger { display: flex; } .footer-grid { grid-template-columns: 1fr 1fr; } .project-hero-trio { width: 95%; } }
     @media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; gap: 2rem; } .footer-bottom { flex-direction: column; align-items: flex-start; } .project-hero-trio { width: 100%; flex-direction: column; } }
+    @media (max-width: 480px) {
+      .btn-book { display: none; }
+      .project-header { flex-direction: column; align-items: flex-start; gap: 1rem; padding: 1.5rem 5% 1rem; }
+      .project-meta-items { gap: 1.5rem; }
+      .project-frames { padding: 30px 5%; }
+      .project-hero { width: 95%; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
     @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
     body { animation: pageFadeIn 0.18s ease-out; }
   </style>
@@ -71,7 +82,7 @@
     <a href="../contact.html" onclick="closeMobile()">Contact</a>
   </div>
   <nav id="navbar">
-    <a href="/" class="nav-logo">DAKE VISUALS</a>
+    <div class="nav-logo-group" style="display:flex;align-items:center;gap:1rem;"><a href="/" class="nav-logo">DAKE VISUALS</a><a href="../contact.html" class="btn-book">Let's create</a></div>
     <ul class="nav-center">
       <li><a href="/">Home</a></li>
       <li><a href="../work.html" class="active">Work</a></li>

@@ -444,7 +444,7 @@
       align-items: stretch;
     }
     .testimonial-card {
-      background: var(--white);
+      background: #c8bfad;
       border-radius: 16px;
       padding: 2rem 1.8rem;
       display: flex;
@@ -513,13 +513,13 @@
       font-size: clamp(1.6rem, 3.5vw, 2.8rem);
       letter-spacing: -0.01em;
       line-height: 1.15;
-      color: rgba(255,255,255,0.85);
+      color: var(--white);
     }
     .cta-section h2 strong {
       font-family: 'Inter', sans-serif;
       font-weight: 900;
       font-style: italic;
-      color: var(--cream);
+      color: var(--white);
       letter-spacing: -0.03em;
     }
     .btn-cta {
@@ -603,21 +603,43 @@
       .hero { padding: 0; }
       .hero-media { border-radius: 0; }
 
-      /* Definition section — stack text above photos, photos stacked 1 column */
-      .definition-body { grid-template-columns: 1fr; gap: 2rem; padding: 50px 5% 40px; }
-      .definition-photo { grid-template-columns: 1fr; }
-
-      /* Testimonial — stack photo below text, smaller */
-      .testimonial-layout { flex-direction: column; }
-      .testimonial-photo-wrap { width: 100%; }
-      .testimonial-photo { width: 100%; height: 180px; border-radius: 4px; }
+      /* Definition section — stack */
+      .definition { grid-template-columns: 1fr; padding: 60px 5% 50px; gap: 2.5rem; }
+      .definition-photo { grid-template-columns: 1fr 1fr; }
 
       /* Work cards */
-      .work-card { flex: 0 0 280px; }
+      .work-card { flex: 0 0 72vw; }
 
       /* Footer */
       .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       .footer-bottom { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 480px) {
+      /* Nav — hide pill button, keep logo + hamburger clean */
+      .btn-book { display: none; }
+
+      /* Definition name — prevent overflow */
+      .definition-name { font-size: clamp(1.6rem, 8vw, 2.8rem); }
+
+      /* Hero services strip — hide on very small screens */
+      .hero-services { display: none; }
+
+      /* Services padding */
+      .service-col { padding: 2rem 0; }
+
+      /* CTA */
+      .cta-inner { padding: 60px 5%; gap: 2rem; }
+
+      /* Testimonials */
+      .testimonials { padding: 40px 5% 70px; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+
+      /* Work section */
+      .work { padding: 40px 0 60px 5%; }
+
+      /* Footer */
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
     }
   
     @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -757,17 +779,16 @@
       <a href="work.html" class="btn-outline">View all</a>
     </div>
     <div class="work-track">
-      <!-- Card 1 -->
       <div class="work-card" onclick="location.href='projects/the-play-off.html'" style="cursor:pointer">
         <div class="work-card-thumb">
           <img src="Videos/Thumbnails/theplayoffcover.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
           <img src="Videos/Thumbnails/The play off.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(1.3)">
           <a href="projects/the-play-off.html" class="work-card-watch">View Project</a>
         </div>
         <p class="work-card-client">Brand Film — Sport</p>
         <p class="work-card-title">The Play Off</p>
       </div>
-      <!-- Card 2 -->
       <div class="work-card" onclick="location.href='projects/enjoyment-of-sound.html'" style="cursor:pointer">
         <div class="work-card-thumb">
           <img src="Videos/Thumbnails/Enjoyment of sound.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
@@ -776,28 +797,6 @@
         <p class="work-card-client">Brand Film — Lifestyle</p>
         <p class="work-card-title">Enjoyment of Sound</p>
       </div>
-      <!-- Card 3 -->
-      <div class="work-card" onclick="location.href='projects/take-one.html'" style="cursor:pointer">
-        <div class="work-card-thumb">
-          <img src="Videos/Thumbnails/TAKE ONE COver photo.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;filter:brightness(0.75)">
-          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
-          <img src="Videos/Thumbnails/TAKE ONE.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;">
-          <a href="projects/take-one.html" class="work-card-watch">View Project</a>
-        </div>
-        <p class="work-card-client">BTS Film — Video Production</p>
-        <p class="work-card-title">Take One</p>
-      </div>
-      <!-- Card 4 -->
-      <div class="work-card" onclick="location.href='projects/dwecks-principle.html'" style="cursor:pointer">
-        <div class="work-card-thumb">
-          <img src="Videos/Thumbnails/dwecks-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
-          <img src="Videos/Thumbnails/Dwecks Principle.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none">
-          <a href="projects/dwecks-principle.html" class="work-card-watch">View Project</a>
-        </div>
-        <p class="work-card-client">Brand Film — Performance</p>
-        <p class="work-card-title">Dweck's Principle</p>
-      </div>
-      <!-- Card 5 -->
       <div class="work-card" onclick="location.href='projects/hjortborg-design.html'" style="cursor:pointer">
         <div class="work-card-thumb">
           <img src="Videos/Thumbnails/Nordic stealth.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
@@ -806,16 +805,213 @@
         <p class="work-card-client">Brand Film — Design</p>
         <p class="work-card-title">Nordic Stealth</p>
       </div>
-      <!-- Card 6 -->
+      <div class="work-card" onclick="location.href='projects/dwecks-principle.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="Videos/Thumbnails/dwecks-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/Thumbnails/Dwecks Principle.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <a href="projects/dwecks-principle.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">Brand Film — Performance</p>
+        <p class="work-card-title">Dweck's Principle</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/need-for-speed.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="Videos/Thumbnails/need for speed - card.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/Thumbnails/Need for speed.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(1.3)">
+          <a href="projects/need-for-speed.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">Event — Motorsport</p>
+        <p class="work-card-title">NEED FOR SPEED</p>
+      </div>
       <div class="work-card" onclick="location.href='projects/jakob-juul.html'" style="cursor:pointer">
         <div class="work-card-thumb">
           <img src="billeder/compressed/Jakob website billeder/IMG_4321.JPG" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
-          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35);pointer-events:none"></div>
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
           <img src="Videos/Thumbnails/Jakob.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(1.25)">
           <a href="projects/jakob-juul.html" class="work-card-watch">View Project</a>
         </div>
-        <p class="work-card-client">Documentary — The Process</p>
+        <p class="work-card-client">Documentary — Art</p>
         <p class="work-card-title">Jakob Juul x Psykiatrifonden</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/icefit.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="Videos/Thumbnails/icefit interviews.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/Thumbnails/ICEFIT WHITE PNG.png" style="position:absolute;inset:0;width:70%;height:70%;top:15%;left:15%;object-fit:contain;pointer-events:none">
+          <a href="projects/icefit.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">Interview — Fitness</p>
+        <p class="work-card-title">ICEFIT</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/evie-cosmetics.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="Videos/Thumbnails/evie-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/Thumbnails/evie-logo.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none">
+          <a href="projects/evie-cosmetics.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">Brand Film — Beauty</p>
+        <p class="work-card-title">Evie Cosmetics</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/rynkeby.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="Videos/Thumbnails/rynkeby cover.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;filter:brightness(0.65)">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/rynkeby.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none">
+          <a href="projects/rynkeby.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">Event — Beverage</p>
+        <p class="work-card-title">Rynkeby</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/conquer-the-mountain.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="Videos/Thumbnails/conquer-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/Thumbnails/Conquer The Mountain.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <a href="projects/conquer-the-mountain.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">AI — Action Sport</p>
+        <p class="work-card-title">Conquer The Mountain</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/aarhus-motion.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="Videos/Thumbnails/aarhus motion thumbnailc:cover .png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/Thumbnails/BACH25_logo_2_linjer_AAM_hvid.png" style="position:absolute;inset:0;width:75%;height:75%;top:12.5%;left:12.5%;object-fit:contain;pointer-events:none">
+          <a href="projects/aarhus-motion.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">Countdown — Sport</p>
+        <p class="work-card-title">Aarhus Motion</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/casablanca.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="Videos/Thumbnails/casablanca-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/Thumbnails/Casablanca.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <a href="projects/casablanca.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">Brand Film — Food &amp; Drinks</p>
+        <p class="work-card-title">Casablanca</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/icefit-4.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="Videos/Thumbnails/icefit4-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/Thumbnails/ICEFIT WHITE PNG.png" style="position:absolute;inset:0;width:70%;height:70%;top:15%;left:15%;object-fit:contain;pointer-events:none">
+          <a href="projects/icefit-4.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">Content — Fitness</p>
+        <p class="work-card-title">ICEFIT</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/take-one.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="Videos/Thumbnails/TAKE ONE COver photo.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;filter:brightness(0.75)">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/Thumbnails/TAKE ONE.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none">
+          <a href="projects/take-one.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">BTS Film — Video Production</p>
+        <p class="work-card-title">Take One</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/thy-rock.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="Videos/Thumbnails/Thy rock cover photo.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/THY_ROCK_26_white_transparent.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(0.45)">
+          <a href="projects/thy-rock.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">Event — Festival</p>
+        <p class="work-card-title">Thy Rock</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/its-out-there.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="Videos/It's out there.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <a href="projects/its-out-there.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">Travel Film — Nature/Lifestyle</p>
+        <p class="work-card-title">It's Out There</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/mad-hos-mads.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="billeder/compressed/madhosmads website billeder/1A0A5256.JPG" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/Thumbnails/madhosmads.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none">
+          <a href="projects/mad-hos-mads.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">Content — Food &amp; Lifestyle</p>
+        <p class="work-card-title">Mad Hos Mads</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/icefit-2.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="Videos/Thumbnails/icefit.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/Thumbnails/ICEFIT WHITE PNG.png" style="position:absolute;inset:0;width:70%;height:70%;top:15%;left:15%;object-fit:contain;pointer-events:none">
+          <a href="projects/icefit-2.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">Brand Film — Fitness</p>
+        <p class="work-card-title">ICEFIT</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/humble-barbers.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="billeder/compressed/Humble Barbers website billeder/DSC00108.JPG" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;pointer-events:none;filter:brightness(0.5)">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/Thumbnails/Humble barbers.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none">
+          <a href="projects/humble-barbers.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">Brand Film — Lifestyle</p>
+        <p class="work-card-title">Humble Barbers</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/bliss-budget.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="billeder/compressed/Bliss website billeder/Sk%C3%A6rmbillede%202026-06-10%20kl.%2020.24.03.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;object-position:0% center">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/Thumbnails/1.05_BLISS_SGA_Logo-kopi.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(0.32)">
+          <a href="projects/bliss-budget.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">Documentary — Product Launch</p>
+        <p class="work-card-title">Bliss Budget</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/pace-club.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="billeder/compressed/paceclub/_DSC0018.JPG" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/Thumbnails/Pace Club.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(1.35)">
+          <a href="projects/pace-club.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">Brand Film — Fitness</p>
+        <p class="work-card-title">Pace Club</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/groft.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="billeder/compressed/Groft website bileder/Sk%C3%A6rmbillede%202026-06-04%20kl.%2012.17.41.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/Thumbnails/Groft.png" style="position:absolute;inset:0;width:85%;height:85%;top:7.5%;left:7.5%;object-fit:contain;pointer-events:none">
+          <a href="projects/groft.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">Brand Film — Sourdough Bakery</p>
+        <p class="work-card-title">Groft</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/dirtbike.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="Videos/Thumbnails/dirtbike-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/Thumbnails/DIRTBIKE.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <a href="projects/dirtbike.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">AI — Action Sport</p>
+        <p class="work-card-title">Dirtbike</p>
+      </div>
+      <div class="work-card" onclick="location.href='projects/icefit-3.html'" style="cursor:pointer">
+        <div class="work-card-thumb">
+          <img src="Videos/Thumbnails/icefit nr 3. thumbnail.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+          <img src="Videos/Thumbnails/ICEFIT WHITE PNG.png" style="position:absolute;inset:0;width:70%;height:70%;top:15%;left:15%;object-fit:contain;pointer-events:none">
+          <a href="projects/icefit-3.html" class="work-card-watch">View Project</a>
+        </div>
+        <p class="work-card-client">Ads — Fitness</p>
+        <p class="work-card-title">ICEFIT</p>
       </div>
     </div>
   </section>
@@ -873,26 +1069,33 @@
     hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
     function closeMobile() { mobileMenu.classList.remove('open'); }
 
-    // Infinite auto-scroll work track
+    // Work track: auto-scroll on desktop, touch-scroll on mobile
     const track = document.querySelector('.work-track');
     if (track) {
-      Array.from(track.children).forEach(card => {
-        const clone = card.cloneNode(true);
-        clone.querySelectorAll('video').forEach(v => { v.load(); });
-        track.appendChild(clone);
-      });
-
-      let pos = 0;
-      const speed = 1.8;
-
-      function autoScroll() {
-        pos += speed;
-        const loopAt = track.scrollWidth / 2;
-        if (pos >= loopAt) pos -= loopAt;
-        track.style.transform = `translateX(-${pos}px)`;
-        requestAnimationFrame(autoScroll);
+      const isMobile = window.matchMedia('(max-width: 480px)').matches;
+      if (isMobile) {
+        track.style.overflowX = 'auto';
+        track.style.scrollSnapType = 'x mandatory';
+        track.style.webkitOverflowScrolling = 'touch';
+        track.style.paddingRight = '5%';
+        Array.from(track.children).forEach(c => { c.style.scrollSnapAlign = 'start'; });
+      } else {
+        Array.from(track.children).forEach(card => {
+          const clone = card.cloneNode(true);
+          clone.querySelectorAll('video').forEach(v => { v.load(); });
+          track.appendChild(clone);
+        });
+        let pos = 0;
+        const speed = 1.8;
+        function autoScroll() {
+          pos += speed;
+          const loopAt = track.scrollWidth / 2;
+          if (pos >= loopAt) pos -= loopAt;
+          track.style.transform = `translateX(-${pos}px)`;
+          requestAnimationFrame(autoScroll);
+        }
+        autoScroll();
       }
-      autoScroll();
     }
 
     // Scroll animations

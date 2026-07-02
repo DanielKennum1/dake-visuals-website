@@ -82,6 +82,12 @@
     .contact-form.slide-in, .contact-sidebar.slide-in { opacity: 1; transform: translateX(0); }
     @media (max-width: 900px) { .nav-center { display: none; } .hamburger { display: flex; } .contact-body { grid-template-columns: 1fr; gap: 4rem; } .footer-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; gap: 0; } .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; } .footer-bottom { flex-direction: column; align-items: flex-start; } }
+    @media (max-width: 480px) {
+      .contact-hero { padding: 10px 5% 40px; }
+      .contact-body { padding: 0 5% 80px; gap: 3rem; }
+      .form-submit { padding-top: 2.5rem; flex-direction: column; align-items: flex-start; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
   
     @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
     body { animation: pageFadeIn 0.18s ease-out; }
