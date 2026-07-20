@@ -1151,15 +1151,26 @@
         });
       });
 
+      // Auto-advance
+      let timer = null;
+      function startAuto() {
+        clearInterval(timer);
+        timer = setInterval(() => {
+          activeIdx = (activeIdx + 1) % n;
+          update();
+        }, 3000);
+      }
+      function resetAuto() { startAuto(); }
+
       const prev = document.querySelector('.work-nav-prev');
       const next = document.querySelector('.work-nav-next');
-      if (prev) prev.addEventListener('click', () => { if (activeIdx > 0) { activeIdx--; update(); } });
-      if (next) next.addEventListener('click', () => { if (activeIdx < n - 1) { activeIdx++; update(); } });
+      if (prev) prev.addEventListener('click', () => { activeIdx = (activeIdx - 1 + n) % n; update(); resetAuto(); });
+      if (next) next.addEventListener('click', () => { activeIdx = (activeIdx + 1) % n; update(); resetAuto(); });
 
       // Keyboard
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft' && activeIdx > 0) { activeIdx--; update(); }
-        if (e.key === 'ArrowRight' && activeIdx < n - 1) { activeIdx++; update(); }
+        if (e.key === 'ArrowLeft') { activeIdx = (activeIdx - 1 + n) % n; update(); resetAuto(); }
+        if (e.key === 'ArrowRight') { activeIdx = (activeIdx + 1) % n; update(); resetAuto(); }
       });
 
       // Touch swipe
@@ -1171,15 +1182,15 @@
           if (sx === null) return;
           const dx = e.changedTouches[0].clientX - sx;
           if (Math.abs(dx) > 40) {
-            if (dx < 0 && activeIdx < n - 1) activeIdx++;
-            else if (dx > 0 && activeIdx > 0) activeIdx--;
-            update();
+            activeIdx = dx < 0 ? (activeIdx + 1) % n : (activeIdx - 1 + n) % n;
+            update(); resetAuto();
           }
           sx = null;
         }, { passive: true });
       }
 
       update();
+      startAuto();
     })();
 
     // Scroll animations
