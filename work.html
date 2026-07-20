@@ -32,6 +32,8 @@
     .project-card:hover .project-thumb-bg { transform: scale(1.04); }
     .project-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.15) 50%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.8rem; opacity: 0; transition: opacity 0.4s; }
     .project-card:hover .project-overlay { opacity: 1; }
+    .project-thumb > div:not(.project-overlay) { transition: opacity 0.35s ease; }
+    .project-card:hover .project-thumb > div:not(.project-overlay) { opacity: 0; }
     .project-category { font-family: 'Lato', sans-serif; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-bottom: 0.35rem; }
     .project-title { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 1.1rem; color: var(--white); letter-spacing: -0.02em; }
     footer { background: var(--cream); border-top: 1px solid rgba(0,0,0,0.08); padding: 60px 4% 40px; }
