@@ -29,9 +29,10 @@
     .video-hero { padding: 0.5rem; height: 100vh; box-sizing: border-box; }
     .video-placeholder { width: 100%; height: 100%; background: #0d1520; border-radius: 8px; overflow: hidden; position: relative; }
     .founder-name-left { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: clamp(1rem, 2.2vw, 1.6rem); letter-spacing: 0.03em; text-transform: uppercase; line-height: 1.0; color: var(--white); white-space: nowrap; margin-bottom: 0.2rem; }
-    .founder-glass-box { position: absolute; bottom: 1rem; left: 2.5rem; right: 1rem; z-index: 2; display: flex; flex-direction: column; gap: 1rem; padding: 2rem 2rem 1.8rem; background: rgba(10,15,25,0.55); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-radius: 4px; opacity: 0; transform: translateY(30px); animation: sectionSlideIn 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards; }
+    .founder-glass-box { position: absolute; bottom: 1rem; left: 2.5rem; right: 1rem; z-index: 2; display: flex; flex-direction: row; align-items: flex-start; gap: 2rem; padding: 2rem 2rem 1.8rem; background: rgba(10,15,25,0.55); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-radius: 4px; opacity: 0; transform: translateY(30px); animation: sectionSlideIn 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards; }
+    .founder-glass-left { flex: 1; display: flex; flex-direction: column; gap: 1rem; }
     .founder-bio { font-family: 'Tinos', serif; font-size: 0.95rem; color: rgba(255,255,255,0.65); line-height: 1.8; }
-    .video-links { display: flex; align-items: center; gap: 0.8rem; font-family: 'Lato', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; flex-wrap: wrap; }
+    .video-links { display: flex; flex-direction: column; align-items: flex-end; gap: 0.55rem; font-family: 'Lato', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; white-space: nowrap; }
     .video-links a { color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
     .video-links a:hover { color: var(--white); }
     @keyframes sectionSlideIn { to { opacity: 1; transform: translateY(0); } }
@@ -98,14 +99,14 @@
   <section class="video-hero">
     <div class="video-placeholder">
       <div class="founder-glass-box">
-        <h2 class="founder-name-left">Daniel Kennum</h2>
-        <p class="founder-bio">I founded DAKE Visuals after seeing businesses investing heavily in advertising without giving enough thought to the creative behind it. Advertising only amplifies what's already there — if the content doesn't connect, more money won't fix it.</p>
-        <p class="founder-bio">I help brands, businesses, and individuals create powerful visuals that gives their marketing something worth amplifying. I'll take you from the initial idea to the final edit.</p>
+        <div class="founder-glass-left">
+          <h2 class="founder-name-left">Daniel Kennum</h2>
+          <p class="founder-bio">I founded DAKE Visuals after seeing businesses investing heavily in advertising without giving enough thought to the creative behind it. Advertising only amplifies what's already there — if the content doesn't connect, more money won't fix it.</p>
+          <p class="founder-bio">I help brands, businesses, and individuals create powerful visuals that gives their marketing something worth amplifying. I'll take you from the initial idea to the final edit.</p>
+        </div>
         <div class="video-links">
           <a href="https://www.instagram.com/dake.visuals/" target="_blank">Instagram</a>
-          <span style="color:rgba(255,255,255,0.2)">·</span>
           <a href="mailto:dake@dakevisuals.com">dake@dakevisuals.com</a>
-          <span style="color:rgba(255,255,255,0.2)">·</span>
           <a href="tel:+4553399909">+45 53 39 99 09</a>
         </div>
       </div>
