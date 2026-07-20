@@ -386,7 +386,7 @@
       margin-left: -170px;
       top: 0;
       cursor: pointer;
-      transition: transform 0.52s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.52s;
+      transition: transform 0.32s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.32s;
       will-change: transform, opacity;
       user-select: none;
     }
@@ -1141,7 +1141,7 @@
         timer = setInterval(() => {
           activeIdx = (activeIdx + 1) % n;
           update();
-        }, 900);
+        }, 400);
       }
       function resetAuto() { startAuto(); }
 
