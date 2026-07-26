@@ -11,66 +11,67 @@
 
   var ease = 'cubic-bezier(0.76,0,0.24,1)';
 
+  // Black background panel — animates independently
   var panel = document.createElement('div');
   panel.style.cssText = [
     'position:fixed;inset:0;z-index:9999;background:#000',
-    'display:flex;align-items:center;justify-content:center',
-    'pointer-events:none;will-change:transform'
+    'pointer-events:none;will-change:transform',
+    'transform:translate(101%,0)'
   ].join(';');
 
-  var wordmark = document.createElement('div');
-  wordmark.textContent = 'DAKE VISUALS';
-  wordmark.style.cssText = [
+  // Wordmark — separate fixed element, moves independently of panel
+  var wm = document.createElement('div');
+  wm.textContent = 'DAKE VISUALS';
+  wm.style.cssText = [
+    'position:fixed;top:50%;left:50%;z-index:10000',
     'font-family:Inter,sans-serif;font-weight:900;font-style:italic',
     'font-size:clamp(1.2rem,3.5vw,2.8rem)',
     'letter-spacing:0.08em;text-transform:uppercase;color:#fff',
-    'transform:translateX(60px);opacity:0;will-change:transform,opacity'
+    'pointer-events:none;will-change:transform,opacity',
+    'transform:translate(calc(-50% + 80px),-50%);opacity:0'
   ].join(';');
 
-  panel.appendChild(wordmark);
   document.body.appendChild(panel);
+  document.body.appendChild(wm);
+
+  function resetAll() {
+    panel.style.transition = 'none';
+    panel.style.transform = 'translate(101%,0)';
+    wm.style.transition = 'none';
+    wm.style.transform = 'translate(calc(-50% + 80px),-50%)';
+    wm.style.opacity = '0';
+    panel.style.pointerEvents = 'none';
+  }
 
   var isCurrentNav = isNavPage(window.location.href);
 
   if (isCurrentNav) {
-    // New page: panel covers screen, hold, then exit upward
-    panel.style.transform = 'translate(0,0)';
+    // Panel already covers screen on arrival
     panel.style.transition = 'none';
+    panel.style.transform = 'translate(0,0)';
 
     requestAnimationFrame(function () { requestAnimationFrame(function () {
-      // Wordmark slides in
-      wordmark.style.transition = 'transform 0.4s ' + ease + ', opacity 0.3s ease';
-      wordmark.style.transform = 'translateX(0)';
-      wordmark.style.opacity = '1';
+      // Wordmark glides into center
+      wm.style.transition = 'transform 0.4s ' + ease + ', opacity 0.3s ease';
+      wm.style.transform = 'translate(-50%,-50%)';
+      wm.style.opacity = '1';
 
-      // Hold so new page content loads, then exit upward
+      // After hold: wordmark slides out to the side, panel lifts up — simultaneously
       setTimeout(function () {
+        wm.style.transition = 'transform 0.45s ' + ease + ', opacity 0.35s ease';
+        wm.style.transform = 'translate(calc(-50% - 90px),-50%)';
+        wm.style.opacity = '0';
+
         panel.style.transition = 'transform 0.6s ' + ease;
         panel.style.transform = 'translate(0,-101%)';
 
-        setTimeout(function () {
-          panel.style.transition = 'none';
-          panel.style.transform = 'translate(101%,0)';
-          wordmark.style.transition = 'none';
-          wordmark.style.transform = 'translateX(60px)';
-          wordmark.style.opacity = '0';
-        }, 650);
+        setTimeout(resetAll, 650);
       }, 750);
     }); });
-  } else {
-    panel.style.transform = 'translate(101%,0)';
-    panel.style.transition = 'none';
   }
 
   window.addEventListener('pageshow', function (e) {
-    if (e.persisted) {
-      panel.style.transition = 'none';
-      panel.style.transform = 'translate(101%,0)';
-      wordmark.style.transition = 'none';
-      wordmark.style.transform = 'translateX(60px)';
-      wordmark.style.opacity = '0';
-      panel.style.pointerEvents = 'none';
-    }
+    if (e.persisted) { resetAll(); }
   });
 
   document.addEventListener('click', function (e) {
@@ -81,19 +82,19 @@
     if (!isNavPage(href) || !isNavPage(window.location.href)) return;
     e.preventDefault();
 
-    // Slide panel in from right
+    // Panel sweeps in from right
     panel.style.pointerEvents = 'all';
     panel.style.transition = 'transform 0.38s ' + ease;
     panel.style.transform = 'translate(0,0)';
 
-    // Wordmark fades in
+    // Wordmark glides in shortly after
     setTimeout(function () {
-      wordmark.style.transition = 'transform 0.3s ' + ease + ', opacity 0.25s ease';
-      wordmark.style.transform = 'translateX(0)';
-      wordmark.style.opacity = '1';
-    }, 120);
+      wm.style.transition = 'transform 0.3s ' + ease + ', opacity 0.25s ease';
+      wm.style.transform = 'translate(-50%,-50%)';
+      wm.style.opacity = '1';
+    }, 150);
 
-    // Navigate only after panel has fully covered — slide (380ms) + safety buffer
+    // Navigate once fully covered
     setTimeout(function () { window.location.href = href; }, 500);
   });
 })();
