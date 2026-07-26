@@ -9,12 +9,15 @@
     } catch (e) { return false; }
   }
 
+  var easing = 'cubic-bezier(0.76,0,0.24,1)';
+
   var panel = document.createElement('div');
   panel.style.cssText = [
     'position:fixed;inset:0;z-index:9999;background:#000',
     'display:flex;align-items:center;justify-content:center',
     'pointer-events:none',
-    'transform:translateY(101%)'
+    'transform:translateX(101%)',
+    'will-change:transform'
   ].join(';');
 
   var wordmark = document.createElement('div');
@@ -23,7 +26,8 @@
     'font-family:Inter,sans-serif;font-weight:900;font-style:italic',
     'font-size:clamp(1.2rem,3.5vw,2.8rem)',
     'letter-spacing:0.08em;text-transform:uppercase;color:#fff',
-    'transform:translateX(120%)'
+    'transform:translateX(60px);opacity:0',
+    'will-change:transform,opacity'
   ].join(';');
 
   panel.appendChild(wordmark);
@@ -38,14 +42,34 @@
     e.preventDefault();
 
     panel.style.pointerEvents = 'all';
-    panel.style.transition = 'transform 0.6s cubic-bezier(0.76,0,0.24,1)';
-    panel.style.transform = 'translateY(0)';
 
+    // Glide in from right
+    panel.style.transition = 'transform 0.45s ' + easing;
+    panel.style.transform = 'translateX(0)';
+
+    // Wordmark fades + slides in shortly after
     setTimeout(function () {
-      wordmark.style.transition = 'transform 0.55s cubic-bezier(0.76,0,0.24,1)';
+      wordmark.style.transition = 'transform 0.35s ' + easing + ', opacity 0.3s ease';
       wordmark.style.transform = 'translateX(0)';
-    }, 150);
+      wordmark.style.opacity = '1';
+    }, 200);
 
-    setTimeout(function () { window.location.href = href; }, 650);
+    // Glide out to the left after hold
+    setTimeout(function () {
+      panel.style.transition = 'transform 0.45s ' + easing;
+      panel.style.transform = 'translateX(-101%)';
+    }, 750);
+
+    // Navigate as the panel finishes sliding out
+    setTimeout(function () {
+      window.location.href = href;
+      // Reset for potential bfcache restore
+      panel.style.transition = 'none';
+      panel.style.transform = 'translateX(101%)';
+      wordmark.style.transition = 'none';
+      wordmark.style.transform = 'translateX(60px)';
+      wordmark.style.opacity = '0';
+      panel.style.pointerEvents = 'none';
+    }, 1220);
   });
 })();
