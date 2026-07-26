@@ -43,12 +43,11 @@
       wordmark.style.transform = 'translateX(0)';
       wordmark.style.opacity = '1';
 
-      // Panel exits upward — reveals new page from bottom to top
+      // Hold so new page content loads, then exit upward
       setTimeout(function () {
         panel.style.transition = 'transform 0.6s ' + ease;
         panel.style.transform = 'translate(0,-101%)';
 
-        // Once off screen, park at right for next exit — both off-screen, jump is invisible
         setTimeout(function () {
           panel.style.transition = 'none';
           panel.style.transform = 'translate(101%,0)';
@@ -56,7 +55,7 @@
           wordmark.style.transform = 'translateX(60px)';
           wordmark.style.opacity = '0';
         }, 650);
-      }, 600);
+      }, 900);
     }); });
   } else {
     panel.style.transform = 'translate(101%,0)';
@@ -94,7 +93,7 @@
       wordmark.style.opacity = '1';
     }, 150);
 
-    // Navigate fast — panel is still sweeping in, new page gets the full exit animation
-    setTimeout(function () { window.location.href = href; }, 250);
+    // Navigate once panel fully covers the page
+    setTimeout(function () { window.location.href = href; }, 480);
   });
 })();
