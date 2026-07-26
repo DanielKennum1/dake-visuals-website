@@ -57,15 +57,15 @@
 
       // Hold, then wordmark snaps right + panel lifts simultaneously
       setTimeout(function () {
-        wm.style.transition = 'transform 0.28s ' + ease + ', opacity 0.25s ease';
+        wm.style.transition = 'transform 0.22s ' + ease + ', opacity 0.2s ease';
         wm.style.transform = 'translate(calc(-50% + 220px),-50%)';
         wm.style.opacity = '0';
 
-        panel.style.transition = 'transform 0.65s ' + ease;
+        panel.style.transition = 'transform 0.5s ' + ease;
         panel.style.transform = 'translate(0,-101%)';
 
-        setTimeout(resetAll, 700);
-      }, 1400);
+        setTimeout(resetAll, 550);
+      }, 800);
     }); });
   }
 
