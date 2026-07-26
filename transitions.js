@@ -52,12 +52,12 @@
   } else {
     // Panel already covers screen from initial CSS — go straight to animation
     requestAnimationFrame(function () { requestAnimationFrame(function () {
-      // Wordmark glides into center
-      wm.style.transition = 'transform 0.4s ' + ease + ', opacity 0.3s ease';
+      // Wordmark appears instantly — no re-entrance, just hold then exit
+      wm.style.transition = 'none';
       wm.style.transform = 'translate(-50%,-50%)';
       wm.style.opacity = '1';
 
-      // After hold: wordmark snaps right, panel lifts up — simultaneously
+      // Hold, then wordmark snaps right + panel lifts simultaneously
       setTimeout(function () {
         wm.style.transition = 'transform 0.28s ' + ease + ', opacity 0.25s ease';
         wm.style.transform = 'translate(calc(-50% + 220px),-50%)';
