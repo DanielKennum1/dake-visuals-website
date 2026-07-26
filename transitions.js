@@ -9,9 +9,12 @@
     } catch (e) { return false; }
   }
 
-  function isHomePage() {
-    var path = window.location.pathname.replace(/\/+$/, '') || '/';
-    return path === '/' || path === '/index' || path === '/index.html';
+  function isHomePage(href) {
+    try {
+      var url = new URL(href || window.location.href, window.location.href);
+      var path = url.pathname.replace(/\/+$/, '') || '/';
+      return path === '/' || path === '/index' || path === '/index.html';
+    } catch (e) { return false; }
   }
 
   var ease = 'cubic-bezier(0.76,0,0.24,1)';
@@ -57,60 +60,48 @@
     panel.style.pointerEvents = 'none';
   }
 
-  var isCurrentNav = isNavPage(window.location.href);
+  if (isHomePage()) {
+    requestAnimationFrame(function () { requestAnimationFrame(function () {
+      wm.style.transition = 'none';
+      wm.style.transform = 'translate(-50%,-50%)';
+      wm.style.opacity = '1';
 
-  if (!isCurrentNav) {
+      var iframe = document.querySelector('iframe[src*="vimeo.com"]');
+      var exited = false;
+
+      function doExit() {
+        if (exited) return;
+        exited = true;
+        window.removeEventListener('message', onVimeoMsg);
+        exitPanel();
+      }
+
+      function onVimeoMsg(e) {
+        if (!String(e.origin).includes('vimeo.com')) return;
+        try {
+          var data = JSON.parse(e.data);
+          if (data.event === 'ready' && iframe) {
+            iframe.contentWindow.postMessage(JSON.stringify({ method: 'addEventListener', value: 'play' }), '*');
+          } else if (data.event === 'play') {
+            doExit();
+          }
+        } catch (_) {}
+      }
+
+      window.addEventListener('message', onVimeoMsg);
+
+      if (iframe) {
+        iframe.contentWindow.postMessage(JSON.stringify({ method: 'addEventListener', value: 'ready' }), '*');
+        iframe.addEventListener('load', function () {
+          iframe.contentWindow.postMessage(JSON.stringify({ method: 'addEventListener', value: 'ready' }), '*');
+        });
+      }
+
+      setTimeout(doExit, 3000);
+    }); });
+  } else {
     panel.style.transition = 'none';
     panel.style.transform = 'translate(101%,0)';
-  } else {
-    requestAnimationFrame(function () { requestAnimationFrame(function () {
-      if (isHomePage()) {
-        // Show wordmark — exit when Vimeo starts playing
-        wm.style.transition = 'none';
-        wm.style.transform = 'translate(-50%,-50%)';
-        wm.style.opacity = '1';
-
-        var iframe = document.querySelector('iframe[src*="vimeo.com"]');
-        var exited = false;
-
-        function doExit() {
-          if (exited) return;
-          exited = true;
-          window.removeEventListener('message', onVimeoMsg);
-          exitPanel();
-        }
-
-        function onVimeoMsg(e) {
-          if (!String(e.origin).includes('vimeo.com')) return;
-          try {
-            var data = JSON.parse(e.data);
-            if (data.event === 'ready' && iframe) {
-              iframe.contentWindow.postMessage(JSON.stringify({ method: 'addEventListener', value: 'play' }), '*');
-            } else if (data.event === 'play') {
-              doExit();
-            }
-          } catch (_) {}
-        }
-
-        window.addEventListener('message', onVimeoMsg);
-
-        // Subscribe to Vimeo ready event
-        if (iframe) {
-          iframe.contentWindow.postMessage(JSON.stringify({ method: 'addEventListener', value: 'ready' }), '*');
-          iframe.addEventListener('load', function () {
-            iframe.contentWindow.postMessage(JSON.stringify({ method: 'addEventListener', value: 'ready' }), '*');
-          });
-        }
-
-        // Fallback: exit after 3s if Vimeo never responds
-        setTimeout(doExit, 3000);
-      } else {
-        // All other nav pages — no wordmark, just lift panel
-        panel.style.transition = 'transform 0.5s ' + ease;
-        panel.style.transform = 'translate(0,-101%)';
-        setTimeout(resetAll, 550);
-      }
-    }); });
   }
 
   window.addEventListener('pageshow', function (e) {
@@ -123,8 +114,11 @@
     var href = link.getAttribute('href');
     if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || link.target === '_blank') return;
     if (!isNavPage(href) || !isNavPage(window.location.href)) return;
-    e.preventDefault();
 
+    // Only animate if the home page is involved
+    if (!isHomePage() && !isHomePage(href)) return;
+
+    e.preventDefault();
     panel.style.pointerEvents = 'all';
     panel.style.transition = 'transform 0.14s ' + ease;
     panel.style.transform = 'translate(0,0)';
