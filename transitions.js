@@ -23,7 +23,8 @@
   wordmark.style.cssText = [
     'font-family:Inter,sans-serif;font-weight:900;font-style:italic',
     'font-size:clamp(1.2rem,3.5vw,2.8rem)',
-    'letter-spacing:0.08em;text-transform:uppercase;color:#fff'
+    'letter-spacing:0.08em;text-transform:uppercase;color:#fff',
+    'transform:translateX(60px);opacity:0;will-change:transform,opacity'
   ].join(';');
 
   panel.appendChild(wordmark);
@@ -32,28 +33,43 @@
   var isCurrentNav = isNavPage(window.location.href);
 
   if (isCurrentNav) {
-    // Entrance: panel covers screen on arrival, slides out to the left
-    panel.style.transform = 'translateX(0)';
+    // New page: panel covers screen, hold, then exit upward
+    panel.style.transform = 'translate(0,0)';
     panel.style.transition = 'none';
 
     requestAnimationFrame(function () { requestAnimationFrame(function () {
-      panel.style.transition = 'transform 0.5s ' + ease;
-      panel.style.transform = 'translateX(-101%)';
-      // Once off-screen, park it on the right ready for the next exit
+      // Wordmark slides in
+      wordmark.style.transition = 'transform 0.4s ' + ease + ', opacity 0.3s ease';
+      wordmark.style.transform = 'translateX(0)';
+      wordmark.style.opacity = '1';
+
+      // Panel exits upward — reveals new page from bottom to top
       setTimeout(function () {
-        panel.style.transition = 'none';
-        panel.style.transform = 'translateX(101%)';
-      }, 550);
+        panel.style.transition = 'transform 0.55s ' + ease;
+        panel.style.transform = 'translate(0,-101%)';
+
+        // Once off screen, park at right for next exit — both off-screen, jump is invisible
+        setTimeout(function () {
+          panel.style.transition = 'none';
+          panel.style.transform = 'translate(101%,0)';
+          wordmark.style.transition = 'none';
+          wordmark.style.transform = 'translateX(60px)';
+          wordmark.style.opacity = '0';
+        }, 600);
+      }, 400);
     }); });
   } else {
-    panel.style.transform = 'translateX(101%)';
+    panel.style.transform = 'translate(101%,0)';
     panel.style.transition = 'none';
   }
 
   window.addEventListener('pageshow', function (e) {
     if (e.persisted) {
       panel.style.transition = 'none';
-      panel.style.transform = 'translateX(101%)';
+      panel.style.transform = 'translate(101%,0)';
+      wordmark.style.transition = 'none';
+      wordmark.style.transform = 'translateX(60px)';
+      wordmark.style.opacity = '0';
       panel.style.pointerEvents = 'none';
     }
   });
@@ -66,12 +82,19 @@
     if (!isNavPage(href) || !isNavPage(window.location.href)) return;
     e.preventDefault();
 
-    // Panel is parked at translateX(101%) — slide it in cleanly
+    // Slide panel in from right
     panel.style.pointerEvents = 'all';
-    panel.style.transition = 'transform 0.5s ' + ease;
-    panel.style.transform = 'translateX(0)';
+    panel.style.transition = 'transform 0.45s ' + ease;
+    panel.style.transform = 'translate(0,0)';
 
-    // Navigate while the panel is covering the screen
-    setTimeout(function () { window.location.href = href; }, 520);
+    // Wordmark fades in shortly after
+    setTimeout(function () {
+      wordmark.style.transition = 'transform 0.35s ' + ease + ', opacity 0.25s ease';
+      wordmark.style.transform = 'translateX(0)';
+      wordmark.style.opacity = '1';
+    }, 150);
+
+    // Navigate while panel is fully covering
+    setTimeout(function () { window.location.href = href; }, 500);
   });
 })();
