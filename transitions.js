@@ -9,44 +9,48 @@
     } catch (e) { return false; }
   }
 
-  var overlay = document.createElement('div');
-  overlay.style.cssText = [
-    'position:fixed;inset:0;z-index:9999;background:#000',
-    'display:flex;align-items:center;justify-content:center',
-    'transform:translateX(0);transition:none;pointer-events:all'
-  ].join(';');
+  function makePanel(text) {
+    var el = document.createElement('div');
+    el.style.cssText = [
+      'position:fixed;inset:0;z-index:9999;background:#000',
+      'display:flex;align-items:center;justify-content:center',
+      'pointer-events:none'
+    ].join(';');
+    var wm = document.createElement('div');
+    wm.textContent = text;
+    wm.style.cssText = [
+      'font-family:Inter,sans-serif;font-weight:900;font-style:italic',
+      'font-size:clamp(1.2rem,3.5vw,2.8rem)',
+      'letter-spacing:0.08em;text-transform:uppercase;color:#fff'
+    ].join(';');
+    el.appendChild(wm);
+    document.body.appendChild(el);
+    return el;
+  }
 
-  var wordmark = document.createElement('div');
-  wordmark.textContent = 'DAKE VISUALS';
-  wordmark.style.cssText = [
-    'font-family:Inter,sans-serif;font-weight:900;font-style:italic',
-    'font-size:clamp(1.2rem,3.5vw,2.8rem)',
-    'letter-spacing:0.08em;text-transform:uppercase;color:#fff'
-  ].join(';');
+  // ── ENTRANCE panel: starts covering screen, slides left ──
+  var entrance = makePanel('DAKE VISUALS');
+  entrance.style.transform = 'translateX(0)';
+  entrance.style.transition = 'none';
 
-  overlay.appendChild(wordmark);
-  document.body.appendChild(overlay);
-
-  // ── ENTRANCE: slide overlay out to the left ──
   var isHome = (window.location.pathname === '/' || window.location.pathname === '/index.html');
-  var holdDelay = isHome ? 1400 : 600;
-
   setTimeout(function () {
-    overlay.style.transition = 'transform 0.65s cubic-bezier(0.76,0,0.24,1)';
-    overlay.style.transform = 'translateX(-101%)';
-    setTimeout(function () { overlay.style.pointerEvents = 'none'; }, 700);
-  }, holdDelay);
+    entrance.style.transition = 'transform 0.65s cubic-bezier(0.76,0,0.24,1)';
+    entrance.style.transform = 'translateX(-101%)';
+  }, isHome ? 1400 : 600);
 
-  // Handle back/forward cache
+  // ── EXIT panel: always off-screen right, slides in on click ──
+  var exit = makePanel('DAKE VISUALS');
+  exit.style.transform = 'translateX(101%)';
+  exit.style.transition = 'transform 0.6s cubic-bezier(0.76,0,0.24,1)';
+
   window.addEventListener('pageshow', function (e) {
     if (e.persisted) {
-      overlay.style.transition = 'none';
-      overlay.style.transform = 'translateX(101%)';
-      overlay.style.pointerEvents = 'none';
+      entrance.style.transition = 'none';
+      entrance.style.transform = 'translateX(-101%)';
     }
   });
 
-  // ── EXIT: slide in from right, then navigate ──
   document.addEventListener('click', function (e) {
     var link = e.target.closest('a[href]');
     if (!link) return;
@@ -55,15 +59,8 @@
     if (!isNavPage(href)) return;
     if (!isNavPage(window.location.href)) return;
     e.preventDefault();
-
-    overlay.style.transition = 'none';
-    overlay.style.transform = 'translateX(101%)';
-    overlay.style.pointerEvents = 'all';
-
-    requestAnimationFrame(function () { requestAnimationFrame(function () {
-      overlay.style.transition = 'transform 0.6s cubic-bezier(0.76,0,0.24,1)';
-      overlay.style.transform = 'translateX(0)';
-      setTimeout(function () { window.location.href = href; }, 620);
-    }); });
+    exit.style.pointerEvents = 'all';
+    exit.style.transform = 'translateX(0)';
+    setTimeout(function () { window.location.href = href; }, 620);
   });
 })();
