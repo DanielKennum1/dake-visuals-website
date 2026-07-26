@@ -85,17 +85,17 @@
 
     // Panel sweeps in from right
     panel.style.pointerEvents = 'all';
-    panel.style.transition = 'transform 0.38s ' + ease;
+    panel.style.transition = 'transform 0.22s ' + ease;
     panel.style.transform = 'translate(0,0)';
 
-    // Wordmark glides in shortly after
+    // Wordmark appears quickly
     setTimeout(function () {
-      wm.style.transition = 'transform 0.3s ' + ease + ', opacity 0.25s ease';
+      wm.style.transition = 'transform 0.18s ' + ease + ', opacity 0.15s ease';
       wm.style.transform = 'translate(-50%,-50%)';
       wm.style.opacity = '1';
-    }, 150);
+    }, 80);
 
-    // Navigate once fully covered
-    setTimeout(function () { window.location.href = href; }, 500);
+    // Navigate fast once covered
+    setTimeout(function () { window.location.href = href; }, 280);
   });
 })();
