@@ -56,17 +56,17 @@
       wm.style.transform = 'translate(-50%,-50%)';
       wm.style.opacity = '1';
 
-      // After hold: wordmark slides out to the side, panel lifts up — simultaneously
+      // After hold: wordmark snaps right, panel lifts up — simultaneously
       setTimeout(function () {
-        wm.style.transition = 'transform 0.45s ' + ease + ', opacity 0.35s ease';
-        wm.style.transform = 'translate(calc(-50% - 90px),-50%)';
+        wm.style.transition = 'transform 0.28s ' + ease + ', opacity 0.25s ease';
+        wm.style.transform = 'translate(calc(-50% + 220px),-50%)';
         wm.style.opacity = '0';
 
-        panel.style.transition = 'transform 0.6s ' + ease;
+        panel.style.transition = 'transform 0.65s ' + ease;
         panel.style.transform = 'translate(0,-101%)';
 
-        setTimeout(resetAll, 650);
-      }, 750);
+        setTimeout(resetAll, 700);
+      }, 1050);
     }); });
   }
 
