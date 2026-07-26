@@ -3,17 +3,17 @@
     "hostinger-hosting": {
       "command": "npx",
       "args": ["--package=hostinger-api-mcp@latest", "hostinger-hosting-mcp"],
-      "env": { "HOSTINGER_API_TOKEN": "${HOSTINGER_API_TOKEN}" }
+      "env": { "HOSTINGER_API_TOKEN": "fNlFZYcmgR0oFEBwzd6AuZpr862EQjSgxPPZTmMzddfa6e55" }
     },
     "hostinger-domains": {
       "command": "npx",
       "args": ["--package=hostinger-api-mcp@latest", "hostinger-domains-mcp"],
-      "env": { "HOSTINGER_API_TOKEN": "${HOSTINGER_API_TOKEN}" }
+      "env": { "HOSTINGER_API_TOKEN": "fNlFZYcmgR0oFEBwzd6AuZpr862EQjSgxPPZTmMzddfa6e55" }
     },
     "hostinger-dns": {
       "command": "npx",
       "args": ["--package=hostinger-api-mcp@latest", "hostinger-dns-mcp"],
-      "env": { "HOSTINGER_API_TOKEN": "${HOSTINGER_API_TOKEN}" }
+      "env": { "HOSTINGER_API_TOKEN": "fNlFZYcmgR0oFEBwzd6AuZpr862EQjSgxPPZTmMzddfa6e55" }
     }
   }
 }
