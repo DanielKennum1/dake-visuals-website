@@ -9,15 +9,13 @@
     } catch (e) { return false; }
   }
 
-  var easing = 'cubic-bezier(0.76,0,0.24,1)';
+  var ease = 'cubic-bezier(0.76,0,0.24,1)';
 
   var panel = document.createElement('div');
   panel.style.cssText = [
     'position:fixed;inset:0;z-index:9999;background:#000',
     'display:flex;align-items:center;justify-content:center',
-    'pointer-events:none',
-    'transform:translateX(101%)',
-    'will-change:transform'
+    'pointer-events:none;will-change:transform'
   ].join(';');
 
   var wordmark = document.createElement('div');
@@ -25,13 +23,40 @@
   wordmark.style.cssText = [
     'font-family:Inter,sans-serif;font-weight:900;font-style:italic',
     'font-size:clamp(1.2rem,3.5vw,2.8rem)',
-    'letter-spacing:0.08em;text-transform:uppercase;color:#fff',
-    'transform:translateX(60px);opacity:0',
-    'will-change:transform,opacity'
+    'letter-spacing:0.08em;text-transform:uppercase;color:#fff'
   ].join(';');
 
   panel.appendChild(wordmark);
   document.body.appendChild(panel);
+
+  var isCurrentNav = isNavPage(window.location.href);
+
+  if (isCurrentNav) {
+    // Entrance: panel covers screen on arrival, slides out to the left
+    panel.style.transform = 'translateX(0)';
+    panel.style.transition = 'none';
+
+    requestAnimationFrame(function () { requestAnimationFrame(function () {
+      panel.style.transition = 'transform 0.5s ' + ease;
+      panel.style.transform = 'translateX(-101%)';
+      // Once off-screen, park it on the right ready for the next exit
+      setTimeout(function () {
+        panel.style.transition = 'none';
+        panel.style.transform = 'translateX(101%)';
+      }, 550);
+    }); });
+  } else {
+    panel.style.transform = 'translateX(101%)';
+    panel.style.transition = 'none';
+  }
+
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) {
+      panel.style.transition = 'none';
+      panel.style.transform = 'translateX(101%)';
+      panel.style.pointerEvents = 'none';
+    }
+  });
 
   document.addEventListener('click', function (e) {
     var link = e.target.closest('a[href]');
@@ -41,35 +66,12 @@
     if (!isNavPage(href) || !isNavPage(window.location.href)) return;
     e.preventDefault();
 
+    // Panel is parked at translateX(101%) — slide it in cleanly
     panel.style.pointerEvents = 'all';
-
-    // Glide in from right
-    panel.style.transition = 'transform 0.45s ' + easing;
+    panel.style.transition = 'transform 0.5s ' + ease;
     panel.style.transform = 'translateX(0)';
 
-    // Wordmark fades + slides in shortly after
-    setTimeout(function () {
-      wordmark.style.transition = 'transform 0.35s ' + easing + ', opacity 0.3s ease';
-      wordmark.style.transform = 'translateX(0)';
-      wordmark.style.opacity = '1';
-    }, 200);
-
-    // Glide out to the left after hold
-    setTimeout(function () {
-      panel.style.transition = 'transform 0.45s ' + easing;
-      panel.style.transform = 'translateX(-101%)';
-    }, 750);
-
-    // Navigate as the panel finishes sliding out
-    setTimeout(function () {
-      window.location.href = href;
-      // Reset for potential bfcache restore
-      panel.style.transition = 'none';
-      panel.style.transform = 'translateX(101%)';
-      wordmark.style.transition = 'none';
-      wordmark.style.transform = 'translateX(60px)';
-      wordmark.style.opacity = '0';
-      panel.style.pointerEvents = 'none';
-    }, 1220);
+    // Navigate while the panel is covering the screen
+    setTimeout(function () { window.location.href = href; }, 520);
   });
 })();
