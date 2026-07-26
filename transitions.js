@@ -107,22 +107,4 @@
   window.addEventListener('pageshow', function (e) {
     if (e.persisted) { resetAll(); }
   });
-
-  document.addEventListener('click', function (e) {
-    var link = e.target.closest('a[href]');
-    if (!link) return;
-    var href = link.getAttribute('href');
-    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || link.target === '_blank') return;
-    if (!isNavPage(href) || !isNavPage(window.location.href)) return;
-
-    // Only animate if the home page is involved
-    if (!isHomePage() && !isHomePage(href)) return;
-
-    e.preventDefault();
-    panel.style.pointerEvents = 'all';
-    panel.style.transition = 'transform 0.14s ' + ease;
-    panel.style.transform = 'translate(0,0)';
-
-    setTimeout(function () { window.location.href = href; }, 180);
-  });
 })();
