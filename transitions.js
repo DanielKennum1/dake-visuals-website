@@ -9,9 +9,13 @@
     } catch (e) { return false; }
   }
 
+  function isHomePage() {
+    var path = window.location.pathname.replace(/\/+$/, '') || '/';
+    return path === '/' || path === '/index' || path === '/index.html';
+  }
+
   var ease = 'cubic-bezier(0.76,0,0.24,1)';
 
-  // Panel starts covering screen — prevents any flash on nav page arrival
   var panel = document.createElement('div');
   panel.style.cssText = [
     'position:fixed;inset:0;z-index:9999;background:#000',
@@ -19,7 +23,6 @@
     'transform:translate(0,0)'
   ].join(';');
 
-  // Wordmark — separate fixed element, moves independently of panel
   var wm = document.createElement('div');
   wm.textContent = 'DAKE VISUALS';
   wm.style.cssText = [
@@ -33,6 +36,17 @@
 
   document.body.appendChild(panel);
   document.body.appendChild(wm);
+
+  function exitPanel() {
+    wm.style.transition = 'transform 0.22s ' + ease + ', opacity 0.2s ease';
+    wm.style.transform = 'translate(calc(-50% + 220px),-50%)';
+    wm.style.opacity = '0';
+
+    panel.style.transition = 'transform 0.5s ' + ease;
+    panel.style.transform = 'translate(0,-101%)';
+
+    setTimeout(resetAll, 550);
+  }
 
   function resetAll() {
     panel.style.transition = 'none';
@@ -50,22 +64,52 @@
     panel.style.transform = 'translate(101%,0)';
   } else {
     requestAnimationFrame(function () { requestAnimationFrame(function () {
-      // Wordmark appears instantly — no re-entrance animation
-      wm.style.transition = 'none';
-      wm.style.transform = 'translate(-50%,-50%)';
-      wm.style.opacity = '1';
+      if (isHomePage()) {
+        // Show wordmark — exit when Vimeo starts playing
+        wm.style.transition = 'none';
+        wm.style.transform = 'translate(-50%,-50%)';
+        wm.style.opacity = '1';
 
-      // Hold, then wordmark snaps right + panel lifts simultaneously
-      setTimeout(function () {
-        wm.style.transition = 'transform 0.22s ' + ease + ', opacity 0.2s ease';
-        wm.style.transform = 'translate(calc(-50% + 220px),-50%)';
-        wm.style.opacity = '0';
+        var iframe = document.querySelector('iframe[src*="vimeo.com"]');
+        var exited = false;
 
+        function doExit() {
+          if (exited) return;
+          exited = true;
+          window.removeEventListener('message', onVimeoMsg);
+          exitPanel();
+        }
+
+        function onVimeoMsg(e) {
+          if (!String(e.origin).includes('vimeo.com')) return;
+          try {
+            var data = JSON.parse(e.data);
+            if (data.event === 'ready' && iframe) {
+              iframe.contentWindow.postMessage(JSON.stringify({ method: 'addEventListener', value: 'play' }), '*');
+            } else if (data.event === 'play') {
+              doExit();
+            }
+          } catch (_) {}
+        }
+
+        window.addEventListener('message', onVimeoMsg);
+
+        // Subscribe to Vimeo ready event
+        if (iframe) {
+          iframe.contentWindow.postMessage(JSON.stringify({ method: 'addEventListener', value: 'ready' }), '*');
+          iframe.addEventListener('load', function () {
+            iframe.contentWindow.postMessage(JSON.stringify({ method: 'addEventListener', value: 'ready' }), '*');
+          });
+        }
+
+        // Fallback: exit after 3s if Vimeo never responds
+        setTimeout(doExit, 3000);
+      } else {
+        // All other nav pages — no wordmark, just lift panel
         panel.style.transition = 'transform 0.5s ' + ease;
         panel.style.transform = 'translate(0,-101%)';
-
         setTimeout(resetAll, 550);
-      }, 800);
+      }
     }); });
   }
 
@@ -84,12 +128,6 @@
     panel.style.pointerEvents = 'all';
     panel.style.transition = 'transform 0.14s ' + ease;
     panel.style.transform = 'translate(0,0)';
-
-    setTimeout(function () {
-      wm.style.transition = 'none';
-      wm.style.transform = 'translate(-50%,-50%)';
-      wm.style.opacity = '1';
-    }, 60);
 
     setTimeout(function () { window.location.href = href; }, 180);
   });
