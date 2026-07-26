@@ -13,7 +13,7 @@
   var overlay = document.createElement('div');
   overlay.style.cssText = [
     'position:fixed;inset:0;z-index:9999',
-    'background:#0d1520',
+    'background:#000000',
     'transform:translateX(101%)',
     'transition:transform 0.6s cubic-bezier(0.76,0,0.24,1)',
     'display:flex;align-items:center;justify-content:center',
@@ -26,7 +26,7 @@
     'font-family:Inter,sans-serif;font-weight:900;font-style:italic',
     'font-size:clamp(1.2rem,3.5vw,2.8rem)',
     'letter-spacing:0.08em;text-transform:uppercase',
-    'color:rgba(255,255,255,0.12)',
+    'color:#ffffff',
     'opacity:0;transition:opacity 0.35s ease 0.25s'
   ].join(';');
 
