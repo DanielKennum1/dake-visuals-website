@@ -55,7 +55,7 @@
           wordmark.style.transform = 'translateX(60px)';
           wordmark.style.opacity = '0';
         }, 650);
-      }, 900);
+      }, 400);
     }); });
   } else {
     panel.style.transform = 'translate(101%,0)';
@@ -83,17 +83,17 @@
 
     // Slide panel in from right
     panel.style.pointerEvents = 'all';
-    panel.style.transition = 'transform 0.45s ' + ease;
+    panel.style.transition = 'transform 0.38s ' + ease;
     panel.style.transform = 'translate(0,0)';
 
-    // Wordmark fades in shortly after
+    // Wordmark fades in
     setTimeout(function () {
-      wordmark.style.transition = 'transform 0.35s ' + ease + ', opacity 0.25s ease';
+      wordmark.style.transition = 'transform 0.3s ' + ease + ', opacity 0.25s ease';
       wordmark.style.transform = 'translateX(0)';
       wordmark.style.opacity = '1';
-    }, 150);
+    }, 120);
 
-    // Navigate once panel fully covers the page
-    setTimeout(function () { window.location.href = href; }, 480);
+    // Navigate only after panel has fully covered — slide (380ms) + safety buffer
+    setTimeout(function () { window.location.href = href; }, 500);
   });
 })();
