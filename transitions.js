@@ -9,7 +9,6 @@
     } catch (e) { return false; }
   }
 
-  // Single panel — no stacking conflict
   var panel = document.createElement('div');
   panel.style.cssText = [
     'position:fixed;inset:0;z-index:9999;background:#000',
@@ -31,31 +30,38 @@
 
   var isCurrentNav = isNavPage(window.location.href);
   var isHome = (window.location.pathname === '/' || window.location.pathname === '/index.html');
+  var holdDelay = isHome ? 1400 : 700;
+  var liftDuration = 650;
+
+  function parkBelow() {
+    panel.style.transition = 'none';
+    panel.style.transform = 'translateY(101%)';
+    wordmark.style.transition = 'none';
+    wordmark.style.transform = 'translateX(120%)';
+  }
 
   if (isCurrentNav) {
-    // Cover screen on arrival, text swipes in, then panel lifts
-    panel.style.transform = 'translateY(0)';
+    // Cover screen, text swipes in, panel lifts off — then silently park below
     panel.style.transition = 'none';
+    panel.style.transform = 'translateY(0)';
+
     requestAnimationFrame(function () { requestAnimationFrame(function () {
       wordmark.style.transition = 'transform 0.55s cubic-bezier(0.76,0,0.24,1)';
       wordmark.style.transform = 'translateX(0)';
     }); });
+
     setTimeout(function () {
-      panel.style.transition = 'transform 0.65s cubic-bezier(0.76,0,0.24,1)';
+      panel.style.transition = 'transform ' + (liftDuration / 1000) + 's cubic-bezier(0.76,0,0.24,1)';
       panel.style.transform = 'translateY(-101%)';
-    }, isHome ? 1400 : 700);
+      // Once fully off-screen above, quietly move to below — no reset flash possible
+      setTimeout(parkBelow, liftDuration + 50);
+    }, holdDelay);
   } else {
-    panel.style.transform = 'translateY(-101%)';
-    panel.style.transition = 'none';
+    parkBelow();
   }
 
   window.addEventListener('pageshow', function (e) {
-    if (e.persisted) {
-      panel.style.transition = 'none';
-      panel.style.transform = 'translateY(-101%)';
-      wordmark.style.transition = 'none';
-      wordmark.style.transform = 'translateX(120%)';
-    }
+    if (e.persisted) { parkBelow(); }
   });
 
   document.addEventListener('click', function (e) {
@@ -67,22 +73,14 @@
     if (!isNavPage(window.location.href)) return;
     e.preventDefault();
 
-    // Park panel below screen with no transition, then let browser paint one frame
-    // before animating up — eliminates any flash from repositioning
-    panel.style.transition = 'none';
-    panel.style.transform = 'translateY(101%)';
-    wordmark.style.transition = 'none';
-    wordmark.style.transform = 'translateX(120%)';
+    // Panel is already parked at translateY(101%) — rise straight up, no reset needed
     panel.style.pointerEvents = 'all';
-
-    requestAnimationFrame(function () { requestAnimationFrame(function () {
-      panel.style.transition = 'transform 0.6s cubic-bezier(0.76,0,0.24,1)';
-      panel.style.transform = 'translateY(0)';
-      setTimeout(function () {
-        wordmark.style.transition = 'transform 0.55s cubic-bezier(0.76,0,0.24,1)';
-        wordmark.style.transform = 'translateX(0)';
-      }, 120);
-      setTimeout(function () { window.location.href = href; }, 640);
-    }); });
+    panel.style.transition = 'transform 0.6s cubic-bezier(0.76,0,0.24,1)';
+    panel.style.transform = 'translateY(0)';
+    setTimeout(function () {
+      wordmark.style.transition = 'transform 0.55s cubic-bezier(0.76,0,0.24,1)';
+      wordmark.style.transform = 'translateX(0)';
+    }, 120);
+    setTimeout(function () { window.location.href = href; }, 640);
   });
 })();
