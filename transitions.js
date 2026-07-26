@@ -47,6 +47,7 @@
     var href = link.getAttribute('href');
     if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || link.target === '_blank') return;
     if (!isNavPage(href)) return;
+    if (!isNavPage(window.location.href)) return;
     e.preventDefault();
     overlay.style.pointerEvents = 'all';
     overlay.style.transition = 'transform 0.6s cubic-bezier(0.76,0,0.24,1)';
