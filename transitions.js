@@ -14,10 +14,10 @@
   overlay.style.cssText = [
     'position:fixed;inset:0;z-index:9999',
     'background:#000000',
-    'transform:translateX(101%)',
-    'transition:transform 0.6s cubic-bezier(0.76,0,0.24,1)',
+    'transform:translateX(0)',
+    'transition:none',
     'display:flex;align-items:center;justify-content:center',
-    'pointer-events:none'
+    'pointer-events:all'
   ].join(';');
 
   var wordmark = document.createElement('div');
@@ -27,17 +27,30 @@
     'font-size:clamp(1.2rem,3.5vw,2.8rem)',
     'letter-spacing:0.08em;text-transform:uppercase',
     'color:#ffffff',
-    'opacity:0;transition:opacity 0.35s ease 0.25s'
+    'opacity:1'
   ].join(';');
 
   overlay.appendChild(wordmark);
   document.body.appendChild(overlay);
+
+  // Entrance: slide overlay out to the left after delay
+  var isHome = ['/', '/index.html'].some(function (p) {
+    return window.location.pathname === p || window.location.pathname === p.replace('.html', '');
+  });
+  var holdDelay = isHome ? 1400 : 600;
+
+  setTimeout(function () {
+    overlay.style.transition = 'transform 0.65s cubic-bezier(0.76,0,0.24,1)';
+    overlay.style.transform = 'translateX(-101%)';
+    setTimeout(function () { overlay.style.pointerEvents = 'none'; }, 700);
+  }, holdDelay);
 
   // Handle back/forward cache
   window.addEventListener('pageshow', function (e) {
     if (e.persisted) {
       overlay.style.transition = 'none';
       overlay.style.transform = 'translateX(101%)';
+      overlay.style.pointerEvents = 'none';
     }
   });
 
@@ -50,9 +63,15 @@
     if (!isNavPage(window.location.href)) return;
     e.preventDefault();
     overlay.style.pointerEvents = 'all';
-    overlay.style.transition = 'transform 0.6s cubic-bezier(0.76,0,0.24,1)';
-    overlay.style.transform = 'translateX(0)';
-    wordmark.style.opacity = '1';
+    overlay.style.transform = 'translateX(101%)';
+    overlay.style.transition = 'none';
+    wordmark.style.transition = 'opacity 0.35s ease 0.25s';
+    wordmark.style.opacity = '0';
+    requestAnimationFrame(function () { requestAnimationFrame(function () {
+      overlay.style.transition = 'transform 0.6s cubic-bezier(0.76,0,0.24,1)';
+      overlay.style.transform = 'translateX(0)';
+      wordmark.style.opacity = '1';
+    }); });
     setTimeout(function () { window.location.href = href; }, 620);
   });
 })();
