@@ -67,7 +67,7 @@
         panel.style.transform = 'translate(0,-101%)';
 
         setTimeout(resetAll, 700);
-      }, 1500);
+      }, 1100);
     }); });
   }
 
