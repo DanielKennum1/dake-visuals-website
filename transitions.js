@@ -11,12 +11,12 @@
 
   var ease = 'cubic-bezier(0.76,0,0.24,1)';
 
-  // Black background panel — animates independently
+  // Black background panel — starts covering screen so no flash on nav pages
   var panel = document.createElement('div');
   panel.style.cssText = [
     'position:fixed;inset:0;z-index:9999;background:#000',
     'pointer-events:none;will-change:transform',
-    'transform:translate(101%,0)'
+    'transform:translate(0,0)'
   ].join(';');
 
   // Wordmark — separate fixed element, moves independently of panel
@@ -45,11 +45,12 @@
 
   var isCurrentNav = isNavPage(window.location.href);
 
-  if (isCurrentNav) {
-    // Panel already covers screen on arrival
+  if (!isCurrentNav) {
+    // Not a nav page — hide panel immediately, no transition
     panel.style.transition = 'none';
-    panel.style.transform = 'translate(0,0)';
-
+    panel.style.transform = 'translate(101%,0)';
+  } else {
+    // Panel already covers screen from initial CSS — go straight to animation
     requestAnimationFrame(function () { requestAnimationFrame(function () {
       // Wordmark glides into center
       wm.style.transition = 'transform 0.4s ' + ease + ', opacity 0.3s ease';
