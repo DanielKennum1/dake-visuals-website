@@ -55,7 +55,7 @@
           wordmark.style.transform = 'translateX(60px)';
           wordmark.style.opacity = '0';
         }, 650);
-      }, 400);
+      }, 750);
     }); });
   } else {
     panel.style.transform = 'translate(101%,0)';
