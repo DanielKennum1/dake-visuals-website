@@ -28,16 +28,22 @@
     return el;
   }
 
-  // ── ENTRANCE panel: starts covering screen, slides left ──
-  var entrance = makePanel('DAKE VISUALS');
-  entrance.style.transform = 'translateX(0)';
-  entrance.style.transition = 'none';
+  var isCurrentNav = isNavPage(window.location.href);
 
-  var isHome = (window.location.pathname === '/' || window.location.pathname === '/index.html');
-  setTimeout(function () {
-    entrance.style.transition = 'transform 0.65s cubic-bezier(0.76,0,0.24,1)';
+  // ── ENTRANCE panel: only animates on nav pages ──
+  var entrance = makePanel('DAKE VISUALS');
+  if (isCurrentNav) {
+    entrance.style.transform = 'translateX(0)';
+    entrance.style.transition = 'none';
+    var isHome = (window.location.pathname === '/' || window.location.pathname === '/index.html');
+    setTimeout(function () {
+      entrance.style.transition = 'transform 0.65s cubic-bezier(0.76,0,0.24,1)';
+      entrance.style.transform = 'translateX(-101%)';
+    }, isHome ? 1400 : 600);
+  } else {
     entrance.style.transform = 'translateX(-101%)';
-  }, isHome ? 1400 : 600);
+    entrance.style.transition = 'none';
+  }
 
   // ── EXIT panel: always off-screen right, slides in on click ──
   var exit = makePanel('DAKE VISUALS');
