@@ -21,7 +21,7 @@
 
   var panel = document.createElement('div');
   panel.style.cssText = [
-    'position:fixed;inset:0;z-index:9999;background:#000',
+    'position:fixed;inset:0;z-index:9999;background:#f7efdb',
     'pointer-events:none;will-change:transform',
     'transform:translate(0,0)'
   ].join(';');
@@ -32,7 +32,7 @@
     'position:fixed;top:50%;left:50%;z-index:10000',
     'font-family:Inter,sans-serif;font-weight:900;font-style:italic',
     'font-size:clamp(1.2rem,3.5vw,2.8rem)',
-    'letter-spacing:0.08em;text-transform:uppercase;color:#fff',
+    'letter-spacing:0.08em;text-transform:uppercase;color:#000',
     'pointer-events:none;will-change:transform,opacity',
     'transform:translate(calc(-50% + 80px),-50%);opacity:0'
   ].join(';');
