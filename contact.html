@@ -87,13 +87,16 @@
     @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; gap: 0; } .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; } .footer-bottom { flex-direction: column; align-items: flex-start; } }
     @media (max-width: 480px) {
       .mobile-menu { background: var(--cream); border-bottom: 1px solid rgba(0,0,0,0.1); }
-
-      .contact-hero { padding: 10px 5% 40px; }
-      .contact-body { padding: 0 5% 80px; gap: 3rem; }
+      .btn-book { display: none; }
+      .contact-hero { padding: 10px 5% 30px; }
+      .contact-body { padding: 0 5% 70px; gap: 3rem; }
       .form-submit { padding-top: 2.5rem; flex-direction: column; align-items: flex-start; }
       .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
     }
-  
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .contact-body { grid-template-columns: 1.4fr 1fr; gap: 3rem; }
+    }
+
     @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
     body { animation: pageFadeIn 0.18s ease-out; }
   </style>

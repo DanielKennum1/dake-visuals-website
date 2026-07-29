@@ -64,8 +64,17 @@
     [data-animate].in-view { opacity: 1; }
     @media (max-width: 900px) { .nav-center { display: none; } .hamburger { display: flex; } .work-grid { grid-template-columns: repeat(2, 1fr); } .footer-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 600px) { .work-grid { grid-template-columns: repeat(2, 1fr); } .footer-grid { grid-template-columns: 1fr; gap: 2rem; } .footer-bottom { flex-direction: column; align-items: flex-start; } }
-    @media (max-width: 480px) { .btn-book { display: none; } .project-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 60%, transparent 100%); padding: 0.7rem; } .project-category { font-size: 0.45rem; letter-spacing: 0.1em; } .project-title { font-size: 0.65rem; } }
-  
+    @media (max-width: 480px) {
+      .btn-book { display: none; }
+      .work-grid-wrap { padding: 0.25rem; }
+      .project-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.3) 60%, transparent 100%); padding: 0.55rem 0.55rem 0.45rem; }
+      .project-category { font-size: 0.52rem; letter-spacing: 0.08em; }
+      .project-title { font-size: 0.7rem; }
+    }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .work-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
     @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
     body { animation: pageFadeIn 0.18s ease-out; }
   </style>
@@ -246,22 +255,22 @@
       </div>
     </a>
 
-    <a class="project-card" href="projects/hjortborg-design.html" data-animate>
-      <div class="project-thumb">
-        <img src="Videos/Thumbnails/RFSPORT Cover.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
-        <div style="position:absolute;inset:0;background:rgba(0,0,0,0.65);pointer-events:none"></div>
-        <img src="Videos/Thumbnails/rfsport-cover.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none">
-        <div class="project-overlay">
-          <p class="project-category">YouTube Editing — Lifestyle</p>
-        </div>
-      </div>
-    </a>
-
     <a class="project-card" href="projects/its-out-there.html" data-animate>
       <div class="project-thumb">
         <img src="Videos/It's out there.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
 <div class="project-overlay">
           <p class="project-category">Travel Film — Nature/Lifestyle</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="project-card" href="projects/icefit-3.html" data-animate>
+      <div class="project-thumb">
+        <img src="Videos/Thumbnails/icefit nr 3. thumbnail.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+                <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
+<img src="Videos/Thumbnails/ICEFIT WHITE PNG.png" style="position:absolute;inset:0;width:70%;height:70%;top:15%;left:15%;object-fit:contain;pointer-events:none">
+        <div class="project-overlay">
+          <p class="project-category">Ads — Sport</p>
         </div>
       </div>
     </a>
@@ -343,13 +352,13 @@
       </div>
     </a>
 
-    <a class="project-card" href="projects/icefit-3.html" data-animate>
+    <a class="project-card" href="projects/hjortborg-design.html" data-animate>
       <div class="project-thumb">
-        <img src="Videos/Thumbnails/icefit nr 3. thumbnail.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
-                <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
-<img src="Videos/Thumbnails/ICEFIT WHITE PNG.png" style="position:absolute;inset:0;width:70%;height:70%;top:15%;left:15%;object-fit:contain;pointer-events:none">
+        <img src="Videos/Thumbnails/RFSPORT Cover.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <div style="position:absolute;inset:0;background:rgba(0,0,0,0.65);pointer-events:none"></div>
+        <img src="Videos/Thumbnails/rfsport-cover.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none">
         <div class="project-overlay">
-          <p class="project-category">Ads — Sport</p>
+          <p class="project-category">YouTube Editing — Lifestyle</p>
         </div>
       </div>
     </a>

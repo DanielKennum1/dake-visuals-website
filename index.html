@@ -664,7 +664,19 @@
       /* Footer */
       .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
     }
-  
+    /* ── iPad portrait: restore 3-column services (900px query stacks them) ── */
+    @media (min-width: 768px) and (max-width: 900px) {
+      .services-grid { grid-template-columns: repeat(3, 1fr); }
+      .service-col { border-right: 1px solid rgba(0,0,0,0.25); border-bottom: none; padding: 3.5rem 3rem 3.5rem 0; }
+      .service-col + .service-col { padding-left: 3rem; }
+      .service-col:last-child { border-right: none; border-bottom: none; padding-right: 0; }
+    }
+    /* ── iPad landscape: work cards slightly wider for better fill ── */
+    @media (min-width: 901px) and (max-width: 1024px) {
+      .work-card { flex: 0 0 36vw; }
+      .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
     @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
     body { animation: pageFadeIn 0.18s ease-out; }
   </style>
