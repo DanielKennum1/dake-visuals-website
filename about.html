@@ -65,6 +65,11 @@
     [data-animate].in-view { opacity: 1; transform: translate(0,0); }
     @media (max-width: 900px) { .nav-center { display: none; } .hamburger { display: flex; } .footer-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; gap: 2rem; } .footer-bottom { flex-direction: column; align-items: flex-start; } }
+    @media (min-width: 481px) and (max-width: 1024px) {
+      .founder-glass-content { flex-direction: column; gap: 1.2rem; }
+      .founder-glass-mid { align-items: flex-start; justify-content: flex-start; }
+      .video-links { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 0.4rem 1.5rem; }
+    }
     @media (max-width: 480px) {
       .btn-book { display: none; }
       /* Stack the founder card content vertically on iPhone */
@@ -84,11 +89,11 @@
 </head>
 <body>
   <div class="mobile-menu" id="mobileMenu">
-    <a href="/" onclick="closeMobile()">Home</a>
-    <a href="work.html" onclick="closeMobile()">Work</a>
-    <a href="bts.html" onclick="closeMobile()">BTS</a>
-    <a href="about.html" onclick="closeMobile()">About</a>
-    <a href="contact.html" onclick="closeMobile()">Contact</a>
+    <a href="/">Home</a>
+    <a href="work.html">Work</a>
+    <a href="bts.html">BTS</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
   </div>
 
   <nav id="navbar">
