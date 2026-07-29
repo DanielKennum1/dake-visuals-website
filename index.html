@@ -619,6 +619,9 @@
     @media (max-width: 480px) {
       /* Nav — hide pill button, keep logo + hamburger clean */
       .btn-book { display: none; }
+      /* Showreel: hide Vimeo iframe (won't autoplay on iOS), show local video */
+      .hero-vimeo { display: none; }
+      .hero-video-mobile { display: block !important; }
 
       /* Definition name — prevent overflow */
       .definition-name { font-size: clamp(1.6rem, 8vw, 2.8rem); }
@@ -694,7 +697,10 @@
   <!-- ─── HERO ─── -->
   <section class="hero">
     <div class="hero-media" id="heroMedia" style="background-size:cover;background-position:center">
-      <iframe src="https://player.vimeo.com/video/1213019798?h=5b1ce90166&badge=0&autopause=0&autoplay=1&muted=1&loop=1&background=1&quality=auto" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;pointer-events:none" title="Showreel"></iframe>
+      <iframe class="hero-vimeo" src="https://player.vimeo.com/video/1213019798?h=5b1ce90166&badge=0&autopause=0&autoplay=1&muted=1&loop=1&background=1&quality=auto" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;pointer-events:none" title="Showreel"></iframe>
+      <video class="hero-video-mobile" autoplay muted playsinline loop style="display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;object-fit:cover;pointer-events:none">
+        <source src="Videos/Compressed/Showreel.mp4" type="video/mp4">
+      </video>
       <div class="hero-scroll">
         <span>Scroll down</span>
         <div class="hero-scroll-line"></div>
@@ -757,7 +763,7 @@
     <div class="testimonials-grid">
       <div class="testimonial-card" data-animate style="transition-delay:0.1s">
         <div class="testimonial-card-footer">
-          <div class="testimonial-card-avatar"><img src="Testimonial Portraits/Carl.jpg" style="width:100%;height:100%;object-fit:cover;"></div>
+          <div class="testimonial-card-avatar"><img loading="lazy" src="Testimonial Portraits/Carl.jpg" style="width:100%;height:100%;object-fit:cover;"></div>
           <div>
             <p class="testimonial-card-name">Carl</p>
             <p class="testimonial-card-company">Founder — ICEFIT The Box</p>
@@ -767,7 +773,7 @@
       </div>
       <div class="testimonial-card" data-animate style="transition-delay:0.22s">
         <div class="testimonial-card-footer">
-          <div class="testimonial-card-avatar"><img src="Testimonial Portraits/Nikolja.jpg" style="width:100%;height:100%;object-fit:cover;"></div>
+          <div class="testimonial-card-avatar"><img loading="lazy" src="Testimonial Portraits/Nikolja.jpg" style="width:100%;height:100%;object-fit:cover;"></div>
           <div>
             <p class="testimonial-card-name">Nikolaj</p>
             <p class="testimonial-card-company">Co-founder — RFSPORT</p>
@@ -777,7 +783,7 @@
       </div>
       <div class="testimonial-card" data-animate style="transition-delay:0.34s">
         <div class="testimonial-card-footer">
-          <div class="testimonial-card-avatar"><img src="Testimonial Portraits/Jasmin.jpg" style="width:100%;height:100%;object-fit:cover;"></div>
+          <div class="testimonial-card-avatar"><img loading="lazy" src="Testimonial Portraits/Jasmin.jpg" style="width:100%;height:100%;object-fit:cover;"></div>
           <div>
             <p class="testimonial-card-name">Jasmin</p>
             <p class="testimonial-card-company">Founder — Evie Cosmetics</p>
@@ -798,9 +804,9 @@
     <div class="work-track">
 <div class="work-card" data-href="projects/enjoyment-of-sound.html" style="cursor:pointer">
         <div class="work-card-thumb">
-          <img src="Videos/Thumbnails/enjoymnet of sound thumbnail.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <img loading="lazy" src="Videos/Thumbnails/enjoymnet of sound thumbnail.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
           <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);pointer-events:none"></div>
-          <img src="Videos/Thumbnails/Enjoyment of sound.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(1.35)">
+          <img loading="lazy" src="Videos/Thumbnails/Enjoyment of sound.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(1.35)">
           <a href="projects/enjoyment-of-sound.html" class="work-card-watch">View Project</a>
         </div>
         <p class="work-card-client">Brand Film — Lifestyle</p>
@@ -808,9 +814,9 @@
       </div>
       <div class="work-card" data-href="projects/thy-rock.html" style="cursor:pointer">
         <div class="work-card-thumb">
-          <img src="Videos/Thumbnails/Thy rock cover photo.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <img loading="lazy" src="Videos/Thumbnails/Thy rock cover photo.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
           <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
-          <img src="Videos/THY_ROCK_26_white_transparent.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(0.45)">
+          <img loading="lazy" src="Videos/THY_ROCK_26_white_transparent.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(0.45)">
           <a href="projects/thy-rock.html" class="work-card-watch">View Project</a>
         </div>
         <p class="work-card-client">Event — Festival</p>
@@ -818,9 +824,9 @@
       </div>
       <div class="work-card" data-href="projects/dwecks-principle.html" style="cursor:pointer">
         <div class="work-card-thumb">
-          <img src="Videos/Thumbnails/dwecks-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <img loading="lazy" src="Videos/Thumbnails/dwecks-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
           <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
-          <img src="Videos/Thumbnails/Dwecks Principle.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <img loading="lazy" src="Videos/Thumbnails/Dwecks Principle.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
           <a href="projects/dwecks-principle.html" class="work-card-watch">View Project</a>
         </div>
         <p class="work-card-client">Brand Film — Performance</p>
@@ -828,9 +834,9 @@
       </div>
 <div class="work-card" data-href="projects/jakob-juul.html" style="cursor:pointer">
         <div class="work-card-thumb">
-          <img src="billeder/compressed/Jakob website billeder/IMG_4321.JPG" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <img loading="lazy" src="billeder/compressed/Jakob website billeder/IMG_4321.JPG" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
           <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
-          <img src="Videos/Thumbnails/Jakob.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(1.25)">
+          <img loading="lazy" src="Videos/Thumbnails/Jakob.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(1.25)">
           <a href="projects/jakob-juul.html" class="work-card-watch">View Project</a>
         </div>
         <p class="work-card-client">Documentary — Art</p>
@@ -838,9 +844,9 @@
       </div>
 <div class="work-card" data-href="projects/rynkeby.html" style="cursor:pointer">
         <div class="work-card-thumb">
-          <img src="Videos/Thumbnails/rynkeby cover.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;filter:brightness(0.65)">
+          <img loading="lazy" src="Videos/Thumbnails/rynkeby cover.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;filter:brightness(0.65)">
           <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
-          <img src="Videos/rynkeby.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none">
+          <img loading="lazy" src="Videos/rynkeby.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none">
           <a href="projects/rynkeby.html" class="work-card-watch">View Project</a>
         </div>
         <p class="work-card-client">Event — Beverage</p>
@@ -848,9 +854,9 @@
       </div>
 <div class="work-card" data-href="projects/icefit-4.html" style="cursor:pointer">
         <div class="work-card-thumb">
-          <img src="Videos/Thumbnails/icefit4-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <img loading="lazy" src="Videos/Thumbnails/icefit4-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
           <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
-          <img src="Videos/Thumbnails/ICEFIT WHITE PNG.png" style="position:absolute;inset:0;width:70%;height:70%;top:15%;left:15%;object-fit:contain;pointer-events:none">
+          <img loading="lazy" src="Videos/Thumbnails/ICEFIT WHITE PNG.png" style="position:absolute;inset:0;width:70%;height:70%;top:15%;left:15%;object-fit:contain;pointer-events:none">
           <a href="projects/icefit-4.html" class="work-card-watch">View Project</a>
         </div>
         <p class="work-card-client">Content — Fitness</p>
