@@ -908,19 +908,45 @@
   </footer>
 
   <script>
-    // Inject Vimeo iframe — background=1 on desktop (seamless), playsinline on iPhone (iOS autoplay)
+    // Vimeo hero: seamless background on desktop, tap-to-play on iPhone (iOS blocks iframe autoplay)
     (function() {
       var isMobile = window.innerWidth <= 480;
-      var params = isMobile
-        ? 'h=5b1ce90166&badge=0&autopause=0&autoplay=1&muted=1&loop=1&playsinline=1&controls=0&quality=auto'
-        : 'h=5b1ce90166&badge=0&autopause=0&autoplay=1&muted=1&loop=1&background=1&quality=auto';
-      var iframe = document.createElement('iframe');
-      iframe.src = 'https://player.vimeo.com/video/1213019798?' + params;
-      iframe.frameBorder = '0';
-      iframe.allow = 'autoplay; fullscreen; picture-in-picture';
-      iframe.title = 'Showreel';
-      iframe.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;pointer-events:none';
-      document.getElementById('heroVimeoMount').appendChild(iframe);
+      var mount = document.getElementById('heroVimeoMount');
+
+      function injectIframe(autoplay) {
+        var params = 'h=5b1ce90166&badge=0&autopause=0&muted=1&loop=1&playsinline=1&controls=0&quality=auto';
+        if (autoplay) params += '&autoplay=1';
+        var iframe = document.createElement('iframe');
+        iframe.src = 'https://player.vimeo.com/video/1213019798?' + params;
+        iframe.frameBorder = '0';
+        iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+        iframe.allowFullscreen = true;
+        iframe.title = 'Showreel';
+        iframe.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;pointer-events:none';
+        mount.appendChild(iframe);
+      }
+
+      if (!isMobile) {
+        // Desktop: background mode, seamless, no controls
+        var iframe = document.createElement('iframe');
+        iframe.src = 'https://player.vimeo.com/video/1213019798?h=5b1ce90166&badge=0&autopause=0&autoplay=1&muted=1&loop=1&background=1&quality=auto';
+        iframe.frameBorder = '0';
+        iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+        iframe.title = 'Showreel';
+        iframe.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;pointer-events:none';
+        mount.appendChild(iframe);
+      } else {
+        // iPhone: show play button over thumbnail, load Vimeo on tap
+        var btn = document.createElement('button');
+        btn.setAttribute('aria-label', 'Play showreel');
+        btn.style.cssText = 'position:absolute;z-index:4;top:50%;left:50%;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.18);border:2px solid rgba(255,255,255,0.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);cursor:pointer;display:flex;align-items:center;justify-content:center;';
+        btn.innerHTML = '<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M10 7l14 7-14 7V7z" fill="white"/></svg>';
+        btn.addEventListener('click', function() {
+          btn.remove();
+          injectIframe(true);
+        });
+        document.getElementById('heroMedia').appendChild(btn);
+      }
     })();
 
     // Mobile menu
