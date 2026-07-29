@@ -619,9 +619,6 @@
     @media (max-width: 480px) {
       /* Nav — hide pill button, keep logo + hamburger clean */
       .btn-book { display: none; }
-      /* Showreel: hide Vimeo iframe (won't autoplay on iOS), show local video */
-      .hero-vimeo { display: none; }
-      .hero-video-mobile { display: block !important; }
 
       /* Definition name — prevent overflow */
       .definition-name { font-size: clamp(1.6rem, 8vw, 2.8rem); }
@@ -697,10 +694,8 @@
   <!-- ─── HERO ─── -->
   <section class="hero">
     <div class="hero-media" id="heroMedia" style="background-size:cover;background-position:center">
-      <iframe class="hero-vimeo" src="https://player.vimeo.com/video/1213019798?h=5b1ce90166&badge=0&autopause=0&autoplay=1&muted=1&loop=1&background=1&quality=auto" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;pointer-events:none" title="Showreel"></iframe>
-      <video class="hero-video-mobile" autoplay muted playsinline loop style="display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;object-fit:cover;pointer-events:none">
-        <source src="Videos/Compressed/Showreel.mp4" type="video/mp4">
-      </video>
+      <!-- Vimeo injected by JS below: background=1 on desktop, playsinline on iPhone -->
+      <div id="heroVimeoMount" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;"></div>
       <div class="hero-scroll">
         <span>Scroll down</span>
         <div class="hero-scroll-line"></div>
@@ -913,6 +908,21 @@
   </footer>
 
   <script>
+    // Inject Vimeo iframe — background=1 on desktop (seamless), playsinline on iPhone (iOS autoplay)
+    (function() {
+      var isMobile = window.innerWidth <= 480;
+      var params = isMobile
+        ? 'h=5b1ce90166&badge=0&autopause=0&autoplay=1&muted=1&loop=1&background=1&playsinline=1&quality=auto'
+        : 'h=5b1ce90166&badge=0&autopause=0&autoplay=1&muted=1&loop=1&background=1&quality=auto';
+      var iframe = document.createElement('iframe');
+      iframe.src = 'https://player.vimeo.com/video/1213019798?' + params;
+      iframe.frameBorder = '0';
+      iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+      iframe.title = 'Showreel';
+      iframe.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;pointer-events:none';
+      document.getElementById('heroVimeoMount').appendChild(iframe);
+    })();
+
     // Mobile menu
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
