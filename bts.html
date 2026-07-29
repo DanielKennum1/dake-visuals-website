@@ -23,9 +23,9 @@
     .nav-center a.active { color: var(--black); border-color: rgba(0,0,0,0.6); }
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
     .hamburger span { display: block; width: 22px; height: 2px; background: var(--black); }
-    .mobile-menu { display: none; position: fixed; top: 70px; left: 0; right: 0; background: var(--cream); border-bottom: 1px solid rgba(0,0,0,0.1); padding: 1.5rem 4%; z-index: 199; flex-direction: column; gap: 1.2rem; }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--black); text-decoration: none; }
+    .mobile-menu { display: flex; position: fixed; top: 0; left: 0; right: 0; background: var(--cream); padding: 90px 6% 2.5rem; z-index: 199; flex-direction: column; gap: 1.8rem; transform: translateY(-105%); opacity: 0; visibility: hidden; pointer-events: none; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.25s ease; box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+    .mobile-menu.open { transform: translateY(0); opacity: 1; visibility: visible; pointer-events: auto; }
+    .mobile-menu a { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--black); text-decoration: none; }
     .bts-grid-wrap { padding: 0.5rem; }
     .bts-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border-radius: 8px; overflow: hidden; }
     .bts-card {
@@ -74,7 +74,6 @@
     @media (max-width: 600px) { .bts-grid { grid-template-columns: repeat(2, 1fr); } .footer-grid { grid-template-columns: 1fr; gap: 2rem; } .footer-bottom { flex-direction: column; align-items: flex-start; } }
   
     @media (max-width: 480px) {
-      .mobile-menu { background: var(--cream); border-bottom: 1px solid rgba(0,0,0,0.1); }
       .btn-book { display: none; }
       .bts-grid-wrap { padding: 0.25rem; }
       .bts-thumb img { filter: brightness(0.78) saturate(0.88); }

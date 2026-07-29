@@ -22,9 +22,9 @@
     .nav-center a.active { color: var(--black); border-color: rgba(0,0,0,0.7); }
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
     .hamburger span { display: block; width: 22px; height: 2px; background: var(--black); }
-    .mobile-menu { display: none; position: fixed; top: 70px; left: 0; right: 0; background: var(--cream); border-bottom: 1px solid rgba(0,0,0,0.1); padding: 1.5rem 4%; z-index: 199; flex-direction: column; gap: 1.2rem; }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--black); text-decoration: none; }
+    .mobile-menu { display: flex; position: fixed; top: 0; left: 0; right: 0; background: var(--cream); padding: 90px 6% 2.5rem; z-index: 199; flex-direction: column; gap: 1.8rem; transform: translateY(-105%); opacity: 0; visibility: hidden; pointer-events: none; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.25s ease; box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+    .mobile-menu.open { transform: translateY(0); opacity: 1; visibility: visible; pointer-events: auto; }
+    .mobile-menu a { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--black); text-decoration: none; }
     main { flex: 1; padding-top: 0; display: flex; flex-direction: column; }
     .contact-headline-wrap { overflow: hidden; display: block; }
     .contact-headline { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: clamp(3rem, 10vw, 7rem); line-height: 1.0; letter-spacing: -0.02em; text-transform: uppercase; color: var(--white); display: block; transform: translateY(110%); animation: titleSlide 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; }
@@ -86,7 +86,6 @@
     @media (max-width: 900px) { .nav-center { display: none; } .hamburger { display: flex; } .contact-body { grid-template-columns: 1fr; gap: 4rem; } .footer-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; gap: 0; } .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; } .footer-bottom { flex-direction: column; align-items: flex-start; } }
     @media (max-width: 480px) {
-      .mobile-menu { background: var(--cream); border-bottom: 1px solid rgba(0,0,0,0.1); }
       .btn-book { display: none; }
       .contact-hero { padding: 10px 5% 30px; }
       .contact-body { padding: 0 5% 70px; gap: 3rem; }
