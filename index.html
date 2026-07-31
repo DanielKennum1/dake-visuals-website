@@ -936,14 +936,30 @@
         iframe.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;pointer-events:none';
         mount.appendChild(iframe);
       } else {
-        // iPhone: show play button over thumbnail, load Vimeo on tap
+        // iPhone: pre-load iframe + Vimeo SDK, then call player.play() on tap.
+        // iOS only allows play() when called synchronously inside a user gesture —
+        // injecting a new iframe with autoplay=1 doesn't qualify.
+        var iframeEl = document.createElement('iframe');
+        iframeEl.src = 'https://player.vimeo.com/video/1213019798?h=5b1ce90166&badge=0&autopause=0&muted=1&loop=1&playsinline=1&controls=0&quality=auto';
+        iframeEl.frameBorder = '0';
+        iframeEl.allow = 'autoplay; fullscreen; picture-in-picture';
+        iframeEl.title = 'Showreel';
+        iframeEl.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;pointer-events:none';
+        mount.appendChild(iframeEl);
+
+        var vimeoPlayer = null;
+        var sdkScript = document.createElement('script');
+        sdkScript.src = 'https://player.vimeo.com/api/player.js';
+        sdkScript.onload = function() { vimeoPlayer = new Vimeo.Player(iframeEl); };
+        document.head.appendChild(sdkScript);
+
         var btn = document.createElement('button');
         btn.setAttribute('aria-label', 'Play showreel');
         btn.style.cssText = 'position:absolute;z-index:4;top:50%;left:50%;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.18);border:2px solid rgba(255,255,255,0.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);cursor:pointer;display:flex;align-items:center;justify-content:center;';
         btn.innerHTML = '<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M10 7l14 7-14 7V7z" fill="white"/></svg>';
         btn.addEventListener('click', function() {
           btn.remove();
-          injectIframe(true);
+          if (vimeoPlayer) { vimeoPlayer.play().catch(function(){}); }
         });
         document.getElementById('heroMedia').appendChild(btn);
       }
