@@ -83,6 +83,8 @@
     .contact-form { opacity: 0; transform: translateX(-60px); transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s, transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s; }
     .contact-sidebar { opacity: 0; transform: translateX(60px); transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1) 0.4s, transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.4s; }
     .contact-form.slide-in, .contact-sidebar.slide-in { opacity: 1; transform: translateX(0); }
+    .contact-calendly-section { padding: 0 4% 80px; }
+    .calendly-label { font-family: 'Lato', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 1rem; }
     @media (max-width: 900px) { .nav-center { display: none; } .hamburger { display: flex; } .contact-body { grid-template-columns: 1fr; gap: 4rem; } .footer-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; gap: 0; } .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; } .footer-bottom { flex-direction: column; align-items: flex-start; } }
     @media (max-width: 480px) {
@@ -146,11 +148,6 @@
         </div>
         <div class="sidebar-divider"></div>
         <div class="sidebar-block">
-          <h4>Book a call</h4>
-          <div class="calendly-inline-widget" data-url="https://calendly.com/dake-dakevisuals/30min?hide_event_type_details=1&hide_gdpr_banner=1" style="min-width:280px;height:700px;"></div>
-        </div>
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-block">
           <h4>Based in</h4>
           <p>Aarhus, Denmark</p>
           <p style="margin-top:0.3rem; opacity:0.6;">Available worldwide</p>
@@ -161,6 +158,10 @@
           <div class="sidebar-socials"><a href="https://www.instagram.com/dake.visuals/" target="_blank" rel="noopener">Instagram</a></div>
         </div>
       </aside>
+    </div>
+    <div class="contact-calendly-section">
+      <h4 class="calendly-label">Book a call</h4>
+      <div class="calendly-inline-widget" data-url="https://calendly.com/dake-dakevisuals/30min?hide_event_type_details=1&hide_gdpr_banner=1" style="min-width:320px;height:600px;"></div>
     </div>
     </div>
     </div>
