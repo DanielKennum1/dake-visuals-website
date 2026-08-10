@@ -108,3 +108,49 @@
     if (e.persisted) { resetAll(); }
   });
 })();
+
+// Sliding nav pill — glides between items instead of fading in/out
+(function () {
+  var nav = document.querySelector('.nav-center');
+  if (!nav || getComputedStyle(nav).display === 'none') return;
+
+  // Suppress individual link borders so the pill is the only indicator
+  var s = document.createElement('style');
+  s.textContent = '.nav-center a:hover{border-color:transparent!important}.nav-center a.active{border-color:transparent!important}.nav-pill{position:absolute;top:0;bottom:0;border-radius:999px;border:1.5px solid;pointer-events:none;transition:left .28s cubic-bezier(.25,.46,.45,.94),width .28s cubic-bezier(.25,.46,.45,.94),opacity .2s ease;opacity:0}';
+  document.head.appendChild(s);
+
+  var pill = document.createElement('span');
+  pill.className = 'nav-pill';
+  nav.style.position = 'relative';
+  nav.appendChild(pill);
+
+  // Pick border colour based on whether navbar has a solid background
+  var navbar = document.getElementById('navbar');
+  var bg = navbar ? getComputedStyle(navbar).backgroundColor : '';
+  var isLight = bg && bg !== 'rgba(0, 0, 0, 0)';
+  pill.style.borderColor = isLight ? 'rgba(0,0,0,0.4)' : 'rgba(255,255,255,0.5)';
+
+  var active = nav.querySelector('a.active');
+
+  function movePill(el, instant) {
+    var r = el.getBoundingClientRect();
+    var p = nav.getBoundingClientRect();
+    if (instant) { pill.style.transition = 'none'; }
+    pill.style.left  = (r.left - p.left) + 'px';
+    pill.style.width = r.width + 'px';
+    pill.style.opacity = '1';
+    if (instant) { requestAnimationFrame(function () { pill.style.transition = ''; }); }
+  }
+
+  // Set initial position on the active link without animation
+  if (active) movePill(active, true);
+
+  nav.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('mouseenter', function () { movePill(a); });
+  });
+
+  nav.addEventListener('mouseleave', function () {
+    if (active) movePill(active);
+    else pill.style.opacity = '0';
+  });
+})();
