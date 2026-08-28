@@ -507,7 +507,11 @@
       gap: 3rem;
       padding: 80px 4%;
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
+    .cta-inner > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.28); pointer-events: none; }
+    .cta-inner > h2, .cta-inner > a { position: relative; z-index: 1; }
     .cta-section h2 {
       font-family: 'Tinos', serif;
       font-weight: 400;
@@ -711,8 +715,8 @@
       <p class="definition-text">Is a creative agency based in Aarhus, Denmark, working with brands that want to elevate their online presence. Combining <em>cinematic craft</em> with strategic storytelling to create visuals that move people.</p>
     </div>
     <div class="definition-photo" data-animate="from-right">
-      <div class="definition-photo-sq"><span class="content-placeholder-label" style="color:rgba(0,0,0,0.25)">Content Placeholder</span></div>
-      <div class="definition-photo-sq"><span class="content-placeholder-label" style="color:rgba(0,0,0,0.25)">Content Placeholder</span></div>
+      <div class="definition-photo-sq"><img src="billeder/compressed/home page/dake-portrait-1.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
+      <div class="definition-photo-sq"><img src="billeder/compressed/home page/dake-portrait-2.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
     </div>
   </section>
 
@@ -864,6 +868,7 @@
   <!-- ─── CTA SECTION ─── -->
   <section class="cta-section" id="contact">
     <div class="cta-inner" data-animate>
+      <img src="billeder/compressed/home page/have-a-project-in-mind.jpg" alt="">
       <h2 data-animate style="transition-delay:0.2s">Have a <strong>PROJECT</strong> in mind?</h2>
       <a href="contact.html" class="btn-cta" data-animate style="transition-delay:0.38s">Let's create</a>
     </div>
