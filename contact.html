@@ -32,7 +32,7 @@
     .contact-content-wrap { padding: 0 0.5rem 0.5rem; }
     .contact-grey-box { background: var(--gray); border-radius: 8px; }
     .contact-hero { padding: 40px 4% 20px; max-width: 900px; }
-    .contact-body { display: grid; grid-template-columns: 1.35fr 0.7fr 0.95fr; gap: 3.5rem; padding: 0 4% 120px; align-items: start; }
+    .contact-body { display: grid; grid-template-columns: 1.35fr 0.8fr 0.78fr; gap: 3.5rem; padding: 0 4% 120px; align-items: start; }
     .contact-photos { padding-top: 1.4rem; display: flex; flex-direction: column; gap: 0.75rem; }
     .contact-photo { width: 100%; aspect-ratio: 1/1; border-radius: 4px; overflow: hidden; position: relative; background: rgba(255,255,255,0.06); }
     .contact-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -86,6 +86,13 @@
     .contact-form { opacity: 0; transform: translateX(-60px); transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s, transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s; }
     .contact-sidebar { opacity: 0; transform: translateX(60px); transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1) 0.4s, transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.4s; }
     .contact-form.slide-in, .contact-sidebar.slide-in { opacity: 1; transform: translateX(0); }
+    .contact-photo { opacity: 0; transform: translateY(45px); clip-path: inset(100% 0 0 0 round 4px);
+      transition: opacity 1.3s cubic-bezier(0.22,1,0.36,1), transform 1.5s cubic-bezier(0.22,1,0.36,1), clip-path 1.5s cubic-bezier(0.22,1,0.36,1); }
+    .contact-photo img { transform: scale(1.35); transition: transform 2s cubic-bezier(0.22,1,0.36,1); }
+    .contact-photo:nth-child(1), .contact-photo:nth-child(1) img { transition-delay: 0.5s; }
+    .contact-photo:nth-child(2), .contact-photo:nth-child(2) img { transition-delay: 0.9s; }
+    .contact-photo.slide-in { opacity: 1; transform: translateY(0); clip-path: inset(0 0 0 0 round 4px); }
+    .contact-photo.slide-in img { transform: scale(1); }
     .contact-calendly-section { padding: 0 4% 80px; }
     .calendly-label { font-family: 'Lato', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 1rem; }
     @media (max-width: 900px) { .nav-center { display: none; } .hamburger { display: flex; } .contact-body { grid-template-columns: 1fr; gap: 4rem; } .contact-photos { padding-top: 0; flex-direction: row; } .footer-grid { grid-template-columns: 1fr 1fr; } }
@@ -196,6 +203,7 @@
     requestAnimationFrame(() => requestAnimationFrame(() => {
       document.querySelector('.contact-form').classList.add('slide-in');
       document.querySelector('.contact-sidebar').classList.add('slide-in');
+      document.querySelectorAll('.contact-photo').forEach(el => el.classList.add('slide-in'));
     }));
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
