@@ -32,8 +32,8 @@
     .contact-content-wrap { padding: 0 0.5rem 0.5rem; }
     .contact-grey-box { background: var(--gray); border-radius: 8px; }
     .contact-hero { padding: 40px 4% 20px; max-width: 900px; }
-    .contact-body { display: grid; grid-template-columns: 1.35fr 0.8fr 0.89fr; gap: 3.5rem; padding: 0 4% 120px; align-items: start; }
-    .contact-photos { padding-top: 1.4rem; display: flex; flex-direction: column; gap: 0.75rem; justify-self: start; width: 80%; }
+    .contact-body { display: grid; grid-template-columns: 1.35fr 0.8fr 1.3fr; gap: 3.5rem; padding: 0 4% 120px; align-items: start; }
+    .contact-photos { padding-top: 1.4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; justify-self: start; width: 72%; }
     .contact-photo { width: 100%; aspect-ratio: 1/1; border-radius: 4px; overflow: hidden; position: relative; background: rgba(255,255,255,0.06); }
     .contact-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .contact-form { display: flex; flex-direction: column; gap: 0; }
@@ -90,12 +90,14 @@
       transition: opacity 1.3s cubic-bezier(0.22,1,0.36,1), transform 1.5s cubic-bezier(0.22,1,0.36,1), clip-path 1.5s cubic-bezier(0.22,1,0.36,1); }
     .contact-photo img { transform: scale(1.35); transition: transform 2s cubic-bezier(0.22,1,0.36,1); }
     .contact-photo:nth-child(1), .contact-photo:nth-child(1) img { transition-delay: 0.5s; }
-    .contact-photo:nth-child(2), .contact-photo:nth-child(2) img { transition-delay: 0.9s; }
+    .contact-photo:nth-child(2), .contact-photo:nth-child(2) img { transition-delay: 0.65s; }
+    .contact-photo:nth-child(3), .contact-photo:nth-child(3) img { transition-delay: 0.8s; }
+    .contact-photo:nth-child(4), .contact-photo:nth-child(4) img { transition-delay: 0.95s; }
     .contact-photo.slide-in { opacity: 1; transform: translateY(0); clip-path: inset(0 0 0 0 round 4px); }
     .contact-photo.slide-in img { transform: scale(1); }
     .contact-calendly-section { padding: 0 4% 80px; }
     .calendly-label { font-family: 'Lato', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 1rem; }
-    @media (max-width: 900px) { .nav-center { display: none; } .hamburger { display: flex; } .contact-body { grid-template-columns: 1fr; gap: 4rem; } .contact-photos { padding-top: 0; flex-direction: row; width: 100%; justify-self: stretch; } .footer-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 900px) { .nav-center { display: none; } .hamburger { display: flex; } .contact-body { grid-template-columns: 1fr; gap: 4rem; } .contact-photos { padding-top: 0; width: 100%; justify-self: stretch; } .footer-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; gap: 0; } .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; } .footer-bottom { flex-direction: column; align-items: flex-start; } }
     @media (max-width: 480px) {
       .btn-book { display: none; }
@@ -106,7 +108,7 @@
     }
     @media (min-width: 768px) and (max-width: 1024px) {
       .contact-body { grid-template-columns: 1fr; gap: 4rem; }
-      .contact-photos { flex-direction: row; padding-top: 0; width: 100%; justify-self: stretch; }
+      .contact-photos { padding-top: 0; width: 100%; justify-self: stretch; }
     }
 
     @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -171,7 +173,9 @@
       </aside>
       <div class="contact-photos">
         <div class="contact-photo"><img src="billeder/compressed/contact/contact-1.jpg" alt=""></div>
+        <div class="contact-photo"><img src="billeder/compressed/contact/contact-4.jpg" alt=""></div>
         <div class="contact-photo"><img src="billeder/compressed/contact/contact-2.jpg" alt=""></div>
+        <div class="contact-photo"><img src="billeder/compressed/contact/contact-3.jpg" alt=""></div>
       </div>
     </div>
     <div class="contact-calendly-section">
