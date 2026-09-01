@@ -114,6 +114,7 @@
 
   <section class="video-hero">
     <div class="video-placeholder">
+      <div id="aboutVimeoMount" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1;"></div>
       <div class="founder-glass-box">
         <h2 class="founder-name-left">Daniel Kennum</h2>
         <div class="founder-glass-content">
@@ -158,6 +159,49 @@
       navbar.classList.toggle('menu-open');
     });
     function closeMobile() { mobileMenu.classList.remove('open'); navbar.classList.remove('menu-open'); }
+
+    // Vimeo background: seamless on desktop, tap-to-play on iPhone (iOS blocks iframe autoplay)
+    (function() {
+      var isMobile = window.innerWidth <= 480;
+      var mount = document.getElementById('aboutVimeoMount');
+      var videoId = '1223114096';
+      var videoHash = 'e178ee3766';
+      var boxStyle = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;pointer-events:none';
+
+      if (!isMobile) {
+        var iframe = document.createElement('iframe');
+        iframe.src = 'https://player.vimeo.com/video/' + videoId + '?h=' + videoHash + '&badge=0&autopause=0&autoplay=1&muted=1&loop=1&background=1&quality=auto';
+        iframe.frameBorder = '0';
+        iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+        iframe.title = 'About background';
+        iframe.style.cssText = boxStyle;
+        mount.appendChild(iframe);
+      } else {
+        var iframeEl = document.createElement('iframe');
+        iframeEl.src = 'https://player.vimeo.com/video/' + videoId + '?h=' + videoHash + '&badge=0&autopause=0&muted=1&loop=1&playsinline=1&controls=0&quality=auto';
+        iframeEl.frameBorder = '0';
+        iframeEl.allow = 'autoplay; fullscreen; picture-in-picture';
+        iframeEl.title = 'About background';
+        iframeEl.style.cssText = boxStyle;
+        mount.appendChild(iframeEl);
+
+        var vimeoPlayer = null;
+        var sdkScript = document.createElement('script');
+        sdkScript.src = 'https://player.vimeo.com/api/player.js';
+        sdkScript.onload = function() { vimeoPlayer = new Vimeo.Player(iframeEl); };
+        document.head.appendChild(sdkScript);
+
+        var btn = document.createElement('button');
+        btn.setAttribute('aria-label', 'Play background video');
+        btn.style.cssText = 'position:absolute;z-index:3;top:35%;left:50%;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.18);border:2px solid rgba(255,255,255,0.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);cursor:pointer;display:flex;align-items:center;justify-content:center;';
+        btn.innerHTML = '<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M10 7l14 7-14 7V7z" fill="white"/></svg>';
+        btn.addEventListener('click', function() {
+          btn.remove();
+          if (vimeoPlayer) { vimeoPlayer.play().catch(function(){}); }
+        });
+        document.querySelector('.video-placeholder').appendChild(btn);
+      }
+    })();
   </script>
 <script src="/transitions.js"></script>
 </body>
