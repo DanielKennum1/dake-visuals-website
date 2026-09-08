@@ -351,6 +351,41 @@
     .service-col:nth-child(3).in-view ul li:nth-child(3):not(:hover) { transition-delay: 0.66s; }
     .service-col.in-view ul li:hover { transform: translateY(-3px) scale(1.03); background: #d0cbbd; transition-delay: 0s; }
 
+
+    /* ─── CLIENTS STRIP ─── */
+    .clients { background: var(--cream); padding: 30px 0 70px; }
+    .clients-header { display: flex; align-items: flex-end; justify-content: space-between; padding: 0 4%; margin-bottom: 2.5rem; }
+    .clients-header h2 { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: clamp(1.6rem,4vw,2.8rem); letter-spacing: -0.02em; line-height: 1.1; color: var(--black); text-transform: uppercase; }
+    .clients .btn-outline { border-color: rgba(0,0,0,0.4); color: var(--black); }
+    .clients .btn-outline:hover { background: var(--black); color: var(--cream); }
+    .clients-viewport { overflow: hidden; padding: 14px 0; position: relative; }
+    /* cream gradients over each end so logos dissolve instead of hitting a hard edge */
+    .clients-viewport::before,
+    .clients-viewport::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 20%;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .clients-viewport::before { left: 0;  background: linear-gradient(to right, var(--cream) 0%, rgba(247,239,219,0.9) 35%, rgba(247,239,219,0) 100%); }
+    .clients-viewport::after  { right: 0; background: linear-gradient(to left,  var(--cream) 0%, rgba(247,239,219,0.9) 35%, rgba(247,239,219,0) 100%); }
+    .work-track.clients-track { display: flex; align-items: center; gap: 8rem; width: max-content; animation: work-marquee 75s linear infinite; }
+    .client-logo { flex-shrink: 0; width: 210px; height: 62px; display: flex; align-items: center; justify-content: center; opacity: 0.72; transition: opacity 0.3s ease; }
+    .client-logo img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; filter: brightness(0); }
+    .client-logo--lg { height: 100px; }
+    .client-logo[title="Rynkeby"] { height: 94px; transform: translateY(-20px); }
+    .client-logo[title="Bliss"] { transform: translateY(-9px); }
+    .client-logo[title="Madhosmads"] img { filter: invert(1); }
+    .client-logo span { font-family: 'Tinos', serif; font-style: italic; font-size: 2.05rem; letter-spacing: 0.03em; color: var(--black); white-space: nowrap; }
+    .client-logo:hover { opacity: 1; }
+    @media (max-width: 480px) {
+      .work-track.clients-track { animation-duration: 45s; }
+      .clients-track { gap: 4rem; }
+      .client-logo { width: 150px; height: 48px; }
+    }
+
     /* ─── WORK CAROUSEL ─── */
     .work {
       background: var(--cream);
@@ -829,74 +864,24 @@
     </div>
   </section>
 
-  <!-- ─── WORK ─── -->
-  <section class="work" id="work">
-    <div class="work-header" data-animate>
-      <h2>Selected <em>work</em></h2>
-      <a href="work.html" class="btn-outline">View all</a>
-    </div>
-    <div class="work-viewport" data-animate style="transition-delay:0.18s">
-    <div class="work-track">
-<div class="work-card" data-href="projects/enjoyment-of-sound.html" style="cursor:pointer">
-        <div class="work-card-thumb">
-          <img loading="lazy" src="Videos/Thumbnails/enjoymnet of sound thumbnail.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
-          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);pointer-events:none"></div>
-          <img loading="lazy" src="Videos/Thumbnails/Enjoyment of sound.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(1.35)">
-          <a href="projects/enjoyment-of-sound.html" class="work-card-watch">View Project</a>
-        </div>
-        <p class="work-card-client">Brand Film — Lifestyle</p>
-        <p class="work-card-title">Enjoyment of Sound</p>
-      </div>
-      <div class="work-card" data-href="projects/thy-rock.html" style="cursor:pointer">
-        <div class="work-card-thumb">
-          <img loading="lazy" src="Videos/Thumbnails/Thy rock cover photo.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
-          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
-          <img loading="lazy" src="Videos/THY_ROCK_26_white_transparent.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(0.45)">
-          <a href="projects/thy-rock.html" class="work-card-watch">View Project</a>
-        </div>
-        <p class="work-card-client">Event — Festival</p>
-        <p class="work-card-title">Thy Rock</p>
-      </div>
-      <div class="work-card" data-href="projects/dwecks-principle.html" style="cursor:pointer">
-        <div class="work-card-thumb">
-          <img loading="lazy" src="Videos/Thumbnails/dwecks-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
-          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
-          <img loading="lazy" src="Videos/Thumbnails/Dwecks Principle.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
-          <a href="projects/dwecks-principle.html" class="work-card-watch">View Project</a>
-        </div>
-        <p class="work-card-client">Brand Film — Performance</p>
-        <p class="work-card-title">Dweck's Principle</p>
-      </div>
-<div class="work-card" data-href="projects/jakob-juul.html" style="cursor:pointer">
-        <div class="work-card-thumb">
-          <img loading="lazy" src="billeder/compressed/Jakob website billeder/IMG_4321.JPG" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
-          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
-          <img loading="lazy" src="Videos/Thumbnails/Jakob.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(1.25)">
-          <a href="projects/jakob-juul.html" class="work-card-watch">View Project</a>
-        </div>
-        <p class="work-card-client">Documentary — Art</p>
-        <p class="work-card-title">Jakob Juul x Psykiatrifonden</p>
-      </div>
-<div class="work-card" data-href="projects/rynkeby.html" style="cursor:pointer">
-        <div class="work-card-thumb">
-          <img loading="lazy" src="Videos/Thumbnails/rynkeby cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;filter:brightness(0.65)">
-          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
-          <img loading="lazy" src="Videos/rynkeby.png" style="position:absolute;width:100%;height:auto;top:50%;left:0;transform:translateY(-50%);pointer-events:none">
-          <a href="projects/rynkeby.html" class="work-card-watch">View Project</a>
-        </div>
-        <p class="work-card-client">Event — Beverage</p>
-        <p class="work-card-title">Rynkeby</p>
-      </div>
-<div class="work-card" data-href="projects/icefit-4.html" style="cursor:pointer">
-        <div class="work-card-thumb">
-          <img loading="lazy" src="Videos/Thumbnails/icefit4-cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
-          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
-          <img loading="lazy" src="Videos/Thumbnails/ICEFIT WHITE PNG.png" style="position:absolute;inset:0;width:70%;height:70%;top:15%;left:15%;object-fit:contain;pointer-events:none">
-          <a href="projects/icefit-4.html" class="work-card-watch">View Project</a>
-        </div>
-        <p class="work-card-client">Content — Fitness</p>
-        <p class="work-card-title">ICEFIT</p>
-      </div>
+  <!-- ─── CLIENTS ─── -->
+  <section class="clients" id="clients">
+    <div class="clients-viewport" data-animate style="transition-delay:0.18s">
+    <div class="work-track clients-track">
+      <div class="client-logo" title="TAKE ONE"><img loading="lazy" src="billeder/compressed/clients/take-one.png" alt="TAKE ONE"></div>
+      <div class="client-logo client-logo--lg" title="ICEFIT The Box"><img loading="lazy" src="billeder/compressed/clients/icefit.png" alt="ICEFIT The Box"></div>
+      <div class="client-logo" title="Casablanca"><img loading="lazy" src="billeder/compressed/clients/casablanca.png" alt="Casablanca"></div>
+      <div class="client-logo" title="EVIE Cosmetics"><img loading="lazy" src="billeder/compressed/clients/evie.png" alt="EVIE Cosmetics"></div>
+      <div class="client-logo" title="Aarhus Motion"><img loading="lazy" src="billeder/compressed/clients/aarhus-motion.png" alt="Aarhus Motion"></div>
+      <div class="client-logo client-logo--lg" title="Rynkeby"><img loading="lazy" src="billeder/compressed/clients/rynkeby.png" alt="Rynkeby"></div>
+      <div class="client-logo" title="THY Rock"><img loading="lazy" src="billeder/compressed/clients/thy-rock.png" alt="THY Rock"></div>
+      <div class="client-logo" title="Bliss"><img loading="lazy" src="billeder/compressed/clients/bliss.png" alt="Bliss"></div>
+      <div class="client-logo" title="RF.Sport"><img loading="lazy" src="billeder/compressed/clients/rfsport.png" alt="RF.Sport"></div>
+      <div class="client-logo" title="GROFT"><img loading="lazy" src="billeder/compressed/clients/groft.png" alt="GROFT"></div>
+      <div class="client-logo" title="PACE Club"><img loading="lazy" src="billeder/compressed/clients/pace-club.png" alt="PACE Club"></div>
+      <div class="client-logo" title="Madhosmads"><img loading="lazy" src="billeder/compressed/clients/madhosmads.png" alt="Madhosmads"></div>
+      <div class="client-logo" title="Philip"><span>Philip</span></div>
+      <div class="client-logo client-logo--lg" title="Psykiatri Fonden"><img loading="lazy" src="billeder/compressed/clients/psykiatri-fonden.png" alt="Psykiatri Fonden"></div>
     </div>
     </div>
   </section>
