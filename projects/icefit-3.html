@@ -34,6 +34,9 @@
     .project-hero-wrap { padding: 1.5rem 4%; position: relative; }
     .project-hero-trio { display: flex; gap: 0.75rem; width: 75%; margin: 0 auto; }
     .project-hero { flex: 1; aspect-ratio: 9/16; overflow: hidden; position: relative; background: #000000; }
+    /* a row with fewer than 3 videos keeps them at one-third width instead of stretching */
+    .project-hero-trio--partial { justify-content: flex-start; }
+    .project-hero-trio--partial .project-hero { flex: 0 0 calc((100% - 1.5rem) / 3); }
     .back-link { position: absolute; top: 1.5rem; left: 4%; font-family: 'Lato', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.55); text-decoration: none; display: inline-flex; align-items: center; gap: 0.45rem; transition: color 0.2s; z-index: 2; }
     .back-link:hover { color: var(--white); }
     .back-link::before { content: '←'; }
@@ -71,7 +74,7 @@
     [data-animate].in-view { opacity: 1; transform: translate(0,0); }
     video::-webkit-media-controls-fullscreen-button { display: none !important; }
     @media (max-width: 900px) { .nav-center { display: none; } .hamburger { display: flex; } .frames-grid { grid-template-columns: repeat(2, 1fr); } .footer-grid { grid-template-columns: 1fr 1fr; } .project-hero-trio { width: 95%; } }
-    @media (max-width: 600px) { .frames-grid { grid-template-columns: repeat(2, 1fr); } .footer-grid { grid-template-columns: 1fr; gap: 2rem; } .footer-bottom { flex-direction: column; align-items: flex-start; } .project-hero-trio { width: 100%; flex-direction: column; } }
+    @media (max-width: 600px) { .frames-grid { grid-template-columns: repeat(2, 1fr); } .footer-grid { grid-template-columns: 1fr; gap: 2rem; } .footer-bottom { flex-direction: column; align-items: flex-start; } .project-hero-trio { width: 100%; flex-direction: column; } .project-hero-trio--partial .project-hero { flex: 1 1 auto; } }
   
     @media (max-width: 480px) {
       .btn-book { display: none; }
@@ -144,6 +147,14 @@
       </div>
       <div class="project-hero">
         <iframe src="https://player.vimeo.com/video/1205225852?h=7fb018d3c4&badge=0&autopause=0&fs=0&title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; picture-in-picture" style="position:absolute;inset:0;width:100%;height:100%;border:none;"></iframe>
+      </div>
+    </div>
+    <div class="project-hero-trio project-hero-trio--partial" style="margin-top:0.75rem;">
+      <div class="project-hero">
+        <iframe src="https://player.vimeo.com/video/1225030008?h=6afddc5d18&badge=0&autopause=0&fs=0&title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; picture-in-picture" style="position:absolute;inset:0;width:100%;height:100%;border:none;"></iframe>
+      </div>
+      <div class="project-hero">
+        <iframe src="https://player.vimeo.com/video/1225031170?h=20d04ae18d&badge=0&autopause=0&fs=0&title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; picture-in-picture" style="position:absolute;inset:0;width:100%;height:100%;border:none;"></iframe>
       </div>
     </div>
   </div>
