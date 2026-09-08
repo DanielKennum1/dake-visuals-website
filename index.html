@@ -319,23 +319,22 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.65rem;
+      align-items: flex-start;
+      gap: 0.55rem;
     }
     .service-col ul li {
       font-family: 'Lato', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
+      font-weight: 700;
       color: var(--gray);
-      padding-left: 1.1rem;
-      position: relative;
+      background: #ddd9ce;
+      padding: 0.5rem 1.15rem;
+      border-radius: 999px;
       letter-spacing: 0.01em;
+      line-height: 1.35;
+      transition: transform 0.25s cubic-bezier(0.22,1,0.36,1), background 0.25s ease;
     }
-    .service-col ul li::before {
-      content: '–';
-      position: absolute;
-      left: 0;
-      color: rgba(0,0,0,0.18);
-      font-size: 0.75rem;
-    }
+    .service-col ul li:hover { transform: translateY(-2px); background: #d0cbbd; }
 
     /* ─── WORK CAROUSEL ─── */
     .work {
@@ -459,6 +458,25 @@
       color: rgba(0,0,0,0.75);
       line-height: 1.6;
     }
+    .quote-rest { display: none; }
+    .testimonial-card.expanded .quote-rest { display: inline; animation: quoteReveal 0.45s cubic-bezier(0.22,1,0.36,1); }
+    @keyframes quoteReveal { from { opacity: 0; } to { opacity: 1; } }
+    .quote-toggle {
+      align-self: flex-start;
+      margin-top: 0.85rem;
+      padding: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      transition: opacity 0.2s;
+    }
+    .quote-toggle:hover { opacity: 0.6; }
     .testimonial-card-footer {
       display: flex;
       align-items: center;
@@ -768,7 +786,8 @@
             <p class="testimonial-card-company">Founder — ICEFIT The Box</p>
           </div>
         </div>
-        <p class="testimonial-card-quote">We have been working with Daniel for almost a year now (…) and what really sets him apart is his flexibility. He always adapts to our needs and is incredibly quick when it comes to delivering the videos he creates. On top of that, he has a great artistic eye, and the content always looks sharp and professional. He has also become a valuable partner in the planning process, helping us plan an entire month of content in advance. I can highly recommend him.</p>
+        <p class="testimonial-card-quote">We have been working with Daniel for almost a year now (…) and what really sets him apart is his flexibility. He always adapts to our needs and is incredibly quick when it comes to delivering the videos he creates.<span class="quote-rest"> On top of that, he has a great artistic eye, and the content always looks sharp and professional. He has also become a valuable partner in the planning process, helping us plan an entire month of content in advance. I can highly recommend him.</span></p>
+        <button class="quote-toggle" type="button">Show more</button>
       </div>
       <div class="testimonial-card" data-animate style="transition-delay:0.22s">
         <div class="testimonial-card-footer">
@@ -778,7 +797,8 @@
             <p class="testimonial-card-company">Co-founder — RFSPORT</p>
           </div>
         </div>
-        <p class="testimonial-card-quote">Before we started working with Daniel, we edited our YouTube videos ourselves. The problem was that we simply didn't have the time or the expertise to achieve the level of quality we were aiming for. (...) Daniel understands our brand and knows exactly the style of editing I'm looking for. (...) Communication with Daniel is easy and fast. (...) Having Daniel on the team saves us an incredible amount of time, and YouTube has now become a channel that we actively use.</p>
+        <p class="testimonial-card-quote">Before we started working with Daniel, we edited our YouTube videos ourselves. The problem was that we simply didn't have the time or the expertise to achieve the level of quality we were aiming for.<span class="quote-rest"> (...) Daniel understands our brand and knows exactly the style of editing I'm looking for. (...) Communication with Daniel is easy and fast. (...) Having Daniel on the team saves us an incredible amount of time, and YouTube has now become a channel that we actively use.</span></p>
+        <button class="quote-toggle" type="button">Show more</button>
       </div>
       <div class="testimonial-card" data-animate style="transition-delay:0.34s">
         <div class="testimonial-card-footer">
@@ -788,7 +808,8 @@
             <p class="testimonial-card-company">Founder — Evie Cosmetics</p>
           </div>
         </div>
-        <p class="testimonial-card-quote">We had a great experience working with Daniel. He was efficient, well-prepared, and exceptionally good at quickly understanding our vision, look and feel we wanted for our brand. At the same time, he was able to think outside the box and bring creative ideas to the table that elevated the final result.</p>
+        <p class="testimonial-card-quote">We had a great experience working with Daniel. He was efficient, well-prepared, and exceptionally good at quickly understanding our vision, look and feel we wanted for our brand.<span class="quote-rest"> At the same time, he was able to think outside the box and bring creative ideas to the table that elevated the final result.</span></p>
+        <button class="quote-toggle" type="button">Show more</button>
       </div>
     </div>
   </section>
@@ -803,7 +824,7 @@
     <div class="work-track">
 <div class="work-card" data-href="projects/enjoyment-of-sound.html" style="cursor:pointer">
         <div class="work-card-thumb">
-          <img loading="lazy" src="Videos/Thumbnails/enjoymnet of sound thumbnail.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <img loading="lazy" src="Videos/Thumbnails/enjoymnet of sound thumbnail.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
           <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);pointer-events:none"></div>
           <img loading="lazy" src="Videos/Thumbnails/Enjoyment of sound.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(1.35)">
           <a href="projects/enjoyment-of-sound.html" class="work-card-watch">View Project</a>
@@ -813,7 +834,7 @@
       </div>
       <div class="work-card" data-href="projects/thy-rock.html" style="cursor:pointer">
         <div class="work-card-thumb">
-          <img loading="lazy" src="Videos/Thumbnails/Thy rock cover photo.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <img loading="lazy" src="Videos/Thumbnails/Thy rock cover photo.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
           <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
           <img loading="lazy" src="Videos/THY_ROCK_26_white_transparent.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transform:scale(0.45)">
           <a href="projects/thy-rock.html" class="work-card-watch">View Project</a>
@@ -843,7 +864,7 @@
       </div>
 <div class="work-card" data-href="projects/rynkeby.html" style="cursor:pointer">
         <div class="work-card-thumb">
-          <img loading="lazy" src="Videos/Thumbnails/rynkeby cover.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;filter:brightness(0.65)">
+          <img loading="lazy" src="Videos/Thumbnails/rynkeby cover.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;filter:brightness(0.65)">
           <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);pointer-events:none"></div>
           <img loading="lazy" src="Videos/rynkeby.png" style="position:absolute;width:100%;height:auto;top:50%;left:0;transform:translateY(-50%);pointer-events:none">
           <a href="projects/rynkeby.html" class="work-card-watch">View Project</a>
@@ -969,6 +990,15 @@
         document.getElementById('heroMedia').appendChild(btn);
       }
     })();
+
+    // Testimonials: reveal the rest of the quote on demand
+    document.querySelectorAll('.quote-toggle').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var card = btn.closest('.testimonial-card');
+        var open = card.classList.toggle('expanded');
+        btn.textContent = open ? 'Show less' : 'Show more';
+      });
+    });
 
     // Mobile menu
     const hamburger = document.getElementById('hamburger');
