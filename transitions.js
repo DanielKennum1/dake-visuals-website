@@ -62,15 +62,30 @@
 
   if (isHomePage()) {
     requestAnimationFrame(function () { requestAnimationFrame(function () {
+      // Fade the wordmark up onto the cream panel rather than snapping it in
+      var FADE_MS = 1300;
       wm.style.transition = 'none';
-      wm.style.transform = 'translate(-50%,-50%)';
-      wm.style.opacity = '1';
+      wm.style.transform = 'translate(calc(-50% + 26px),-50%)';
+      wm.style.opacity = '0';
+      requestAnimationFrame(function () {
+        wm.style.transition = 'transform ' + (FADE_MS / 1000) + 's ' + ease +
+                              ', opacity ' + (FADE_MS / 1000) + 's cubic-bezier(0.4,0,0.6,1)';
+        wm.style.transform = 'translate(-50%,-50%)';
+        wm.style.opacity = '1';
+      });
 
+      var shownAt = Date.now();
       var iframe = document.querySelector('iframe[src*="vimeo.com"]');
       var exited = false;
 
       function doExit() {
         if (exited) return;
+        // Let the fade-in finish before the panel leaves
+        var waited = Date.now() - shownAt;
+        if (waited < FADE_MS + 150) {
+          setTimeout(doExit, FADE_MS + 150 - waited);
+          return;
+        }
         exited = true;
         window.removeEventListener('message', onVimeoMsg);
         exitPanel();
