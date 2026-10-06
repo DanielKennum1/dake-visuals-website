@@ -37,7 +37,7 @@
       width: min(46vw, 50vh);
       aspect-ratio: 1 / 1;
       opacity: 0; transform: scale(0.92);
-      transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+      transition: opacity 0.5s cubic-bezier(0.22,1,0.36,1), transform 0.5s cubic-bezier(0.22,1,0.36,1);
     }
     .bts-deck.in { opacity: 1; transform: scale(1); }
     .bts-deck.in.burst { transform: scale(0.75); }
@@ -45,7 +45,7 @@
       position: absolute; inset: 0;
       border-radius: 4px; overflow: hidden; background: #111;
       transform: translate(0,0) rotate(0deg) scale(1);
-      transition: transform 1.05s cubic-bezier(0.22,1,0.36,1), opacity 0.55s ease;
+      transition: transform 0.8s cubic-bezier(0.22,1,0.36,1), opacity 0.4s ease;
       will-change: transform, opacity;
       box-shadow: 0 10px 40px rgba(0,0,0,0.18);
     }
@@ -55,7 +55,7 @@
       transform: translate(var(--tx,0), var(--ty,0)) rotate(var(--r,0deg)) scale(var(--s,1));
     }
     .bts-deck.unite .bts-frame:not(.bts-frame--main) {
-      opacity: 0; transition: transform 1.05s cubic-bezier(0.22,1,0.36,1), opacity 0.4s ease 0.8s;
+      opacity: 0; transition: transform 0.8s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease 0.55s;
     }
     .bts-frame--main { z-index: 2; }
     .bts-frame img {
@@ -130,20 +130,26 @@
 
   <section class="bts-stage">
     <div class="bts-deck" id="btsDeck">
-      <div class="bts-frame" style="--tx:0.0%;--ty:-81.0%;--r:-14deg;--s:0.52;--d:0ms"><img src="billeder/compressed/bts/IMG_6396.jpg" alt=""></div>
-      <div class="bts-frame" style="--tx:35.9%;--ty:-55.1%;--r:11deg;--s:0.40;--d:45ms"><img src="billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.34.06.jpg" alt=""></div>
-      <div class="bts-frame" style="--tx:105.2%;--ty:-32.0%;--r:-8deg;--s:0.46;--d:90ms"><img src="billeder/compressed/bts/IMG_5779.jpg" alt=""></div>
-      <div class="bts-frame" style="--tx:83.5%;--ty:-3.8%;--r:16deg;--s:0.38;--d:135ms"><img src="billeder/compressed/bts/IMG_2949.jpg" alt=""></div>
-      <div class="bts-frame" style="--tx:99.7%;--ty:52.6%;--r:-18deg;--s:0.56;--d:180ms"><img src="billeder/compressed/bts/IMG_5091.jpg" alt=""></div>
-      <div class="bts-frame" style="--tx:57.1%;--ty:51.3%;--r:7deg;--s:0.42;--d:225ms"><img src="billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.35.18.jpg" alt=""></div>
-      <div class="bts-frame" style="--tx:-6.2%;--ty:77.3%;--r:-11deg;--s:0.50;--d:270ms"><img src="billeder/compressed/bts/IMG_4241.jpg" alt=""></div>
-      <div class="bts-frame" style="--tx:-31.0%;--ty:52.6%;--r:13deg;--s:0.36;--d:315ms"><img src="billeder/compressed/bts/bar-cameras.jpg" alt=""></div>
-      <div class="bts-frame" style="--tx:-111.0%;--ty:32.2%;--r:-6deg;--s:0.54;--d:360ms"><img src="billeder/compressed/bts/IMG_3361.jpg" alt=""></div>
-      <div class="bts-frame" style="--tx:-94.4%;--ty:3.2%;--r:17deg;--s:0.44;--d:405ms"><img src="billeder/compressed/bts/IMG_3008.jpg" alt=""></div>
-      <div class="bts-frame" style="--tx:-87.2%;--ty:-44.4%;--r:-15deg;--s:0.48;--d:450ms"><img src="billeder/compressed/bts/IMG_4852.jpg" alt=""></div>
-      <div class="bts-frame" style="--tx:-51.1%;--ty:-47.6%;--r:9deg;--s:0.40;--d:495ms"><img src="billeder/compressed/bts/IMG_5504.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:-9.2%;--ty:-57.3%;--r:0deg;--s:0.56;--d:0ms"><img src="billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.37.17.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:68.4%;--ty:-80.5%;--r:16deg;--s:0.41;--d:26ms"><img src="billeder/compressed/bts/IMG_6396.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:44.0%;--ty:-42.6%;--r:-10deg;--s:0.44;--d:52ms"><img src="billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.34.06.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:130.2%;--ty:-32.6%;--r:-9deg;--s:0.44;--d:78ms"><img src="billeder/compressed/bts/IMG_5779.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:87.0%;--ty:-16.3%;--r:16deg;--s:0.55;--d:104ms"><img src="billeder/compressed/bts/IMG_2949.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:118.6%;--ty:26.6%;--r:-1deg;--s:0.38;--d:130ms"><img src="billeder/compressed/bts/IMG_5091.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:89.0%;--ty:25.8%;--r:-16deg;--s:0.46;--d:156ms"><img src="billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.35.18.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:67.0%;--ty:72.8%;--r:11deg;--s:0.47;--d:182ms"><img src="billeder/compressed/bts/IMG_4241.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:36.9%;--ty:49.3%;--r:8deg;--s:0.53;--d:208ms"><img src="billeder/compressed/bts/bar-cameras.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:-22.4%;--ty:92.2%;--r:-17deg;--s:0.36;--d:234ms"><img src="billeder/compressed/bts/IMG_3361.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:-19.4%;--ty:50.7%;--r:3deg;--s:0.48;--d:260ms"><img src="billeder/compressed/bts/IMG_3008.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:-102.2%;--ty:58.0%;--r:15deg;--s:0.48;--d:286ms"><img src="billeder/compressed/bts/IMG_4852.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:-76.3%;--ty:36.2%;--r:-12deg;--s:0.50;--d:312ms"><img src="billeder/compressed/bts/IMG_5504.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:-124.2%;--ty:1.4%;--r:-7deg;--s:0.36;--d:338ms"><img src="billeder/compressed/bts/desk-setup-1.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:-94.9%;--ty:-4.3%;--r:17deg;--s:0.51;--d:364ms"><img src="billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.36.13.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:-104.5%;--ty:-55.2%;--r:-4deg;--s:0.48;--d:390ms"><img src="billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.36.55.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:-58.1%;--ty:-36.6%;--r:-14deg;--s:0.47;--d:416ms"><img src="billeder/compressed/bts/IMG_4826.jpg" alt=""></div>
+      <div class="bts-frame" style="--tx:-27.4%;--ty:-91.8%;--r:13deg;--s:0.37;--d:442ms"><img src="billeder/compressed/bts/IMG_5200.jpg" alt=""></div>
       <div class="bts-frame bts-frame--main">
-        <img id="btsA" src="billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.37.17.jpg" alt="" class="on">
+        <img id="btsA" src="billeder/compressed/bts/first-frame.jpg" alt="" class="on">
         <img id="btsB" alt="">
       </div>
     </div>
@@ -170,7 +176,7 @@
 
     // ── BTS deck: one frame → burst → unite → cycle ──
     (function () {
-      var PHOTOS = ["billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.37.17.jpg", "billeder/compressed/bts/IMG_6396.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.34.06.jpg", "billeder/compressed/bts/IMG_5779.jpg", "billeder/compressed/bts/IMG_2949.jpg", "billeder/compressed/bts/IMG_5091.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.35.18.jpg", "billeder/compressed/bts/IMG_4241.jpg", "billeder/compressed/bts/bar-cameras.jpg", "billeder/compressed/bts/IMG_3361.jpg", "billeder/compressed/bts/IMG_3008.jpg", "billeder/compressed/bts/IMG_4852.jpg", "billeder/compressed/bts/IMG_5504.jpg", "billeder/compressed/bts/desk-setup-1.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.36.13.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.36.55.jpg", "billeder/compressed/bts/IMG_4826.jpg", "billeder/compressed/bts/IMG_5200.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.38.18.jpg", "billeder/compressed/bts/IMG_5667.jpg", "billeder/compressed/bts/IMG_5094.jpg", "billeder/compressed/bts/IMG_4986.jpg", "billeder/compressed/bts/IMG_3484.jpg", "billeder/compressed/bts/IMG_7231.jpg", "billeder/compressed/bts/IMG_6161.jpg", "billeder/compressed/bts/IMG_4250.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.34.56.jpg", "billeder/compressed/bts/DSCF3240.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.35.44.jpg", "billeder/compressed/bts/DSCF2013.jpg", "billeder/compressed/bts/IMG_1397.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.37.44.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.33.11.jpg", "billeder/compressed/bts/IMG_5168.jpg", "billeder/compressed/bts/IMG_4465.jpg"];
+      var PHOTOS = ["billeder/compressed/bts/first-frame.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.37.17.jpg", "billeder/compressed/bts/IMG_6396.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.34.06.jpg", "billeder/compressed/bts/IMG_5779.jpg", "billeder/compressed/bts/IMG_2949.jpg", "billeder/compressed/bts/IMG_5091.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.35.18.jpg", "billeder/compressed/bts/IMG_4241.jpg", "billeder/compressed/bts/bar-cameras.jpg", "billeder/compressed/bts/IMG_3361.jpg", "billeder/compressed/bts/IMG_3008.jpg", "billeder/compressed/bts/IMG_4852.jpg", "billeder/compressed/bts/IMG_5504.jpg", "billeder/compressed/bts/desk-setup-1.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.36.13.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.36.55.jpg", "billeder/compressed/bts/IMG_4826.jpg", "billeder/compressed/bts/IMG_5200.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.38.18.jpg", "billeder/compressed/bts/IMG_5667.jpg", "billeder/compressed/bts/IMG_5094.jpg", "billeder/compressed/bts/IMG_4986.jpg", "billeder/compressed/bts/IMG_3484.jpg", "billeder/compressed/bts/IMG_7231.jpg", "billeder/compressed/bts/IMG_6161.jpg", "billeder/compressed/bts/IMG_4250.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.34.56.jpg", "billeder/compressed/bts/DSCF3240.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.35.44.jpg", "billeder/compressed/bts/DSCF2013.jpg", "billeder/compressed/bts/IMG_1397.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.37.44.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.33.11.jpg", "billeder/compressed/bts/IMG_5168.jpg", "billeder/compressed/bts/IMG_4465.jpg"];
 
       var deck = document.getElementById('btsDeck');
       var a = document.getElementById('btsA');
@@ -178,8 +184,10 @@
       if (!deck || !a || !b) return;
 
       var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var EXTRAS = 12;                 // photos already shown in the burst
-      var front = a, back = b, i = EXTRAS;  // so the unite reveals an unseen one
+      // burst frames hold PHOTOS[1..EXTRAS]; start the counter there so the
+      // unite lands on a photo the burst never showed
+      var EXTRAS = deck.querySelectorAll('.bts-frame:not(.bts-frame--main)').length;
+      var front = a, back = b, i = EXTRAS;
 
       // Swap the visible photo once per second
       function cycle() {
@@ -210,18 +218,18 @@
       }
 
       requestAnimationFrame(function () {
-        setTimeout(function () { deck.classList.add('in'); }, 150);
-        setTimeout(function () { deck.classList.add('burst'); }, 1100);
+        setTimeout(function () { deck.classList.add('in'); }, 100);
+        setTimeout(function () { deck.classList.add('burst'); }, 700);
         setTimeout(function () {
           deck.classList.remove('burst');
           deck.classList.add('unite');
-        }, 2600);
+        }, 1950);
         // the frames merge into a photo you have not seen yet
-        setTimeout(cycle, 3150);
+        setTimeout(cycle, 2350);
         setTimeout(function () {
           setInterval(cycle, 1000);
           preload(EXTRAS + 2);
-        }, 4150);
+        }, 3100);
       });
     })();
   </script>
