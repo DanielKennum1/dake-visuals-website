@@ -176,7 +176,7 @@
 
     // ── BTS deck: one frame → burst → unite → cycle ──
     (function () {
-      var PHOTOS = ["billeder/compressed/bts/first-frame.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.37.17.jpg", "billeder/compressed/bts/IMG_6396.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.34.06.jpg", "billeder/compressed/bts/IMG_5779.jpg", "billeder/compressed/bts/IMG_2949.jpg", "billeder/compressed/bts/IMG_5091.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.35.18.jpg", "billeder/compressed/bts/IMG_4241.jpg", "billeder/compressed/bts/bar-cameras.jpg", "billeder/compressed/bts/IMG_3361.jpg", "billeder/compressed/bts/IMG_3008.jpg", "billeder/compressed/bts/IMG_4852.jpg", "billeder/compressed/bts/IMG_5504.jpg", "billeder/compressed/bts/desk-setup-1.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.36.13.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.36.55.jpg", "billeder/compressed/bts/IMG_4826.jpg", "billeder/compressed/bts/IMG_5200.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.38.18.jpg", "billeder/compressed/bts/IMG_5667.jpg", "billeder/compressed/bts/IMG_5094.jpg", "billeder/compressed/bts/IMG_4986.jpg", "billeder/compressed/bts/IMG_3484.jpg", "billeder/compressed/bts/IMG_7231.jpg", "billeder/compressed/bts/IMG_6161.jpg", "billeder/compressed/bts/IMG_4250.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.34.56.jpg", "billeder/compressed/bts/DSCF3240.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.35.44.jpg", "billeder/compressed/bts/DSCF2013.jpg", "billeder/compressed/bts/IMG_1397.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.37.44.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.33.11.jpg", "billeder/compressed/bts/IMG_5168.jpg", "billeder/compressed/bts/IMG_4465.jpg"];
+      var PHOTOS = ["billeder/compressed/bts/first-frame.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.37.17.jpg", "billeder/compressed/bts/IMG_6396.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.34.06.jpg", "billeder/compressed/bts/IMG_5779.jpg", "billeder/compressed/bts/IMG_2949.jpg", "billeder/compressed/bts/IMG_5091.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.35.18.jpg", "billeder/compressed/bts/IMG_4241.jpg", "billeder/compressed/bts/bar-cameras.jpg", "billeder/compressed/bts/IMG_3361.jpg", "billeder/compressed/bts/IMG_3008.jpg", "billeder/compressed/bts/IMG_4852.jpg", "billeder/compressed/bts/IMG_5504.jpg", "billeder/compressed/bts/desk-setup-1.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.36.13.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.36.55.jpg", "billeder/compressed/bts/IMG_4826.jpg", "billeder/compressed/bts/IMG_5200.jpg", "billeder/compressed/bts/IMG_5667.jpg", "billeder/compressed/bts/IMG_5094.jpg", "billeder/compressed/bts/IMG_4986.jpg", "billeder/compressed/bts/IMG_3484.jpg", "billeder/compressed/bts/IMG_7231.jpg", "billeder/compressed/bts/IMG_6161.jpg", "billeder/compressed/bts/IMG_4250.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.34.56.jpg", "billeder/compressed/bts/DSCF3240.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.35.44.jpg", "billeder/compressed/bts/DSCF2013.jpg", "billeder/compressed/bts/IMG_1397.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.37.44.jpg", "billeder/compressed/bts/Skærmbillede 2026-06-04 kl. 18.33.11.jpg", "billeder/compressed/bts/IMG_5168.jpg", "billeder/compressed/bts/IMG_4465.jpg"];
 
       var deck = document.getElementById('btsDeck');
       var a = document.getElementById('btsA');
@@ -202,33 +202,37 @@
         else back.onload = show;
       }
 
-      // Load the rest in the background so the loop never waits on a fetch
-      function preload(n) {
-        if (n >= PHOTOS.length) return;
-        var im = new Image();
-        im.onload = im.onerror = function () { preload(n + 1); };
-        im.src = PHOTOS[n];
+      // Fetch every photo up front so no frame pops in blank mid-animation.
+      // Capped, so a slow connection delays the burst rather than blocking it.
+      function preloadAll(done) {
+        var left = PHOTOS.length, fired = false;
+        function finish() { if (!fired) { fired = true; done(); } }
+        function tick() { if (--left <= 0) finish(); }
+        PHOTOS.forEach(function (src) {
+          var im = new Image();
+          im.onload = im.onerror = tick;
+          im.src = src;
+        });
+        setTimeout(finish, 8000);
       }
 
       if (reduced) {
         deck.classList.add('in');
-        setInterval(cycle, 1000);
-        preload(EXTRAS + 2);
+        preloadAll(function () { setInterval(cycle, 1000); });
         return;
       }
 
-      requestAnimationFrame(function () {
-        setTimeout(function () { deck.classList.add('in'); }, 100);
-        setTimeout(function () { deck.classList.add('burst'); }, 700);
+      // show the opening frame straight away, then wait for the full set
+      setTimeout(function () { deck.classList.add('in'); }, 100);
+
+      preloadAll(function () {
+        setTimeout(function () { deck.classList.add('burst'); }, 250);
         setTimeout(function () {
           deck.classList.remove('burst');
           deck.classList.add('unite');
-        }, 1950);
+        }, 1500);
         // the frames merge back into the opening photo, then the loop takes over
-        setTimeout(function () {
-          setInterval(cycle, 1000);
-          preload(EXTRAS + 2);
-        }, 2750);
+        setTimeout(function () { setInterval(cycle, 1000); }, 2300);
       });
     })();
   </script>
