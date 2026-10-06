@@ -185,7 +185,7 @@
 
       var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       // burst frames hold PHOTOS[1..EXTRAS]; start the counter there so the
-      // unite lands on a photo the burst never showed
+      // first photo after the opening frame is one the burst never showed
       var EXTRAS = deck.querySelectorAll('.bts-frame:not(.bts-frame--main)').length;
       var front = a, back = b, i = EXTRAS;
 
@@ -224,12 +224,11 @@
           deck.classList.remove('burst');
           deck.classList.add('unite');
         }, 1950);
-        // the frames merge into a photo you have not seen yet
-        setTimeout(cycle, 2350);
+        // the frames merge back into the opening photo, then the loop takes over
         setTimeout(function () {
           setInterval(cycle, 1000);
           preload(EXTRAS + 2);
-        }, 3100);
+        }, 2750);
       });
     })();
   </script>
