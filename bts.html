@@ -187,6 +187,20 @@
       // burst frames hold PHOTOS[1..EXTRAS]; start the counter there so the
       // first photo after the opening frame is one the burst never showed
       var EXTRAS = deck.querySelectorAll('.bts-frame:not(.bts-frame--main)').length;
+
+      // Shuffle every photo except the opening frame, so the burst and the
+      // loop come out in a different order on each visit.
+      (function () {
+        var rest = PHOTOS.slice(1);
+        for (var j = rest.length - 1; j > 0; j--) {
+          var k = Math.floor(Math.random() * (j + 1));
+          var t = rest[j]; rest[j] = rest[k]; rest[k] = t;
+        }
+        PHOTOS = [PHOTOS[0]].concat(rest);
+        var ex = deck.querySelectorAll('.bts-frame:not(.bts-frame--main) img');
+        for (var n = 0; n < ex.length; n++) ex[n].src = PHOTOS[n + 1];
+      })();
+
       var front = a, back = b, i = EXTRAS;
 
       // Swap the visible photo once per second
