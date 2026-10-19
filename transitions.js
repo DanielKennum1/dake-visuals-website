@@ -194,8 +194,8 @@
     '.pt-panel{position:fixed;inset:0;z-index:99999;background:#f7efdb;' +
     'display:flex;align-items:center;justify-content:center;pointer-events:none;' +
     'transform:translateX(100%);will-change:transform}' +
-    '.pt-panel b{font-family:Inter,sans-serif;font-weight:900;font-style:italic;' +
-    'text-transform:uppercase;font-size:clamp(1.6rem,7vw,4.5rem);letter-spacing:-0.02em;' +
+    '.pt-panel b{font-family:Lato,sans-serif;font-weight:700;font-style:normal;' +
+    'text-transform:uppercase;font-size:clamp(1.6rem,7vw,4.5rem);letter-spacing:0.12em;' +
     'color:#000;line-height:1}';
   document.head.appendChild(style);
 
