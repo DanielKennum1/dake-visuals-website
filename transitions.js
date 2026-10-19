@@ -202,9 +202,23 @@
     'display:flex;align-items:center;justify-content:center;pointer-events:none;' +
     'transform:translateX(100%);will-change:transform}' +
     '.pt-panel b{font-family:Inter,sans-serif;font-weight:900;font-style:normal;' +
-    'text-transform:uppercase;font-size:clamp(1.6rem,7vw,4.5rem);letter-spacing:-0.02em;' +
-    'color:#000;line-height:1}';
+    'text-transform:uppercase;font-size:clamp(1.3rem,5.5vw,3.4rem);letter-spacing:-0.02em;' +
+    'color:#000;line-height:1;opacity:0;transition:opacity 0.18s ease}';
   document.head.appendChild(style);
+
+  // The name is set in Inter, which Google Fonts serves with display=swap.
+  // Painted immediately it would show in a fallback face and then jump when
+  // Inter arrives, so hold it until the real font is ready.
+  function revealWhenFontReady(b) {
+    var shown = false;
+    function show() { if (!shown) { shown = true; b.style.opacity = '1'; } }
+    try {
+      if (document.fonts && document.fonts.load) {
+        document.fonts.load('900 1em Inter').then(show, show);
+      } else { show(); }
+    } catch (e) { show(); }
+    setTimeout(show, 700);          // never leave the panel wordless
+  }
 
   function panelWith(name) {
     var p = document.createElement('div');
@@ -213,6 +227,7 @@
     b.textContent = name;
     p.appendChild(b);
     document.body.appendChild(p);
+    revealWhenFontReady(b);
     return p;
   }
 
