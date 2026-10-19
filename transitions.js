@@ -238,14 +238,20 @@
     setTimeout(show, 700);          // never leave the panel wordless
   }
 
+  // `name` is only passed on the way out. The pre-paint cover on the next page
+  // cannot draw the word (its fonts are not parsed that early), so re-adding it
+  // after the document loads made the word vanish and pop back across the
+  // navigation. The arriving panel is plain cream and simply wipes away.
   function panelWith(name) {
     var p = document.createElement('div');
     p.className = 'pt-panel';
-    var b = document.createElement('b');
-    b.textContent = name;
-    p.appendChild(b);
+    if (name) {
+      var b = document.createElement('b');
+      b.textContent = name;
+      p.appendChild(b);
+      revealWhenFontReady(b);
+    }
     document.body.appendChild(p);
-    revealWhenFontReady(b);
     return p;
   }
 
@@ -255,7 +261,7 @@
 
   var here = pathOf(location.href);
   if (incoming && here !== '/' && here !== '/index') {
-    var panel = panelWith(incoming);
+    var panel = panelWith(null);   // wordless: the word was shown on the way out
     panel.style.transform = 'translateX(0)';           // already covering
     document.documentElement.className =
       document.documentElement.className.replace(/\s*pt-cover/, '');
