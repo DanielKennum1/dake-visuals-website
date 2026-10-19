@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>/* page transition: raise the cover before anything paints */
+  (function(){try{if(sessionStorage.getItem('pt-to')){var h=document.documentElement;h.className+=' pt-arrive';var s=document.createElement('style');s.textContent='html.pt-arrive::before{content:"";position:fixed;inset:0;background:#f7efdb;z-index:99998}';document.head.appendChild(s);}}catch(e){}})();
+  </script>
   <title>BTS — DAKE Visuals</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

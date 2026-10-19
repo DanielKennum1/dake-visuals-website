@@ -169,3 +169,110 @@
     else pill.style.opacity = '0';
   });
 })();
+
+// ── Page transition: a cream panel carrying the destination name ──
+// Leaves by sweeping in from the right, arrives by sweeping off to the left,
+// and holds on the new page until its content has actually loaded.
+(function () {
+  var NAMES = {
+    '/work': 'Work', '/bts': 'BTS', '/about': 'About', '/contact': 'Contact'
+  };
+  var ease = 'cubic-bezier(0.76,0,0.24,1)';
+  var MIN_COVER = 420;     // never flash away instantly
+  var MAX_COVER = 4500;    // never trap the visitor behind a stalled asset
+
+  function pathOf(href) {
+    try {
+      var u = new URL(href, location.href);
+      if (u.origin !== location.origin) return null;
+      return u.pathname.replace(/\/+$/, '').replace(/\.html$/, '') || '/';
+    } catch (e) { return null; }
+  }
+
+  var style = document.createElement('style');
+  style.textContent =
+    '.pt-panel{position:fixed;inset:0;z-index:99999;background:#f7efdb;' +
+    'display:flex;align-items:center;justify-content:center;pointer-events:none;' +
+    'transform:translateX(100%);will-change:transform}' +
+    '.pt-panel b{font-family:Inter,sans-serif;font-weight:900;font-style:italic;' +
+    'text-transform:uppercase;font-size:clamp(3rem,16vw,11rem);letter-spacing:-0.02em;' +
+    'color:#000;line-height:1}';
+  document.head.appendChild(style);
+
+  function panelWith(name) {
+    var p = document.createElement('div');
+    p.className = 'pt-panel';
+    var b = document.createElement('b');
+    b.textContent = name;
+    p.appendChild(b);
+    document.body.appendChild(p);
+    return p;
+  }
+
+  // ---------- arriving ----------
+  var incoming = null;
+  try { incoming = sessionStorage.getItem('pt-to'); sessionStorage.removeItem('pt-to'); } catch (e) {}
+
+  var here = pathOf(location.href);
+  if (incoming && here !== '/' && here !== '/index') {
+    var panel = panelWith(incoming);
+    panel.style.transform = 'translateX(0)';           // already covering
+    document.documentElement.className =
+      document.documentElement.className.replace(/\s*pt-arrive/, '');
+
+    var started = Date.now(), lifted = false;
+    function lift() {
+      if (lifted) return;
+      lifted = true;
+      var wait = Math.max(0, MIN_COVER - (Date.now() - started));
+      setTimeout(function () {
+        panel.style.transition = 'transform 0.62s ' + ease;
+        panel.style.transform = 'translateX(-100%)';
+        setTimeout(function () { if (panel.parentNode) panel.parentNode.removeChild(panel); }, 700);
+      }, wait);
+    }
+
+    // wait for the images this page has actually put in the DOM
+    var pending = [].slice.call(document.images).filter(function (i) { return !i.complete; });
+    var left = pending.length;
+    if (!left) {
+      if (document.readyState === 'complete') lift();
+      else window.addEventListener('load', lift);
+    } else {
+      pending.forEach(function (img) {
+        function tick() { if (--left <= 0) lift(); }
+        img.addEventListener('load', tick);
+        img.addEventListener('error', tick);
+      });
+    }
+    setTimeout(lift, MAX_COVER);
+  } else if (document.documentElement.className.indexOf('pt-arrive') > -1) {
+    document.documentElement.className =
+      document.documentElement.className.replace(/\s*pt-arrive/, '');
+  }
+
+  // ---------- leaving ----------
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest ? e.target.closest('a') : null;
+    if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
+
+    var href = a.getAttribute('href');
+    if (!href || href.charAt(0) === '#' || /^(mailto|tel):/i.test(href)) return;
+
+    var dest = pathOf(a.href);
+    if (!dest || dest === here) return;
+    var name = NAMES[dest];
+    if (!name) return;                                  // only the named nav pages
+
+    e.preventDefault();
+    try { sessionStorage.setItem('pt-to', name); } catch (err) {}
+
+    var out = panelWith(name);
+    requestAnimationFrame(function () {
+      out.style.transition = 'transform 0.62s ' + ease;
+      out.style.transform = 'translateX(0)';
+    });
+    setTimeout(function () { location.href = a.href; }, 640);
+  });
+})();
