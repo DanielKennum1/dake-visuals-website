@@ -178,7 +178,7 @@
     '/work': 'Work', '/bts': 'BTS', '/about': 'About', '/contact': 'Contact'
   };
   var ease = 'cubic-bezier(0.76,0,0.24,1)';
-  var MIN_COVER = 420;     // never flash away instantly
+  var MIN_COVER = 260;     // never flash away instantly
   var MAX_COVER = 4500;    // never trap the visitor behind a stalled asset
 
   function pathOf(href) {
@@ -195,7 +195,7 @@
     'display:flex;align-items:center;justify-content:center;pointer-events:none;' +
     'transform:translateX(100%);will-change:transform}' +
     '.pt-panel b{font-family:Inter,sans-serif;font-weight:900;font-style:italic;' +
-    'text-transform:uppercase;font-size:clamp(3rem,16vw,11rem);letter-spacing:-0.02em;' +
+    'text-transform:uppercase;font-size:clamp(1.6rem,7vw,4.5rem);letter-spacing:-0.02em;' +
     'color:#000;line-height:1}';
   document.head.appendChild(style);
 
@@ -226,9 +226,9 @@
       lifted = true;
       var wait = Math.max(0, MIN_COVER - (Date.now() - started));
       setTimeout(function () {
-        panel.style.transition = 'transform 0.62s ' + ease;
+        panel.style.transition = 'transform 0.42s ' + ease;
         panel.style.transform = 'translateX(-100%)';
-        setTimeout(function () { if (panel.parentNode) panel.parentNode.removeChild(panel); }, 700);
+        setTimeout(function () { if (panel.parentNode) panel.parentNode.removeChild(panel); }, 480);
       }, wait);
     }
 
@@ -270,9 +270,9 @@
 
     var out = panelWith(name);
     requestAnimationFrame(function () {
-      out.style.transition = 'transform 0.62s ' + ease;
+      out.style.transition = 'transform 0.42s ' + ease;
       out.style.transform = 'translateX(0)';
     });
-    setTimeout(function () { location.href = a.href; }, 640);
+    setTimeout(function () { location.href = a.href; }, 440);
   });
 })();
