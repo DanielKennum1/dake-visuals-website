@@ -565,7 +565,7 @@
       padding: 0.5rem;
     }
     .cta-inner {
-      background: var(--black);
+      background: var(--cream);
       border-radius: 20px;
       min-height: 40vh;
       display: flex;
@@ -578,22 +578,17 @@
       position: relative;
       overflow: hidden;
     }
-    /* cursor-tracked glow sitting behind the heading */
-    .cta-glow {
-      position: absolute; top: 0; left: 0;
-      width: 440px; height: 440px; margin: -220px 0 0 -220px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(53,82,157,0.85), rgba(53,82,157,0) 68%);
-      filter: blur(30px);
-      opacity: 0; pointer-events: none; z-index: 0;
-      transition: opacity 0.55s ease;
+    /* an identical copy of the headline in blue, revealed through a circle
+       that tracks the cursor */
+    .cta-section h2 .cta-ink, .cta-section h2 .cta-ink strong { color: var(--blue); }
+    .cta-ink {
+      position: absolute; inset: 0;
+      pointer-events: none;
+      clip-path: circle(0px at 50% 50%);
+      will-change: clip-path;
     }
-    .cta-inner.cta-live .cta-glow { opacity: 1; }
-    .cta-char {
-      display: inline-block; will-change: transform;
-      transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
-    }
-    @media (prefers-reduced-motion: reduce) { .cta-char { transition: none; } }
+    .cta-ink.cta-ease { transition: clip-path 0.5s cubic-bezier(0.22,1,0.36,1); }
+    @media (prefers-reduced-motion: reduce) { .cta-ink { display: none; } }
     .cta-inner > h2, .cta-inner > a { position: relative; z-index: 1; }
     .cta-section h2 {
       font-family: 'Tinos', serif;
@@ -601,13 +596,13 @@
       font-size: clamp(1.6rem, 3.5vw, 2.8rem);
       letter-spacing: -0.01em;
       line-height: 1.15;
-      color: var(--white);
+      color: var(--black);
     }
     .cta-section h2 strong {
       font-family: 'Inter', sans-serif;
       font-weight: 900;
       font-style: italic;
-      color: var(--white);
+      color: var(--black);
       letter-spacing: -0.03em;
     }
     .btn-cta {
@@ -617,13 +612,13 @@
       text-decoration: none;
       padding: 1.1rem 3.2rem;
       background: transparent;
-      color: var(--white);
+      color: var(--black);
       border-radius: 999px;
-      border: 1.5px solid rgba(255,255,255,0.4);
+      border: 1.5px solid rgba(0,0,0,0.4);
       transition: border-color 0.35s, background 0.35s, color 0.35s;
       letter-spacing: 0.02em;
     }
-    .btn-cta:hover { border-color: var(--white); background: var(--white); color: var(--black); }
+    .btn-cta:hover { border-color: var(--black); background: var(--black); color: var(--cream); }
 
     /* ─── FOOTER ─── */
     footer {
@@ -1056,7 +1051,7 @@
       .then(d => { document.getElementById('heroMedia').style.backgroundImage = 'url(' + d.thumbnail_url.replace(/\d+x\d+/, '1280x720') + ')'; })
       .catch(() => {});
 
-    // ── CTA: letters lift away from the cursor, glow follows it ──
+    // ── CTA: a blue copy of the headline revealed through a circle at the cursor ──
     (function () {
       var inner = document.querySelector('.cta-inner');
       var h2 = inner && inner.querySelector('h2');
@@ -1064,72 +1059,40 @@
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       if (!window.matchMedia('(hover: hover)').matches) return;   // skip on touch
 
-      // wrap each visible character so it can move on its own
-      function split(node) {
-        var out = [];
-        [].slice.call(node.childNodes).forEach(function (n) {
-          if (n.nodeType === 3) {
-            var frag = document.createDocumentFragment();
-            n.nodeValue.split('').forEach(function (ch) {
-              if (ch === ' ') { frag.appendChild(document.createTextNode(' ')); return; }
-              var sp = document.createElement('span');
-              sp.className = 'cta-char';
-              sp.textContent = ch;
-              frag.appendChild(sp);
-              out.push(sp);
-            });
-            node.replaceChild(frag, n);
-          } else if (n.nodeType === 1) {
-            out = out.concat(split(n));
-          }
-        });
-        return out;
-      }
-      var chars = split(h2);
-      if (!chars.length) return;
+      var R = 130;
 
-      var glow = document.createElement('div');
-      glow.className = 'cta-glow';
-      inner.insertBefore(glow, inner.firstChild);
+      // exact duplicate, stacked on top so the two layers register perfectly
+      var ink = document.createElement('span');
+      ink.className = 'cta-ink';
+      ink.setAttribute('aria-hidden', 'true');
+      ink.innerHTML = h2.innerHTML;
+      h2.style.position = 'relative';
+      h2.appendChild(ink);
 
-      // cache each character's centre relative to the panel (scroll-independent)
-      var pos = [];
-      function measure() {
-        var box = inner.getBoundingClientRect();
-        pos = chars.map(function (c) {
-          var r = c.getBoundingClientRect();
-          return { x: r.left - box.left + r.width / 2, y: r.top - box.top + r.height / 2 };
-        });
-      }
-      measure();
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
-      window.addEventListener('resize', measure);
-
-      var RADIUS = 160, mx = 0, my = 0, frame = null;
-      function apply() {
+      var x = 0, y = 0, frame = null;
+      function draw() {
         frame = null;
-        for (var i = 0; i < chars.length; i++) {
-          var dx = pos[i].x - mx, dy = pos[i].y - my;
-          var f = 1 - Math.sqrt(dx * dx + dy * dy) / RADIUS;
-          if (f < 0) f = 0;
-          f = f * f * (3 - 2 * f);                                  // smoothstep
-          var boost = chars[i].parentNode.tagName === 'STRONG' ? 1.55 : 1;
-          chars[i].style.transform =
-            'translateY(' + (-17 * f * boost).toFixed(2) + 'px) scale(' + (1 + 0.13 * f * boost).toFixed(3) + ')';
-        }
-        glow.style.transform = 'translate(' + mx + 'px,' + my + 'px)';
+        ink.style.clipPath = 'circle(' + R + 'px at ' + x.toFixed(1) + 'px ' + y.toFixed(1) + 'px)';
       }
+
+      inner.addEventListener('pointerenter', function (e) {
+        var b = h2.getBoundingClientRect();
+        x = e.clientX - b.left; y = e.clientY - b.top;
+        ink.classList.add('cta-ease');            // grow the circle in
+        ink.style.clipPath = 'circle(0px at ' + x.toFixed(1) + 'px ' + y.toFixed(1) + 'px)';
+        requestAnimationFrame(draw);
+      });
 
       inner.addEventListener('pointermove', function (e) {
-        var box = inner.getBoundingClientRect();
-        mx = e.clientX - box.left;
-        my = e.clientY - box.top;
-        if (!inner.classList.contains('cta-live')) { inner.classList.add('cta-live'); measure(); }
-        if (!frame) frame = requestAnimationFrame(apply);
+        var b = h2.getBoundingClientRect();
+        x = e.clientX - b.left; y = e.clientY - b.top;
+        ink.classList.remove('cta-ease');         // track the cursor exactly
+        if (!frame) frame = requestAnimationFrame(draw);
       });
+
       inner.addEventListener('pointerleave', function () {
-        inner.classList.remove('cta-live');
-        for (var i = 0; i < chars.length; i++) chars[i].style.transform = '';
+        ink.classList.add('cta-ease');            // shrink it away
+        ink.style.clipPath = 'circle(0px at ' + x.toFixed(1) + 'px ' + y.toFixed(1) + 'px)';
       });
     })();
 
