@@ -207,17 +207,29 @@
 
       var front = a, back = b, i = EXTRAS;
 
-      // Swap the visible photo once per second
+      // Swap the visible photo once per second.
+      // Each tick gets its own id: a load that resolves late can no longer
+      // swap the layers behind a newer tick's back, which previously left
+      // front/back crossed and the picture stuck on one frame.
+      var tick = 0;
       function cycle() {
         i = (i + 1) % PHOTOS.length;
-        back.src = PHOTOS[i];
+        var mine = ++tick;
+        var img = back;
+        var swapped = false;
         function show() {
-          back.classList.add('on');
+          if (swapped || mine !== tick) return;   // superseded, or already done
+          swapped = true;
+          img.classList.add('on');
           front.classList.remove('on');
-          var t = front; front = back; back = t;
+          var t = front; front = img; back = t;
         }
-        if (back.complete && back.naturalWidth) show();
-        else back.onload = show;
+        img.onload = null;
+        img.onerror = null;
+        img.onload = show;
+        img.onerror = function () { /* skip it; the next tick carries on */ };
+        img.src = PHOTOS[i];
+        if (img.complete && img.naturalWidth) show();
       }
 
       // Fetch every photo up front so no frame pops in blank mid-animation.

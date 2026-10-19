@@ -196,6 +196,8 @@
     } catch (e) { return null; }
   }
 
+  try { if (document.fonts && document.fonts.load) document.fonts.load('900 1em Inter'); } catch (e) {}
+
   var style = document.createElement('style');
   style.textContent =
     '.pt-panel{position:fixed;inset:0;z-index:99999;background:#f7efdb;' +
@@ -210,11 +212,27 @@
   // Painted immediately it would show in a fallback face and then jump when
   // Inter arrives, so hold it until the real font is ready.
   function revealWhenFontReady(b) {
+    var FONT = '900 1em Inter';
+    // fonts.check() is synchronous: when Inter is already there (any navigation
+    // after the first) paint the name with the panel, with no fade at all —
+    // fonts.load() resolves a frame or two late, and that late fade reads as a blip.
+    try {
+      if (document.fonts && document.fonts.check && document.fonts.check(FONT)) {
+        b.style.transition = 'none';
+        b.style.opacity = '1';
+        return;
+      }
+    } catch (e) {}
     var shown = false;
-    function show() { if (!shown) { shown = true; b.style.opacity = '1'; } }
+    function show() {
+      if (shown) return;
+      shown = true;
+      b.style.transition = 'none';   // a few ms from cache; a fade here reads as a blip
+      b.style.opacity = '1';
+    }
     try {
       if (document.fonts && document.fonts.load) {
-        document.fonts.load('900 1em Inter').then(show, show);
+        document.fonts.load(FONT).then(show, show);
       } else { show(); }
     } catch (e) { show(); }
     setTimeout(show, 700);          // never leave the panel wordless
