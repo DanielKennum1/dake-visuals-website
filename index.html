@@ -584,16 +584,16 @@
     .cta-ink {
       position: absolute; inset: 0;
       pointer-events: none;
-      clip-path: circle(0px at 50% 50%);
-      will-change: clip-path;
+      -webkit-mask-image: radial-gradient(circle 0px at 50% 50%, #000 58%, rgba(0,0,0,0) 100%);
+      mask-image: radial-gradient(circle 0px at 50% 50%, #000 58%, rgba(0,0,0,0) 100%);
+      will-change: -webkit-mask-image, mask-image;
     }
-    .cta-ink.cta-ease { transition: clip-path 0.5s cubic-bezier(0.22,1,0.36,1); }
     @media (prefers-reduced-motion: reduce) { .cta-ink { display: none; } }
     .cta-inner > h2, .cta-inner > a { position: relative; z-index: 1; }
     .cta-section h2 {
       font-family: 'Tinos', serif;
       font-weight: 400;
-      font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+      font-size: clamp(1.8rem, 4.2vw, 3.4rem);
       letter-spacing: -0.01em;
       line-height: 1.15;
       color: var(--black);
@@ -615,10 +615,26 @@
       color: var(--black);
       border-radius: 999px;
       border: 1.5px solid rgba(0,0,0,0.4);
-      transition: border-color 0.35s, background 0.35s, color 0.35s;
+      transition: transform 0.5s cubic-bezier(0.22,1,0.36,1),
+                  border-color 0.35s, color 0.35s;
       letter-spacing: 0.02em;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      will-change: transform;
     }
-    .btn-cta:hover { border-color: var(--black); background: var(--black); color: var(--cream); }
+    /* blue flood that opens from wherever the cursor entered the pill */
+    .btn-cta-fill {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--blue);
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.55s cubic-bezier(0.22,1,0.36,1);
+      z-index: -1;
+      pointer-events: none;
+    }
+    .btn-cta:hover .btn-cta-fill { transform: translate(-50%, -50%) scale(1); }
+    .btn-cta:hover { border-color: var(--blue); color: var(--cream); }
 
     /* ─── FOOTER ─── */
     footer {
@@ -1051,7 +1067,8 @@
       .then(d => { document.getElementById('heroMedia').style.backgroundImage = 'url(' + d.thumbnail_url.replace(/\d+x\d+/, '1280x720') + ')'; })
       .catch(() => {});
 
-    // ── CTA: a blue copy of the headline revealed through a circle at the cursor ──
+    // ── CTA: a blue copy of the headline revealed through a soft pool that
+    //    trails the cursor ──
     (function () {
       var inner = document.querySelector('.cta-inner');
       var h2 = inner && inner.querySelector('h2');
@@ -1059,7 +1076,7 @@
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       if (!window.matchMedia('(hover: hover)').matches) return;   // skip on touch
 
-      var R = 130;
+      var RADIUS = 210;
 
       // exact duplicate, stacked on top so the two layers register perfectly
       var ink = document.createElement('span');
@@ -1069,31 +1086,77 @@
       h2.style.position = 'relative';
       h2.appendChild(ink);
 
-      var x = 0, y = 0, frame = null;
-      function draw() {
-        frame = null;
-        ink.style.clipPath = 'circle(' + R + 'px at ' + x.toFixed(1) + 'px ' + y.toFixed(1) + 'px)';
+      var tx = 0, ty = 0, tr = 0;      // where the pool is heading
+      var x = 0, y = 0, r = 0;         // where it actually is
+      var running = false;
+
+      function paint() {
+        var m = 'radial-gradient(circle ' + r.toFixed(1) + 'px at ' +
+                x.toFixed(1) + 'px ' + y.toFixed(1) + 'px, #000 58%, rgba(0,0,0,0) 100%)';
+        ink.style.webkitMaskImage = m;
+        ink.style.maskImage = m;
+      }
+
+      function loop() {
+        x += (tx - x) * 0.17;          // trail the cursor
+        y += (ty - y) * 0.17;
+        r += (tr - r) * 0.12;          // and ease the size
+        paint();
+        if (Math.abs(tx - x) > 0.4 || Math.abs(ty - y) > 0.4 || Math.abs(tr - r) > 0.4) {
+          requestAnimationFrame(loop);
+        } else {
+          x = tx; y = ty; r = tr; paint();
+          running = false;
+        }
+      }
+      function kick() { if (!running) { running = true; requestAnimationFrame(loop); } }
+
+      function at(e) {
+        var b = h2.getBoundingClientRect();
+        tx = e.clientX - b.left;
+        ty = e.clientY - b.top;
       }
 
       inner.addEventListener('pointerenter', function (e) {
-        var b = h2.getBoundingClientRect();
-        x = e.clientX - b.left; y = e.clientY - b.top;
-        ink.classList.add('cta-ease');            // grow the circle in
-        ink.style.clipPath = 'circle(0px at ' + x.toFixed(1) + 'px ' + y.toFixed(1) + 'px)';
-        requestAnimationFrame(draw);
+        at(e);
+        x = tx; y = ty;                // start under the cursor, not at 0,0
+        tr = RADIUS;
+        kick();
+      });
+      inner.addEventListener('pointermove', function (e) { at(e); kick(); });
+      inner.addEventListener('pointerleave', function () { tr = 0; kick(); });
+
+      // ── button: magnetic pull, and a blue flood from the entry point ──
+      var btn = inner.querySelector('.btn-cta');
+      if (!btn) return;
+
+      var fill = document.createElement('span');
+      fill.className = 'btn-cta-fill';
+      btn.appendChild(fill);
+
+      btn.addEventListener('pointerenter', function (e) {
+        var b = btn.getBoundingClientRect();
+        var d = Math.sqrt(b.width * b.width + b.height * b.height) * 1.15;
+        fill.style.width = fill.style.height = d + 'px';
+        fill.style.left = (e.clientX - b.left) + 'px';
+        fill.style.top = (e.clientY - b.top) + 'px';
       });
 
+      var PULL = 170;                  // how far out the button starts reacting
       inner.addEventListener('pointermove', function (e) {
-        var b = h2.getBoundingClientRect();
-        x = e.clientX - b.left; y = e.clientY - b.top;
-        ink.classList.remove('cta-ease');         // track the cursor exactly
-        if (!frame) frame = requestAnimationFrame(draw);
+        var b = btn.getBoundingClientRect();
+        var dx = e.clientX - (b.left + b.width / 2);
+        var dy = e.clientY - (b.top + b.height / 2);
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < PULL) {
+          var f = 1 - dist / PULL;
+          btn.style.transform = 'translate(' + (dx * 0.32 * f).toFixed(1) + 'px,' +
+                                               (dy * 0.32 * f).toFixed(1) + 'px)';
+        } else if (btn.style.transform) {
+          btn.style.transform = '';
+        }
       });
-
-      inner.addEventListener('pointerleave', function () {
-        ink.classList.add('cta-ease');            // shrink it away
-        ink.style.clipPath = 'circle(0px at ' + x.toFixed(1) + 'px ' + y.toFixed(1) + 'px)';
-      });
+      inner.addEventListener('pointerleave', function () { btn.style.transform = ''; });
     })();
 
   </script>
