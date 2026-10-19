@@ -178,8 +178,15 @@
     '/work': 'Work', '/bts': 'BTS', '/about': 'About', '/contact': 'Contact'
   };
   var ease = 'cubic-bezier(0.76,0,0.24,1)';
-  var MIN_COVER = 260;     // never flash away instantly
   var MAX_COVER = 4500;    // never trap the visitor behind a stalled asset
+
+  // About keeps the original, slower sweep; everywhere else is quick
+  var SLOW = { '/about': true };
+  function pace(dest) {
+    return SLOW[dest]
+      ? { slide: '0.62s', nav: 640, min: 420, rm: 700 }
+      : { slide: '0.42s', nav: 440, min: 260, rm: 480 };
+  }
 
   function pathOf(href) {
     try {
@@ -194,8 +201,8 @@
     '.pt-panel{position:fixed;inset:0;z-index:99999;background:#f7efdb;' +
     'display:flex;align-items:center;justify-content:center;pointer-events:none;' +
     'transform:translateX(100%);will-change:transform}' +
-    '.pt-panel b{font-family:Lato,sans-serif;font-weight:700;font-style:normal;' +
-    'text-transform:uppercase;font-size:clamp(1.6rem,7vw,4.5rem);letter-spacing:0.12em;' +
+    '.pt-panel b{font-family:Inter,sans-serif;font-weight:900;font-style:italic;' +
+    'text-transform:uppercase;font-size:clamp(1.6rem,7vw,4.5rem);letter-spacing:-0.02em;' +
     'color:#000;line-height:1}';
   document.head.appendChild(style);
 
@@ -220,15 +227,16 @@
     document.documentElement.className =
       document.documentElement.className.replace(/\s*pt-arrive/, '');
 
+    var tA = pace(here);
     var started = Date.now(), lifted = false;
     function lift() {
       if (lifted) return;
       lifted = true;
-      var wait = Math.max(0, MIN_COVER - (Date.now() - started));
+      var wait = Math.max(0, tA.min - (Date.now() - started));
       setTimeout(function () {
-        panel.style.transition = 'transform 0.42s ' + ease;
+        panel.style.transition = 'transform ' + tA.slide + ' ' + ease;
         panel.style.transform = 'translateX(-100%)';
-        setTimeout(function () { if (panel.parentNode) panel.parentNode.removeChild(panel); }, 480);
+        setTimeout(function () { if (panel.parentNode) panel.parentNode.removeChild(panel); }, tA.rm);
       }, wait);
     }
 
@@ -268,11 +276,12 @@
     e.preventDefault();
     try { sessionStorage.setItem('pt-to', name); } catch (err) {}
 
+    var tD = pace(dest);
     var out = panelWith(name);
     requestAnimationFrame(function () {
-      out.style.transition = 'transform 0.42s ' + ease;
+      out.style.transition = 'transform ' + tD.slide + ' ' + ease;
       out.style.transform = 'translateX(0)';
     });
-    setTimeout(function () { location.href = a.href; }, 440);
+    setTimeout(function () { location.href = a.href; }, tD.nav);
   });
 })();
