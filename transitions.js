@@ -201,7 +201,7 @@
     '.pt-panel{position:fixed;inset:0;z-index:99999;background:#f7efdb;' +
     'display:flex;align-items:center;justify-content:center;pointer-events:none;' +
     'transform:translateX(100%);will-change:transform}' +
-    '.pt-panel b{font-family:Inter,sans-serif;font-weight:900;font-style:italic;' +
+    '.pt-panel b{font-family:Inter,sans-serif;font-weight:900;font-style:normal;' +
     'text-transform:uppercase;font-size:clamp(1.6rem,7vw,4.5rem);letter-spacing:-0.02em;' +
     'color:#000;line-height:1}';
   document.head.appendChild(style);
@@ -225,7 +225,7 @@
     var panel = panelWith(incoming);
     panel.style.transform = 'translateX(0)';           // already covering
     document.documentElement.className =
-      document.documentElement.className.replace(/\s*pt-arrive/, '');
+      document.documentElement.className.replace(/\s*pt-cover/, '');
 
     var tA = pace(here);
     var started = Date.now(), lifted = false;
@@ -254,9 +254,9 @@
       });
     }
     setTimeout(lift, MAX_COVER);
-  } else if (document.documentElement.className.indexOf('pt-arrive') > -1) {
+  } else if (document.documentElement.className.indexOf('pt-cover') > -1) {
     document.documentElement.className =
-      document.documentElement.className.replace(/\s*pt-arrive/, '');
+      document.documentElement.className.replace(/\s*pt-cover/, '');
   }
 
   // ---------- leaving ----------
