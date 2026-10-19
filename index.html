@@ -578,7 +578,22 @@
       position: relative;
       overflow: hidden;
     }
-    .cta-inner > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; filter: brightness(0.28); pointer-events: none; }
+    /* cursor-tracked glow sitting behind the heading */
+    .cta-glow {
+      position: absolute; top: 0; left: 0;
+      width: 440px; height: 440px; margin: -220px 0 0 -220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(53,82,157,0.85), rgba(53,82,157,0) 68%);
+      filter: blur(30px);
+      opacity: 0; pointer-events: none; z-index: 0;
+      transition: opacity 0.55s ease;
+    }
+    .cta-inner.cta-live .cta-glow { opacity: 1; }
+    .cta-char {
+      display: inline-block; will-change: transform;
+      transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+    }
+    @media (prefers-reduced-motion: reduce) { .cta-char { transition: none; } }
     .cta-inner > h2, .cta-inner > a { position: relative; z-index: 1; }
     .cta-section h2 {
       font-family: 'Tinos', serif;
@@ -889,7 +904,6 @@
   <!-- ─── CTA SECTION ─── -->
   <section class="cta-section" id="contact">
     <div class="cta-inner" data-animate>
-      <img src="billeder/compressed/home page/project-in-mind-2.jpg" alt="">
       <h2 data-animate style="transition-delay:0.2s">Have a <strong>PROJECT</strong> in mind?</h2>
       <a href="contact.html" class="btn-cta" data-animate style="transition-delay:0.38s">Let's create</a>
     </div>
@@ -1041,6 +1055,83 @@
       .then(r => r.json())
       .then(d => { document.getElementById('heroMedia').style.backgroundImage = 'url(' + d.thumbnail_url.replace(/\d+x\d+/, '1280x720') + ')'; })
       .catch(() => {});
+
+    // ── CTA: letters lift away from the cursor, glow follows it ──
+    (function () {
+      var inner = document.querySelector('.cta-inner');
+      var h2 = inner && inner.querySelector('h2');
+      if (!inner || !h2) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (!window.matchMedia('(hover: hover)').matches) return;   // skip on touch
+
+      // wrap each visible character so it can move on its own
+      function split(node) {
+        var out = [];
+        [].slice.call(node.childNodes).forEach(function (n) {
+          if (n.nodeType === 3) {
+            var frag = document.createDocumentFragment();
+            n.nodeValue.split('').forEach(function (ch) {
+              if (ch === ' ') { frag.appendChild(document.createTextNode(' ')); return; }
+              var sp = document.createElement('span');
+              sp.className = 'cta-char';
+              sp.textContent = ch;
+              frag.appendChild(sp);
+              out.push(sp);
+            });
+            node.replaceChild(frag, n);
+          } else if (n.nodeType === 1) {
+            out = out.concat(split(n));
+          }
+        });
+        return out;
+      }
+      var chars = split(h2);
+      if (!chars.length) return;
+
+      var glow = document.createElement('div');
+      glow.className = 'cta-glow';
+      inner.insertBefore(glow, inner.firstChild);
+
+      // cache each character's centre relative to the panel (scroll-independent)
+      var pos = [];
+      function measure() {
+        var box = inner.getBoundingClientRect();
+        pos = chars.map(function (c) {
+          var r = c.getBoundingClientRect();
+          return { x: r.left - box.left + r.width / 2, y: r.top - box.top + r.height / 2 };
+        });
+      }
+      measure();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+      window.addEventListener('resize', measure);
+
+      var RADIUS = 160, mx = 0, my = 0, frame = null;
+      function apply() {
+        frame = null;
+        for (var i = 0; i < chars.length; i++) {
+          var dx = pos[i].x - mx, dy = pos[i].y - my;
+          var f = 1 - Math.sqrt(dx * dx + dy * dy) / RADIUS;
+          if (f < 0) f = 0;
+          f = f * f * (3 - 2 * f);                                  // smoothstep
+          var boost = chars[i].parentNode.tagName === 'STRONG' ? 1.55 : 1;
+          chars[i].style.transform =
+            'translateY(' + (-17 * f * boost).toFixed(2) + 'px) scale(' + (1 + 0.13 * f * boost).toFixed(3) + ')';
+        }
+        glow.style.transform = 'translate(' + mx + 'px,' + my + 'px)';
+      }
+
+      inner.addEventListener('pointermove', function (e) {
+        var box = inner.getBoundingClientRect();
+        mx = e.clientX - box.left;
+        my = e.clientY - box.top;
+        if (!inner.classList.contains('cta-live')) { inner.classList.add('cta-live'); measure(); }
+        if (!frame) frame = requestAnimationFrame(apply);
+      });
+      inner.addEventListener('pointerleave', function () {
+        inner.classList.remove('cta-live');
+        for (var i = 0; i < chars.length; i++) chars[i].style.transform = '';
+      });
+    })();
 
   </script>
 <script src="/transitions.js"></script>
