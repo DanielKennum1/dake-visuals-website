@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script>/* page transition: raise the cover before anything paints, and stop
-     the body fade-in from making that cover translucent */
-  (function(){try{if(sessionStorage.getItem('pt-to')){var h=document.documentElement;h.className+=' pt-cover pt-nofade';var s=document.createElement('style');s.textContent='html.pt-cover{background:#f7efdb}html.pt-cover::before{content:"";position:fixed;inset:0;background:#f7efdb;z-index:99998}html.pt-nofade body{animation:none!important}';document.head.appendChild(s);}}catch(e){}})();
+  <script>/* page transition: raise the cover before anything paints, carrying the
+     destination name, and stop the body fade from making it translucent */
+  (function(){try{var n=sessionStorage.getItem('pt-to');if(n){n=String(n).replace(/[^A-Za-z ]/g,'').slice(0,24);var h=document.documentElement;h.className+=' pt-cover pt-nofade';var s=document.createElement('style');s.textContent='html.pt-cover{background:#f7efdb}html.pt-cover::before{content:"'+n+'";position:fixed;inset:0;background:#f7efdb;z-index:99998;display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;font-weight:900;text-transform:uppercase;font-size:clamp(1.3rem,5.5vw,3.4rem);letter-spacing:-0.02em;color:#000;transform:translateX(0)}html.pt-lift::before{transform:translateX(-100%)}html.pt-nofade body{animation:none!important}';document.head.appendChild(s);}}catch(e){}})();
   </script>
   <title>Work — DAKE Visuals</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />

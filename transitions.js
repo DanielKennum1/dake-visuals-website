@@ -170,9 +170,11 @@
   });
 })();
 
-// ── Page transition: a cream panel carrying the destination name ──
-// Leaves by sweeping in from the right, arrives by sweeping off to the left,
-// and holds on the new page until its content has actually loaded.
+// ── Page transition ──
+// Nothing happens on the way out. The arriving page raises a cream cover in
+// its <head>, before anything paints, with the destination name already on it;
+// that same cover holds until the content has loaded, then sweeps off left.
+// The name is never re-rendered, so there is nothing that can pop or jump.
 (function () {
   var NAMES = {
     '/work': 'Work', '/bts': 'BTS', '/about': 'About', '/contact': 'Contact'
@@ -184,8 +186,8 @@
   var SLOW = { '/about': true };
   function pace(dest) {
     return SLOW[dest]
-      ? { slide: '0.62s', nav: 640, min: 420, rm: 700 }
-      : { slide: '0.42s', nav: 440, min: 260, rm: 480 };
+      ? { slide: '0.62s', min: 420, rm: 700 }
+      : { slide: '0.42s', min: 260, rm: 480 };
   }
 
   function pathOf(href) {
@@ -196,64 +198,10 @@
     } catch (e) { return null; }
   }
 
+  // Keep the upright Inter 900 face warm: nothing else on the site renders it
+  // (the logo is italic), so without this the arriving cover would paint the
+  // name in a fallback and swap when Inter landed.
   try { if (document.fonts && document.fonts.load) document.fonts.load('900 1em Inter'); } catch (e) {}
-
-  var style = document.createElement('style');
-  style.textContent =
-    '.pt-panel{position:fixed;inset:0;z-index:99999;background:#f7efdb;' +
-    'display:flex;align-items:center;justify-content:center;pointer-events:none;' +
-    'transform:translateX(100%);will-change:transform}' +
-    '.pt-panel b{font-family:Inter,sans-serif;font-weight:900;font-style:normal;' +
-    'text-transform:uppercase;font-size:clamp(1.3rem,5.5vw,3.4rem);letter-spacing:-0.02em;' +
-    'color:#000;line-height:1;opacity:0;transition:opacity 0.18s ease}';
-  document.head.appendChild(style);
-
-  // The name is set in Inter, which Google Fonts serves with display=swap.
-  // Painted immediately it would show in a fallback face and then jump when
-  // Inter arrives, so hold it until the real font is ready.
-  function revealWhenFontReady(b) {
-    var FONT = '900 1em Inter';
-    // fonts.check() is synchronous: when Inter is already there (any navigation
-    // after the first) paint the name with the panel, with no fade at all —
-    // fonts.load() resolves a frame or two late, and that late fade reads as a blip.
-    try {
-      if (document.fonts && document.fonts.check && document.fonts.check(FONT)) {
-        b.style.transition = 'none';
-        b.style.opacity = '1';
-        return;
-      }
-    } catch (e) {}
-    var shown = false;
-    function show() {
-      if (shown) return;
-      shown = true;
-      b.style.transition = 'none';   // a few ms from cache; a fade here reads as a blip
-      b.style.opacity = '1';
-    }
-    try {
-      if (document.fonts && document.fonts.load) {
-        document.fonts.load(FONT).then(show, show);
-      } else { show(); }
-    } catch (e) { show(); }
-    setTimeout(show, 700);          // never leave the panel wordless
-  }
-
-  // `name` is only passed on the way out. The pre-paint cover on the next page
-  // cannot draw the word (its fonts are not parsed that early), so re-adding it
-  // after the document loads made the word vanish and pop back across the
-  // navigation. The arriving panel is plain cream and simply wipes away.
-  function panelWith(name) {
-    var p = document.createElement('div');
-    p.className = 'pt-panel';
-    if (name) {
-      var b = document.createElement('b');
-      b.textContent = name;
-      p.appendChild(b);
-      revealWhenFontReady(b);
-    }
-    document.body.appendChild(p);
-    return p;
-  }
 
   // ---------- arriving ----------
   var incoming = null;
@@ -261,21 +209,25 @@
 
   var here = pathOf(location.href);
   if (incoming && here !== '/' && here !== '/index') {
-    var panel = panelWith(null);   // wordless: the word was shown on the way out
-    panel.style.transform = 'translateX(0)';           // already covering
-    document.documentElement.className =
-      document.documentElement.className.replace(/\s*pt-cover/, '');
-
+    var root = document.documentElement;
     var tA = pace(here);
+
+    // hand the cover its slide timing
+    var st = document.createElement('style');
+    st.textContent = 'html.pt-cover::before{transition:transform ' + tA.slide + ' ' + ease + '}';
+    document.head.appendChild(st);
+
     var started = Date.now(), lifted = false;
     function lift() {
       if (lifted) return;
       lifted = true;
       var wait = Math.max(0, tA.min - (Date.now() - started));
       setTimeout(function () {
-        panel.style.transition = 'transform ' + tA.slide + ' ' + ease;
-        panel.style.transform = 'translateX(-100%)';
-        setTimeout(function () { if (panel.parentNode) panel.parentNode.removeChild(panel); }, tA.rm);
+        root.className += ' pt-lift';
+        setTimeout(function () {
+          root.className = root.className
+            .replace(/\s*pt-cover/, '').replace(/\s*pt-lift/, '');
+        }, tA.rm);
       }, wait);
     }
 
@@ -312,15 +264,8 @@
     var name = NAMES[dest];
     if (!name) return;                                  // only the named nav pages
 
-    e.preventDefault();
+    // Nothing animates on the way out: just flag the destination and let the
+    // browser navigate. The whole transition plays when the next page lands.
     try { sessionStorage.setItem('pt-to', name); } catch (err) {}
-
-    var tD = pace(dest);
-    var out = panelWith(name);
-    requestAnimationFrame(function () {
-      out.style.transition = 'transform ' + tD.slide + ' ' + ease;
-      out.style.transform = 'translateX(0)';
-    });
-    setTimeout(function () { location.href = a.href; }, tD.nav);
   });
 })();
