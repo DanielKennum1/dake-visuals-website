@@ -977,6 +977,45 @@
       var isMobile = window.innerWidth <= 480;
       var mount = document.getElementById('heroVimeoMount');
 
+      // This reel never emits Vimeo's 'ended' event: the clock reaches the
+      // duration and parks there while the player still reports not-paused,
+      // so loop=1 has nothing to react to. Watch the clock ourselves and
+      // restart when it stops advancing at the end.
+      function keepLooping(frame) {
+        var duration = 0, lastTime = -1, stalls = 0;
+        function send(method, value) {
+          try {
+            frame.contentWindow.postMessage(
+              JSON.stringify(value === undefined ? { method: method } : { method: method, value: value }), '*');
+          } catch (e) {}
+        }
+        function restart() { stalls = 0; lastTime = -1; send('setCurrentTime', 0); send('play'); }
+        window.addEventListener('message', function (e) {
+          if (!String(e.origin).includes('vimeo.com')) return;
+          var d; try { d = JSON.parse(e.data); } catch (_) { return; }
+          if (d.event === 'ended') { restart(); return; }          // if it ever does fire
+          if (d.method === 'getDuration') { duration = d.value; return; }
+          if (d.method === 'getCurrentTime') {
+            var t = d.value;
+            if (duration && t >= duration - 0.4 && t === lastTime) {
+              if (++stalls >= 1) restart();        // one stalled read is enough
+            } else { stalls = 0; }
+            lastTime = t;
+          }
+        });
+        function hello() { send('addEventListener', 'ended'); send('getDuration'); }
+        frame.addEventListener('load', hello);
+        hello();
+        // poll once a second, but tighten to 250ms over the last few seconds so
+        // the restart lands quickly instead of holding the final frame
+        (function tick() {
+          if (!duration) hello();                  // ignored until the player is ready
+          send('getCurrentTime');
+          var nearEnd = duration && lastTime >= duration - 3;
+          setTimeout(tick, nearEnd ? 250 : 1000);
+        })();
+      }
+
       function injectIframe(autoplay) {
         var params = 'h=da3e5c5230&badge=0&autopause=0&muted=1&loop=1&playsinline=1&controls=0&quality=auto';
         if (autoplay) params += '&autoplay=1';
@@ -999,6 +1038,7 @@
         iframe.title = 'Showreel';
         iframe.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;pointer-events:none';
         mount.appendChild(iframe);
+        keepLooping(iframe);
       } else {
         // iPhone: pre-load iframe + Vimeo SDK, then call player.play() on tap.
         // iOS only allows play() when called synchronously inside a user gesture —
@@ -1010,6 +1050,7 @@
         iframeEl.title = 'Showreel';
         iframeEl.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;pointer-events:none';
         mount.appendChild(iframeEl);
+        keepLooping(iframeEl);
 
         var vimeoPlayer = null;
         var sdkScript = document.createElement('script');
