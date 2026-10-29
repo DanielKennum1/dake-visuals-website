@@ -977,48 +977,38 @@
       var isMobile = window.innerWidth <= 480;
       var mount = document.getElementById('heroVimeoMount');
 
-      // This reel never emits Vimeo's 'ended' event: the clock reaches the
-      // duration and parks there while the player still reports not-paused,
-      // so loop=1 has nothing to react to. Watch the clock ourselves and
-      // restart when it stops advancing at the end.
+      // Vimeo's loop=1 relies on the 'ended' event, which this reel never fires:
+      // its metadata runs 67ms past its last frame, so the player waits for video
+      // that isn't there. Listen to the player's own timeupdate and send it back
+      // to the start as it reaches the end.
       function keepLooping(frame) {
-        var duration = 0, lastTime = -1, stalls = 0;
         function send(method, value) {
           try {
             frame.contentWindow.postMessage(
               JSON.stringify(value === undefined ? { method: method } : { method: method, value: value }), '*');
           } catch (e) {}
         }
-        function restart() { stalls = 0; lastTime = -1; send('setCurrentTime', 0); send('play'); }
+        var subscribed = false;
         window.addEventListener('message', function (e) {
           if (!String(e.origin).includes('vimeo.com')) return;
           var d; try { d = JSON.parse(e.data); } catch (_) { return; }
-          if (d.event === 'ended') { restart(); return; }          // if it ever does fire
-          if (d.method === 'getDuration') { duration = d.value; return; }
-          if (d.method === 'getCurrentTime') {
-            var t = d.value;
-            // Restart just before the end rather than after it: the player
-            // parks on the final frame, so waiting for the stall shows a
-            // visible freeze. Costs the last ~0.35s of the reel.
-            if (duration && t >= duration - 0.35) {
-              restart();
-            } else if (duration && t >= duration - 1 && t === lastTime) {
-              if (++stalls >= 1) restart();        // safety net if the lead is missed
-            } else { stalls = 0; }
-            lastTime = t;
+          if (d.event === 'ended') { send('setCurrentTime', 0); send('play'); return; }
+          if ((d.event !== 'playProgress' && d.event !== 'timeupdate') || !d.data) return;
+          subscribed = true;
+          if (d.data.duration && d.data.seconds >= d.data.duration - 0.15) {
+            send('setCurrentTime', 0);
+            send('play');
           }
         });
-        function hello() { send('addEventListener', 'ended'); send('getDuration'); }
-        frame.addEventListener('load', hello);
-        hello();
-        // poll once a second, but tighten to 250ms over the last few seconds so
-        // the restart lands quickly instead of holding the final frame
-        (function tick() {
-          if (!duration) hello();                  // ignored until the player is ready
-          send('getCurrentTime');
-          var nearEnd = duration && lastTime >= duration - 3;
-          setTimeout(tick, nearEnd ? 250 : 1000);
-        })();
+        function subscribe() {
+          send('addEventListener', 'playProgress');   // raw postMessage name
+          send('addEventListener', 'timeupdate');     // SDK name, harmless
+          send('addEventListener', 'ended');
+        }
+        frame.addEventListener('load', subscribe);
+        subscribe();
+        // the player ignores messages until it is ready, so retry until it answers
+        var retry = setInterval(function () { subscribed ? clearInterval(retry) : subscribe(); }, 1000);
       }
 
       function injectIframe(autoplay) {
