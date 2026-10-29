@@ -997,8 +997,13 @@
           if (d.method === 'getDuration') { duration = d.value; return; }
           if (d.method === 'getCurrentTime') {
             var t = d.value;
-            if (duration && t >= duration - 0.4 && t === lastTime) {
-              if (++stalls >= 1) restart();        // one stalled read is enough
+            // Restart just before the end rather than after it: the player
+            // parks on the final frame, so waiting for the stall shows a
+            // visible freeze. Costs the last ~0.35s of the reel.
+            if (duration && t >= duration - 0.35) {
+              restart();
+            } else if (duration && t >= duration - 1 && t === lastTime) {
+              if (++stalls >= 1) restart();        // safety net if the lead is missed
             } else { stalls = 0; }
             lastTime = t;
           }
