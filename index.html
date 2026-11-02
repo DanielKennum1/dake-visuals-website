@@ -658,15 +658,9 @@
     footer {
       position: relative;
       border-top: none;
-      padding: 300px 4% 60px;
+      padding: 190px 4% 60px;
       background-color: transparent;
       background-image:
-        radial-gradient(118% 132% at 92% 112%,
-          rgba(53,82,157,1.00) 14%,
-          rgba(53,82,157,0.78) 34%,
-          rgba(53,82,157,0.40) 54%,
-          rgba(53,82,157,0.12) 70%,
-          rgba(53,82,157,0.00) 84%),
         linear-gradient(174deg,
           rgba(53,82,157,0.00) 4%,
           rgba(53,82,157,0.10) 24%,
@@ -685,6 +679,10 @@
       background-size: 240px 240px;
       opacity: 0.13;
       mix-blend-mode: overlay;
+      /* without this the grain begins abruptly at the footer's top edge and
+         that texture change alone reads as a line under the CTA */
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 22%, #000 48%);
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 22%, #000 48%);
     }
     .footer-grid {
       display: grid;
