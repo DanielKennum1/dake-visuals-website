@@ -60,28 +60,43 @@
     .frame-placeholder { font-family: 'Lato', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.15); }
     .project-content-wrap { padding: 0 0.5rem 0.5rem; }
     .project-grey-box { background: var(--gray); border-radius: 8px; }
-    /* One continuous wash from transparent into the footer blue. It is pulled
-       up over the preceding section rather than sitting below it, so there is
-       no seam and no empty band that reads as its own screen. */
-    .footer-fade {
+    /* The whole descent lives on the footer itself: a deep top padding is the
+       fade zone, and the background starts fully transparent so the cream page
+       shows straight through it. There is no second element to butt against,
+       so nothing can draw a line. A wide ellipse anchored off the right edge
+       sweeps the front in diagonally rather than flat, and it is still only
+       part-way blue where the footer content begins. */
+    footer {
       position: relative;
-      z-index: 2;
-      height: clamp(240px, 32vh, 420px);
-      margin-top: calc(-1 * clamp(240px, 32vh, 420px));
-      background: linear-gradient(to bottom, rgba(53,82,157,0.000) 0.0%, rgba(53,82,157,0.002) 5.6%, rgba(53,82,157,0.012) 11.1%, rgba(53,82,157,0.035) 16.7%, rgba(53,82,157,0.076) 22.2%, rgba(53,82,157,0.135) 27.8%, rgba(53,82,157,0.210) 33.3%, rgba(53,82,157,0.298) 38.9%, rgba(53,82,157,0.397) 44.4%, rgba(53,82,157,0.500) 50.0%, rgba(53,82,157,0.603) 55.6%, rgba(53,82,157,0.702) 61.1%, rgba(53,82,157,0.790) 66.7%, rgba(53,82,157,0.865) 72.2%, rgba(53,82,157,0.924) 77.8%, rgba(53,82,157,0.965) 83.3%, rgba(53,82,157,0.988) 88.9%, rgba(53,82,157,0.998) 94.4%, rgba(53,82,157,1.000) 100.0%);
-      pointer-events: none;
+      border-top: none;
+      padding: 300px 4% 60px;
+      background-color: transparent;
+      background-image:
+        radial-gradient(118% 132% at 92% 112%,
+          rgba(53,82,157,1.00) 14%,
+          rgba(53,82,157,0.78) 34%,
+          rgba(53,82,157,0.40) 54%,
+          rgba(53,82,157,0.12) 70%,
+          rgba(53,82,157,0.00) 84%),
+        linear-gradient(174deg,
+          rgba(53,82,157,0.00) 4%,
+          rgba(53,82,157,0.10) 24%,
+          rgba(53,82,157,0.34) 44%,
+          rgba(53,82,157,0.66) 64%,
+          rgba(53,82,157,0.92) 84%,
+          rgba(53,82,157,1.00) 100%);
     }
-    /* fine grain only - it dithers away 8-bit banding without adding shapes */
-    .footer-fade::after {
+    /* grain across the whole descent - one continuous field, no edge */
+    footer::after {
       content: '';
       position: absolute;
       inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-size: 200px 200px;
-      opacity: 0.05;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 240px 240px;
+      opacity: 0.13;
       mix-blend-mode: overlay;
     }
-    footer { background: #35529d; border-top: none; padding: 60px 4% 40px; }
     .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,0.16); }
     .footer-col h4 { font-family: 'Lato', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 1.2rem; }
     .footer-contact-person p { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); margin-bottom: 0.3rem; }
@@ -192,7 +207,6 @@
   </div>
   </div></div>
   </div></div>
-  <div class="footer-fade"></div>
   <footer>
     <div class="footer-grid">
       <div class="footer-col"><h4>Contact</h4><div class="footer-contact-person"><p>DAKE Visuals</p><a href="mailto:dake@dakevisuals.com">dake@dakevisuals.com</a><a href="tel:+4553399909">+45 53 39 99 09</a><a href="#">Aarhus, Denmark</a><span class="footer-cvr" style="display:block;font-family:'Lato',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.72);margin-bottom:0.15rem">CVR: 45359077</span></div></div>
