@@ -8,7 +8,7 @@
      destination name, and stop the body fade from making it translucent */
   (function(){try{var n=sessionStorage.getItem('pt-to');if(n){n=String(n).replace(/[^A-Za-z ]/g,'').slice(0,24);var h=document.documentElement;h.className+=' pt-cover pt-nofade';var s=document.createElement('style');s.textContent='html.pt-cover{background:#f7efdb}html.pt-cover::before{content:"'+n+'";position:fixed;inset:0;background:#f7efdb;z-index:99998;display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;font-weight:900;text-transform:uppercase;font-size:clamp(1.3rem,5.5vw,3.4rem);letter-spacing:-0.02em;color:#000;transform:translateX(0)}html.pt-lift::before{transform:translateX(-100%)}html.pt-nofade body{animation:none!important}';document.head.appendChild(s);}}catch(e){}})();
   </script>
-  <title>About — DAKE Visuals</title>
+  <title data-da="Om — DAKE Visuals">About — DAKE Visuals</title>
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="DAKE Visuals" />
   <meta property="og:title" content="About — DAKE Visuals" />
@@ -207,29 +207,29 @@
 </head>
 <body>
   <div class="mobile-menu" id="mobileMenu">
-    <a href="/">Home</a>
-    <a href="work.html">Work</a>
+    <a href="/" data-da="Hjem">Home</a>
+    <a href="work.html" data-da="Projekter">Work</a>
     <a href="bts.html">BTS</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
+    <a href="about.html" data-da="Om">About</a>
+    <a href="contact.html" data-da="Kontakt">Contact</a>
   </div>
 
   <nav id="navbar">
     <div class="nav-logo-group">
       <a href="/" class="nav-logo">DAKE VISUALS</a>
-      <a href="contact.html" class="btn-book">Let's create</a>
+      <a href="contact.html" class="btn-book" data-da="Lad os skabe">Let\'s create</a>
     </div>
     <ul class="nav-center">
-      <li><a href="/">Home</a></li>
-      <li><a href="work.html">Work</a></li>
+      <li><a href="/" data-da="Hjem">Home</a></li>
+      <li><a href="work.html" data-da="Projekter">Work</a></li>
       <li><a href="bts.html">BTS</a></li>
-      <li><a href="about.html" class="active">About</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li><a href="about.html" class="active" data-da="Om">About</a></li>
+      <li><a href="contact.html" data-da="Kontakt">Contact</a></li>
     </ul>
     <div class="nav-end">
       <div class="lang-switch" data-lang="en" role="group" aria-label="Language / Sprog">
         <button type="button" class="lang-opt is-on" data-lang="en" aria-pressed="true">Eng</button>
-        <button type="button" class="lang-opt" data-lang="da" aria-pressed="false">Dan</button>
+        <button type="button" class="lang-opt" data-lang="da" aria-pressed="false">Den</button>
       </div>
       <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
     </div>
@@ -287,11 +287,11 @@
         <h2 class="founder-name-left">Daniel Kennum</h2>
         <div class="founder-glass-content">
           <div class="founder-glass-left">
-            <p class="founder-bio">I founded DAKE Visuals after seeing businesses investing heavily in advertising without giving enough thought to the creative behind it. Advertising only amplifies what's already there — if the content doesn't connect, more money won't fix it.</p>
-            <p class="founder-bio">I help brands, businesses, and individuals create powerful visuals that gives their marketing something worth amplifying. I'll take you from the initial idea to the final edit.</p>
+            <p class="founder-bio" data-da="Jeg startede DAKE Visuals, efter at have set virksomheder investere massivt i annoncering uden at tænke nok over det kreative bag. Annoncering forstærker kun det, der allerede er der — hvis indholdet ikke rammer, kan flere penge ikke rette op på det.">I founded DAKE Visuals after seeing businesses investing heavily in advertising without giving enough thought to the creative behind it. Advertising only amplifies what's already there — if the content doesn't connect, more money won't fix it.</p>
+            <p class="founder-bio" data-da="Jeg hjælper brands, virksomheder og enkeltpersoner med at skabe stærke visuals, der giver deres markedsføring noget, det er værd at forstærke. Jeg tager dig med fra den første idé til den færdige klipning.">I help brands, businesses, and individuals create powerful visuals that gives their marketing something worth amplifying. I'll take you from the initial idea to the final edit.</p>
           </div>
           <div class="founder-glass-mid">
-            <a href="contact.html" class="btn-glass">Let's create</a>
+            <a href="contact.html" class="btn-glass" data-da="Lad os skabe">Let's create</a>
           </div>
           <div class="video-links">
             <a href="https://www.instagram.com/dake.visuals/" target="_blank">Instagram</a>
@@ -306,14 +306,14 @@
 
   <footer>
     <div class="footer-grid">
-      <div class="footer-col"><h4>Contact</h4><div class="footer-contact-person"><p>DAKE Visuals</p><a href="mailto:dake@dakevisuals.com">dake@dakevisuals.com</a><a href="tel:+4553399909">+45 53 39 99 09</a><a href="#">Aarhus, Denmark</a><span class="footer-cvr" style="display:block;font-family:'Lato',sans-serif;font-size:0.85rem;color:var(--gray);margin-bottom:0.15rem">CVR: 45359077</span></div></div>
-      <div class="footer-col"><h4>Navigate</h4><nav class="footer-nav"><a href="work.html">Work</a><a href="about.html">About</a><a href="bts.html">BTS</a><a href="contact.html">Contact</a></nav></div>
-      <div class="footer-col"><h4>Follow</h4><div class="footer-socials"><a href="https://www.instagram.com/dake.visuals/" target="_blank">Instagram</a></div></div>
+      <div class="footer-col"><h4 data-da="Kontakt">Contact</h4><div class="footer-contact-person"><p>DAKE Visuals</p><a href="mailto:dake@dakevisuals.com">dake@dakevisuals.com</a><a href="tel:+4553399909">+45 53 39 99 09</a><a href="#" data-da="Aarhus, Danmark">Aarhus, Denmark</a><span class="footer-cvr" style="display:block;font-family:'Lato',sans-serif;font-size:0.85rem;color:var(--gray);margin-bottom:0.15rem">CVR: 45359077</span></div></div>
+      <div class="footer-col"><h4 data-da="Naviger">Navigate</h4><nav class="footer-nav"><a href="work.html" data-da="Projekter">Work</a><a href="about.html" data-da="Om">About</a><a href="bts.html">BTS</a><a href="contact.html" data-da="Kontakt">Contact</a></nav></div>
+      <div class="footer-col"><h4 data-da="Følg">Follow</h4><div class="footer-socials"><a href="https://www.instagram.com/dake.visuals/" target="_blank">Instagram</a></div></div>
     </div>
     <div class="footer-bottom">
       <span class="footer-logo-bottom">DAKE VISUALS</span>
-      <span class="footer-copy">© 2026 DAKE Visuals. All rights reserved.</span>
-      <div class="footer-legal"><a href="#">Privacy Policy</a><a href="#">Terms</a></div>
+      <span class="footer-copy" data-da="© 2026 DAKE Visuals. Alle rettigheder forbeholdes.">© 2026 DAKE Visuals. All rights reserved.</span>
+      <div class="footer-legal"><a href="#" data-da="Privatlivspolitik">Privacy Policy</a><a href="#" data-da="Vilkår">Terms</a></div>
     </div>
   </footer>
 

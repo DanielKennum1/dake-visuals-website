@@ -72,6 +72,10 @@
         b.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
     });
+
+    // For anything a page has to rebuild itself — a cloned layer, a label the
+    // page's own JS owns. Fired after the swap, so the DOM is already Danish.
+    document.dispatchEvent(new CustomEvent('dv:lang', { detail: { lang: lang } }));
   }
 
   function init() {

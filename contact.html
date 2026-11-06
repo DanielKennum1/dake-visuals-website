@@ -8,7 +8,7 @@
      destination name, and stop the body fade from making it translucent */
   (function(){try{var n=sessionStorage.getItem('pt-to');if(n){n=String(n).replace(/[^A-Za-z ]/g,'').slice(0,24);var h=document.documentElement;h.className+=' pt-cover pt-nofade';var s=document.createElement('style');s.textContent='html.pt-cover{background:#f7efdb}html.pt-cover::before{content:"'+n+'";position:fixed;inset:0;background:#f7efdb;z-index:99998;display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;font-weight:900;text-transform:uppercase;font-size:clamp(1.3rem,5.5vw,3.4rem);letter-spacing:-0.02em;color:#000;transform:translateX(0)}html.pt-lift::before{transform:translateX(-100%)}html.pt-nofade body{animation:none!important}';document.head.appendChild(s);}}catch(e){}})();
   </script>
-  <title>Contact — DAKE Visuals</title>
+  <title data-da="Kontakt — DAKE Visuals">Contact — DAKE Visuals</title>
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="DAKE Visuals" />
   <meta property="og:title" content="Contact — DAKE Visuals" />
@@ -215,25 +215,25 @@
 </head>
 <body>
   <div class="mobile-menu" id="mobileMenu">
-    <a href="/">Home</a>
-    <a href="work.html">Work</a>
+    <a href="/" data-da="Hjem">Home</a>
+    <a href="work.html" data-da="Projekter">Work</a>
     <a href="bts.html">BTS</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
+    <a href="about.html" data-da="Om">About</a>
+    <a href="contact.html" data-da="Kontakt">Contact</a>
   </div>
   <nav id="navbar">
     <a href="/" class="nav-logo">DAKE VISUALS</a>
     <ul class="nav-center">
-      <li><a href="/">Home</a></li>
-      <li><a href="work.html">Work</a></li>
+      <li><a href="/" data-da="Hjem">Home</a></li>
+      <li><a href="work.html" data-da="Projekter">Work</a></li>
       <li><a href="bts.html">BTS</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="contact.html" class="active">Contact</a></li>
+      <li><a href="about.html" data-da="Om">About</a></li>
+      <li><a href="contact.html" class="active" data-da="Kontakt">Contact</a></li>
     </ul>
     <div class="nav-end">
       <div class="lang-switch" data-lang="en" role="group" aria-label="Language / Sprog">
         <button type="button" class="lang-opt is-on" data-lang="en" aria-pressed="true">Eng</button>
-        <button type="button" class="lang-opt" data-lang="da" aria-pressed="false">Dan</button>
+        <button type="button" class="lang-opt" data-lang="da" aria-pressed="false">Den</button>
       </div>
       <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
     </div>
@@ -243,35 +243,35 @@
     <div class="contact-content-wrap">
     <div class="contact-grey-box">
       <div class="contact-hero">
-        <div class="contact-headline-wrap"><h1 class="contact-headline">Contact</h1></div>
+        <div class="contact-headline-wrap"><h1 class="contact-headline" data-da="Kontakt">Contact</h1></div>
       </div>
     <div class="contact-body">
       <form class="contact-form" id="contactForm">
         <div class="form-row">
-          <div class="field"><label for="firstName">First name</label><input type="text" id="firstName" name="firstName" placeholder="Your first name" autocomplete="given-name" required /></div>
-          <div class="field"><label for="lastName">Last name</label><input type="text" id="lastName" name="lastName" placeholder="Your last name" autocomplete="family-name" required /></div>
+          <div class="field"><label for="firstName" data-da="Fornavn">First name</label><input type="text" id="firstName" name="firstName" placeholder="Your first name" data-da-placeholder="Dit fornavn" autocomplete="given-name" required /></div>
+          <div class="field"><label for="lastName" data-da="Efternavn">Last name</label><input type="text" id="lastName" name="lastName" placeholder="Your last name" data-da-placeholder="Dit efternavn" autocomplete="family-name" required /></div>
         </div>
-        <div class="field"><label for="email">Email address</label><input type="email" id="email" name="_replyto" placeholder="hello@yourcompany.com" autocomplete="email" required /></div>
-        <div class="field"><label for="company">Company / Brand</label><input type="text" id="company" name="company" placeholder="Your company name" /></div>
-        <div class="field"><label for="message">Message</label><textarea id="message" name="message" placeholder="Tell us about your project…" rows="5" required></textarea></div>
-<div class="form-submit"><button type="submit" class="btn-submit">Send message</button></div>
-        <div class="form-success" id="formSuccess"><p>Thanks — we've received your message<br>and will be in touch shortly.</p></div>
+        <div class="field"><label for="email" data-da="E-mailadresse">Email address</label><input type="email" id="email" name="_replyto" placeholder="hello@yourcompany.com" autocomplete="email" required /></div>
+        <div class="field"><label for="company" data-da="Virksomhed / brand">Company / Brand</label><input type="text" id="company" name="company" placeholder="Your company name" data-da-placeholder="Din virksomhed" /></div>
+        <div class="field"><label for="message" data-da="Besked">Message</label><textarea id="message" name="message" placeholder="Tell us about your project…" data-da-placeholder="Fortæl om dit projekt…" rows="5" required></textarea></div>
+<div class="form-submit"><button type="submit" class="btn-submit" data-da="Send besked">Send message</button></div>
+        <div class="form-success" id="formSuccess"><p data-da-html="Tak — vi har modtaget din besked<br>og vender tilbage hurtigst muligt.">Thanks — we've received your message<br>and will be in touch shortly.</p></div>
       </form>
       <aside class="contact-sidebar">
         <div class="sidebar-block">
-          <h4>Direct contact</h4>
+          <h4 data-da="Direkte kontakt">Direct contact</h4>
           <a href="mailto:dake@dakevisuals.com">dake@dakevisuals.com</a>
           <a href="tel:+4553399909">+45 53 39 99 09</a>
         </div>
         <div class="sidebar-divider"></div>
         <div class="sidebar-block">
-          <h4>Based in</h4>
-          <p>Aarhus, Denmark</p>
-          <p style="margin-top:0.3rem; opacity:0.6;">Available worldwide</p>
+          <h4 data-da="Baseret i">Based in</h4>
+          <p data-da="Aarhus, Danmark">Aarhus, Denmark</p>
+          <p style="margin-top:0.3rem; opacity:0.6;" data-da="Arbejder i hele verden">Available worldwide</p>
         </div>
         <div class="sidebar-divider"></div>
         <div class="sidebar-block">
-          <h4>Follow</h4>
+          <h4 data-da="Følg">Follow</h4>
           <div class="sidebar-socials"><a href="https://www.instagram.com/dake.visuals/" target="_blank" rel="noopener">Instagram</a></div>
         </div>
       </aside>
@@ -283,7 +283,7 @@
       </div>
     </div>
     <div class="contact-calendly-section">
-      <h4 class="calendly-label">Book a call</h4>
+      <h4 class="calendly-label" data-da="Book et møde">Book a call</h4>
       <div class="calendly-inline-widget" data-url="https://calendly.com/dake-dakevisuals/30min?hide_event_type_details=1&hide_gdpr_banner=1" style="min-width:320px;height:750px;"></div>
     </div>
     </div>
@@ -293,14 +293,14 @@
 
   <footer>
     <div class="footer-grid">
-      <div class="footer-col"><h4>Contact</h4><div class="footer-contact-person"><p>DAKE Visuals</p><a href="mailto:dake@dakevisuals.com">dake@dakevisuals.com</a><a href="tel:+4553399909">+45 53 39 99 09</a><a href="#">Aarhus, Denmark</a><span class="footer-cvr" style="display:block;font-family:'Lato',sans-serif;font-size:0.85rem;color:var(--gray);margin-bottom:0.15rem">CVR: 45359077</span></div></div>
-      <div class="footer-col"><h4>Navigate</h4><nav class="footer-nav"><a href="work.html">Work</a><a href="about.html">About</a><a href="bts.html">BTS</a><a href="contact.html">Contact</a></nav></div>
-      <div class="footer-col"><h4>Follow</h4><div class="footer-socials"><a href="https://www.instagram.com/dake.visuals/" target="_blank">Instagram</a></div></div>
+      <div class="footer-col"><h4 data-da="Kontakt">Contact</h4><div class="footer-contact-person"><p>DAKE Visuals</p><a href="mailto:dake@dakevisuals.com">dake@dakevisuals.com</a><a href="tel:+4553399909">+45 53 39 99 09</a><a href="#" data-da="Aarhus, Danmark">Aarhus, Denmark</a><span class="footer-cvr" style="display:block;font-family:'Lato',sans-serif;font-size:0.85rem;color:var(--gray);margin-bottom:0.15rem">CVR: 45359077</span></div></div>
+      <div class="footer-col"><h4 data-da="Naviger">Navigate</h4><nav class="footer-nav"><a href="work.html" data-da="Projekter">Work</a><a href="about.html" data-da="Om">About</a><a href="bts.html">BTS</a><a href="contact.html" data-da="Kontakt">Contact</a></nav></div>
+      <div class="footer-col"><h4 data-da="Følg">Follow</h4><div class="footer-socials"><a href="https://www.instagram.com/dake.visuals/" target="_blank">Instagram</a></div></div>
     </div>
     <div class="footer-bottom">
       <span class="footer-logo-bottom">DAKE VISUALS</span>
-      <span class="footer-copy">© 2026 DAKE Visuals. All rights reserved.</span>
-      <div class="footer-legal"><a href="#">Privacy Policy</a><a href="#">Terms</a></div>
+      <span class="footer-copy" data-da="© 2026 DAKE Visuals. Alle rettigheder forbeholdes.">© 2026 DAKE Visuals. All rights reserved.</span>
+      <div class="footer-legal"><a href="#" data-da="Privatlivspolitik">Privacy Policy</a><a href="#" data-da="Vilkår">Terms</a></div>
     </div>
   </footer>
 

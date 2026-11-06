@@ -168,6 +168,11 @@
     if (active) movePill(active);
     else pill.style.opacity = '0';
   });
+
+  // Danish labels are wider than the English ones, so re-measure after a swap
+  document.addEventListener('dv:lang', function () {
+    if (active) movePill(active, true);
+  });
 })();
 
 // ── Page transition ──
@@ -176,8 +181,13 @@
 // that same cover holds until the content has loaded, then sweeps off left.
 // The name is never re-rendered, so there is nothing that can pop or jump.
 (function () {
+  // The name the arriving page paints on its cover. Kept ASCII-only: the
+  // <head> snippet that renders it strips anything else.
   var NAMES = {
     '/work': 'Work', '/bts': 'BTS', '/about': 'About', '/contact': 'Contact'
+  };
+  var NAMES_DA = {
+    '/work': 'Projekter', '/bts': 'BTS', '/about': 'Om', '/contact': 'Kontakt'
   };
   var ease = 'cubic-bezier(0.76,0,0.24,1)';
   var MAX_COVER = 4500;    // never trap the visitor behind a stalled asset
@@ -261,7 +271,8 @@
 
     var dest = pathOf(a.href);
     if (!dest || dest === here) return;
-    var name = NAMES[dest];
+    var da = document.documentElement.lang === 'da';
+    var name = (da ? NAMES_DA : NAMES)[dest];
     if (!name) return;                                  // only the named nav pages
 
     // Nothing animates on the way out: just flag the destination and let the
