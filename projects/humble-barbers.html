@@ -137,7 +137,55 @@
 
     @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
     body { animation: pageFadeIn 0.18s ease-out; }
-  </style>
+  
+    /* ─── LANGUAGE SWITCH (Eng / Dan) ─── */
+    .nav-end { display: contents; }
+    .lang-switch {
+      position: absolute; top: 58px; right: 4%;
+      display: inline-flex; align-items: stretch;
+      padding: 2px; border-radius: 999px;
+      border: 1.5px solid var(--ls-line);
+      background: var(--ls-bg);
+      overflow: hidden;
+      --ls-line: rgba(0,0,0,0.3);
+      --ls-bg: transparent;
+      --ls-knob: rgba(0,0,0,0.85);
+      --ls-fg: rgba(0,0,0,0.55);
+      --ls-fg-on: var(--cream);
+    }
+    .lang-switch::before {
+      content: ''; position: absolute; top: 2px; bottom: 2px; left: 2px;
+      width: calc(50% - 2px); border-radius: 999px;
+      background: var(--ls-knob);
+      transition: transform 0.3s cubic-bezier(0.76,0,0.24,1);
+    }
+    .lang-switch[data-lang="da"]::before { transform: translateX(100%); }
+    .lang-opt {
+      position: relative; z-index: 1;
+      flex: 0 0 auto; min-width: 3.05rem;
+      padding: 0.3rem 0; border: 0; background: none; cursor: pointer;
+      font-family: 'Lato', sans-serif; font-size: 0.66rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--ls-fg);
+      transition: color 0.25s ease;
+    }
+    .lang-opt.is-on { color: var(--ls-fg-on); }
+    @media (max-width: 900px) {
+      /* iPad and phone: sit inline, just left of the burger */
+      .nav-end { display: flex; align-items: center; gap: 0.75rem; }
+      .lang-switch { position: relative; top: auto; right: auto; }
+    }
+    @media (min-width: 901px) {
+      /* Headroom under the nav row so the switch has clear space to sit in,
+         instead of overlapping whatever the page starts with. The nav items
+         stay exactly where they were (20px from the top). */
+      #navbar { height: 94px; align-items: flex-start; padding-top: 25px; }
+      .lang-switch { top: 56px; }
+    }
+    @media (max-width: 380px) {
+      .lang-opt { min-width: 2.6rem; font-size: 0.62rem; letter-spacing: 0.08em; }
+    }
+</style>
 </head>
 <body>
   <div class="mobile-menu" id="mobileMenu">
@@ -156,7 +204,13 @@
       <li><a href="../about.html">About</a></li>
       <li><a href="../contact.html">Contact</a></li>
     </ul>
-    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-end">
+      <div class="lang-switch" data-lang="en" role="group" aria-label="Language / Sprog">
+        <button type="button" class="lang-opt is-on" data-lang="en" aria-pressed="true">Eng</button>
+        <button type="button" class="lang-opt" data-lang="da" aria-pressed="false">Dan</button>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
   </nav>
   <div class="project-content-wrap"><div class="project-grey-box">
   <div class="project-header">
@@ -206,5 +260,6 @@
     function closeMobile() { mobileMenu.classList.remove('open'); }
   </script>
 <script src="/transitions.js"></script>
+<script src="/lang.js"></script>
 </body>
 </html>
