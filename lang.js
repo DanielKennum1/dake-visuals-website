@@ -9,7 +9,10 @@
 //   · client names and logo labels
 //
 // Supported attributes:
-//   data-da="…"              swaps the element's text
+//   data-da="…"              swaps the element's text — this REPLACES every
+//                            child, so never put it on an element the page's
+//                            own script appends nodes to (put it on an inner
+//                            span instead, or rebuild on the dv:lang event)
 //   data-da-placeholder="…"  swaps an input/textarea placeholder
 //   data-da-aria="…"         swaps aria-label
 //   data-da-html="…"         swaps innerHTML (for copy containing <em>, <br> …)

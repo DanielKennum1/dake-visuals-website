@@ -1029,7 +1029,9 @@
   <section class="cta-section" id="contact">
     <div class="cta-inner" data-animate>
       <h2 data-animate style="transition-delay:0.2s"><span data-da="Har du et">Have a</span> <strong data-da="PROJEKT">PROJECT</strong> <span data-da="i tankerne?">in mind?</span></h2>
-      <a href="contact.html" class="btn-cta" data-animate style="transition-delay:0.38s" data-da="Book et møde">Let's create</a>
+      <!-- data-da goes on the label, not the <a>: the blue flood is a span the
+           script appends here, and swapping the anchor's text would delete it -->
+      <a href="contact.html" class="btn-cta" data-animate style="transition-delay:0.38s"><span data-da="Book et møde">Let's create</span></a>
     </div>
   </section>
 
