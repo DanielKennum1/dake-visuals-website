@@ -193,7 +193,7 @@
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 960px) {
-      .s-grid { grid-template-columns: 1fr; gap: 2.4rem; }
+      .s-grid { gap: 0 1.6rem; }
       .proof { padding-top: 80px; }
       .t-grid { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; }
       .testimonials .label-sm { max-width: 560px; margin-left: auto; margin-right: auto; }
@@ -217,9 +217,15 @@
       .photo:nth-child(even) { transform: translateY(20px); }
       .services { padding: 28px 5% 52px; }
       .book { padding-top: 40px; }
-      .s-cta { width: 100%; justify-content: center; }
+      .s-cta { width: 100%; justify-content: center; white-space: nowrap; font-size: 0.72rem; letter-spacing: 0.1em; padding: 1rem 1.2rem; }
       .services-lede { font-size: 1rem; }
-      .s-grid { margin-top: 2.6rem; }
+      .s-grid { margin-top: 2.2rem; gap: 0 0.75rem; }
+      .s-col { padding-top: 0.9rem; min-width: 0; }
+      .s-num { font-size: 0.7rem; }
+      .s-col h3 { font-size: 0.82rem; margin-top: 0.3rem; letter-spacing: -0.01em; }
+      .s-text { font-size: 0.78rem; line-height: 1.45; margin-top: 0.55rem; hyphens: auto; -webkit-hyphens: auto; }
+      .s-col ul { margin-top: 0.7rem; }
+      .s-col li { font-size: 0.62rem; letter-spacing: 0.02em; text-transform: none; line-height: 1.3; padding: 0.45rem 0; hyphens: auto; -webkit-hyphens: auto; overflow-wrap: anywhere; }
       .s-chips { margin-top: 2.4rem; }
       .proof { padding: 64px 5% 30px; }
       .testimonials { padding: 50px 5% 0; }
