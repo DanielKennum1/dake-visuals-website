@@ -255,16 +255,24 @@ summary:focus-visible,
    changes: the label itself is untouched. Only on links that go somewhere
    further — never on an email address or a phone number, where a
    "continue" arrow would be meaningless.
-   ───────────────────────────────────────────────────────────────────────── */
+
+   The label is set at 0.72rem, and a chevron inherited at that size nearly
+   disappeared. It gets its own size instead — 1.6× the label — with the
+   line-height zeroed and a small optical nudge down, so growing it does not
+   change the row's height or push the baseline around. */
 .quote-toggle::after {
   content: '\203A';            /* › */
   display: inline-block;
-  margin-left: 0.45em;
+  margin-left: 0.5em;
+  font-size: 1.6em;
+  line-height: 0;
+  position: relative;
+  top: 0.05em;
   transform: translateX(0);
   transition: transform var(--t) var(--ds-ease);
 }
 .quote-toggle:hover::after {
-  transform: translateX(3px);
+  transform: translateX(4px);
 }
 .quote-toggle:hover {
   color: var(--blue-ink);
@@ -663,10 +671,25 @@ html[lang="da"] .service-col h3 {
    li:hover` filling the row with #d0cbbd and popping it 3px. On a pill that
    was fine; with the fill gone it drew a grey slab behind the words. It
    outranks `.service-col ul li`, so it has to be answered at its own
-   specificity rather than overridden from below. */
+   specificity rather than overridden from below.
+
+   The movement stays — the row should still feel alive under the cursor —
+   it just becomes a nudge forward instead of a box appearing. Sideways
+   rather than up: the bullet anchors the row, so stepping away from it
+   reads as the line coming forward. No scale, because scaling text at this
+   size softens it. */
 .service-col.in-view ul li:hover {
   background: none;
-  transform: translateY(0);
+  transform: translateX(6px);
+  transition-delay: 0s;
+  transition-duration: var(--t-fast);
+}
+.service-col ul li:hover {
+  color: var(--ink-900);
+}
+.service-col ul li:hover::before {
+  opacity: 1;
+  transform: scale(1.5);
 }
 
 /* ── Testimonials ── */
