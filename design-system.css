@@ -434,52 +434,69 @@ summary:focus-visible,
 
 /* ─────────────────────────────────────────────────────────────────────────
    8 · THE CONTACT FORM
-   The form is a card, lifted off the dark panel.
+   No container. The form sits straight on the dark panel and the fields
+   themselves do the work: wells lifted a little out of the grey, each with
+   a hairline edge, brightening under the cursor and brighter still when
+   focused. Send is the one solid element in the column.
 
-   Translucent fields floating directly on the grey were the real problem:
-   low contrast, no edges, and nothing drawing the eye to the one thing
-   this page exists for. A bright panel with real elevation does what Apple
-   does with a form on a tinted background — the form becomes the subject
-   and the dark slab becomes its backdrop. Everything inside flips to
-   ink-on-light as a consequence.
+   An earlier pass put the whole form in a card. It read as a box dropped
+   on the page rather than part of it, so it is gone.
    ───────────────────────────────────────────────────────────────────────── */
-.contact-form {
-  background: var(--cream-raised);
-  border-radius: var(--r-lg);
-  padding: 2.3rem 2.1rem 2.1rem;
-  box-shadow: var(--e3);
-  align-self: start;
-}
+/* No card. The form sits straight on the dark panel, the way it always
+   did — the fields themselves carry the weight instead of a container.
+   Each one is a well lifted a little out of the grey, with a hairline
+   edge, and it brightens as you move through it. */
 .contact-form .field {
   border-bottom: none;
-  background: var(--white);
-  border: 1px solid var(--hairline-strong);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--r-md);
-  padding: 0.72rem 0.95rem 0.78rem;
+  padding: 0.85rem 1.05rem 0.9rem;
   transition: border-color var(--t-fast) var(--ds-ease),
+              background var(--t-fast) var(--ds-ease),
               box-shadow var(--t-fast) var(--ds-ease);
 }
 .contact-form .field:hover {
-  border-color: rgba(10, 10, 10, 0.32);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.34);
 }
 .contact-form .field:focus-within {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(53, 82, 157, 0.16);
-}
-.contact-form .field label {
-  margin-bottom: 0.3rem;
-  color: var(--ink-500);
-}
-.contact-form .field:focus-within label {
-  color: var(--ink-900);
+  background: rgba(255, 255, 255, 0.13);
+  border-color: var(--white);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.14);
 }
 .contact-form .field input,
 .contact-form .field textarea {
-  color: var(--ink-900);
+  font-size: 1.02rem;
 }
+.contact-form .field textarea {
+  min-height: 148px;
+}
+/* Wider than the original 1.35fr: the card has padding of its own now, so
+   at the old width the fields inside it ended up narrower than the plain
+   fields they replaced. */
+@media (min-width: 901px) {
+  .contact-body {
+    grid-template-columns: 1.62fr 0.76fr 1.05fr;
+    gap: 3rem;
+  }
+}
+.btn-submit {
+  min-height: 52px;
+  padding-left: 2.4rem;
+  padding-right: 2.4rem;
+}
+.contact-form .field label {
+  margin-bottom: 0.3rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+.contact-form .field:focus-within label {
+  color: var(--white);
+}
+/* 20% white was close to invisible against the panel. */
 .contact-form .field input::placeholder,
 .contact-form .field textarea::placeholder {
-  color: var(--ink-200);
+  color: rgba(255, 255, 255, 0.34);
 }
 
 /* ── The primary action ──
@@ -489,16 +506,16 @@ summary:focus-visible,
    where to click. Book a call, out on the dark panel, stays an outline, so
    the two read as a first and a second rank rather than equal weight. */
 .btn-submit {
-  background: var(--ink-900);
-  border-color: var(--ink-900);
-  color: var(--cream);
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--ink-900);
   box-shadow: var(--e1);
 }
 .btn-submit:hover {
-  background: #1c1c1c;
-  border-color: #1c1c1c;
-  color: var(--cream);
-  box-shadow: var(--e2);
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--ink-900);
+  box-shadow: var(--e3);
 }
 .btn-calendly {
   border-width: 1px;
@@ -574,13 +591,13 @@ summary:focus-visible,
 .contact-form .field textarea:focus-visible {
   outline: none;
 }
-/* The page patches autofill with a dark fill and white text, which would
-   now paint a dark block inside a white field. */
+/* The page's autofill patch paints the old #545454; keep it in step with
+   the warmed panel so an autofilled field matches the ones beside it. */
 .contact-form .field input:-webkit-autofill,
 .contact-form .field input:-webkit-autofill:hover,
 .contact-form .field input:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
-  -webkit-text-fill-color: #0a0a0a;
+  -webkit-box-shadow: 0 0 0 1000px #5d5950 inset;
+  -webkit-text-fill-color: #ffffff;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
