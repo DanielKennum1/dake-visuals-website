@@ -52,19 +52,24 @@ function rt($text) {
     return [['type' => 'text', 'text' => ['content' => $text]]];
 }
 
-// These properties already exist in the leads database (same as the contact form).
-$base = [
+// Every lead from this page is marked with Source = "Booking (/book)" in
+// "DAKE Visuals - CRM", so it can be filtered or grouped there.
+const BOOKING_SOURCE = 'Booking (/book)';
+
+$properties = [
     'Name'    => ['title' => rt($company)],
     'Email'   => ['email' => $email],
+    'Phone'   => ['phone_number' => $phone],
     'Status'  => ['select' => ['name' => 'Not Contacted']],
+    'Source'  => ['select' => ['name' => BOOKING_SOURCE]],
     'Person'  => ['rich_text' => rt($name)],
     'Company' => ['rich_text' => rt($company)],
 ];
-// Used only if the database has them ("Phone" = phone property, "Source" = select).
-// If it doesn't, the lead is saved without them; phone and source are always in the page body.
-$extra = [
-    'Phone'  => ['phone_number' => $phone],
-    'Source' => ['select' => ['name' => 'Meta Ads']],
+// Safety net if the CRM's properties are ever renamed: save the lead with the
+// title and email only, and put the marker in the title so it still stands out.
+$fallback = [
+    'Name'  => ['title' => rt('[Booking] ' . $company)],
+    'Email' => ['email' => $email],
 ];
 
 function heading($text) {
@@ -75,7 +80,7 @@ function para($text) {
 }
 
 $children = [
-    heading('Booking fra dakevisuals.com/book (Meta Ads)'),
+    heading('Booking fra dakevisuals.com/book'),
     para("Navn: $name\nTelefon: $phone\nE-mail: $email\nVirksomhed: $company"),
     heading('Kommentar'),
     para($need !== '' ? $need : 'Ingen kommentar.'),
@@ -104,10 +109,10 @@ function create_page($properties, $children, $token, $dbId) {
     return [$status, $response];
 }
 
-[$status, $response] = create_page(array_merge($base, $extra), $children, $NOTION_TOKEN, $DATABASE_ID);
+[$status, $response] = create_page($properties, $children, $NOTION_TOKEN, $DATABASE_ID);
 if ($status === 400) {
-    // Most likely the database has no Phone/Source property: retry without them.
-    [$status, $response] = create_page($base, $children, $NOTION_TOKEN, $DATABASE_ID);
+    // A property was renamed or removed in Notion: don't lose the lead.
+    [$status, $response] = create_page($fallback, $children, $NOTION_TOKEN, $DATABASE_ID);
 }
 
 if ($status === 200) {
