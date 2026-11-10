@@ -33,6 +33,11 @@
   /* ── Surfaces. Depth comes from these first, shadows second. */
   --cream-raised: #fcf7ea;
   --cream-sunken: #f1e8d0;
+  /* The surface the cards sit on: a step DOWN from the page cream rather
+     than up. Daniel's call — against a warm background a slightly deeper
+     tone reads as a panel set into the page, where a lighter one reads as
+     white paper laid on top of it. */
+  --card-surface: #f2e9d3;
   --hairline:        rgba(10, 10, 10, 0.09);
   --hairline-strong: rgba(10, 10, 10, 0.20);
 
@@ -333,7 +338,7 @@ summary:focus-visible,
    surface, with a two-layer shadow, draws a card resting on a table.
    ───────────────────────────────────────────────────────────────────────── */
 .testimonial-card {
-  background: var(--cream-raised);
+  background: var(--card-surface);
   border: 1px solid var(--hairline);
   border-radius: var(--r-lg);
   box-shadow: var(--e1);
@@ -694,7 +699,7 @@ summary:focus-visible,
 }
 
 .service-col {
-  background: var(--cream-raised);
+  background: var(--card-surface);
   border: 1px solid var(--hairline);
   border-radius: var(--r-lg);
   box-shadow: var(--e1);
