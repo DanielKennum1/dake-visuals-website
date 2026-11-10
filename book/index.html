@@ -125,14 +125,23 @@
     .steps span.d { font-size: 0.85rem; line-height: 1.5; color: var(--muted); }
 
     /* ─── PROOF ─── */
-    .proof { display: grid; grid-template-columns: 1.4fr 1fr; gap: 3rem 5%; padding: 100px 4% 40px; align-items: center; max-width: 1400px; margin: 0 auto; }
+    .proof { padding: 100px 4% 40px; max-width: 1100px; margin: 0 auto; }
     .photos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
     .photo { aspect-ratio: 3 / 4; border-radius: 4px; overflow: hidden; background: rgba(0,0,0,0.06); }
     .photo img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.12); transition: transform 1.6s var(--ease); }
     .photo:nth-child(even) { transform: translateY(28px); }
     .in .photo img { transform: scale(1); }
-    .quote blockquote { font-family: 'Tinos', serif; font-style: italic; font-size: clamp(1.25rem, 2vw, 1.55rem); line-height: 1.45; }
-    .who { display: flex; align-items: center; gap: 0.9rem; margin-top: 1.6rem; }
+    /* ─── TESTIMONIALS ─── */
+    .testimonials { padding: 60px 4% 0; max-width: 1100px; margin: 0 auto; }
+    .t-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; align-items: start; }
+    .t-card { border: 1px solid rgba(0,0,0,0.2); border-radius: 14px; padding: 1.5rem 1.4rem 1.3rem; display: flex; flex-direction: column; }
+    .t-card blockquote { font-family: 'Tinos', serif; font-style: italic; font-size: 1.08rem; line-height: 1.5; margin-top: 1.1rem; }
+    .t-card .rest { display: none; }
+    .t-card.open .rest { display: inline; animation: fadeIn 0.4s var(--ease); }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .t-toggle { align-self: flex-start; margin-top: 0.9rem; padding: 0; background: none; border: 0; cursor: pointer; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); }
+    .t-toggle:hover { opacity: 0.6; }
+    .who { display: flex; align-items: center; gap: 0.9rem; }
     .who img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; }
     .who b { display: block; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
     .who small { font-size: 0.82rem; color: var(--gray); }
@@ -161,7 +170,9 @@
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 960px) {
-      .proof { grid-template-columns: 1fr; padding-top: 80px; }
+      .proof { padding-top: 80px; }
+      .t-grid { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; }
+      .testimonials .label-sm { max-width: 560px; margin-left: auto; margin-right: auto; }
     }
     @media (max-width: 600px) {
       .top { height: 62px; padding: 0 5%; }
@@ -180,7 +191,8 @@
       .steps span.d { display: none; }
       .photos { grid-template-columns: repeat(2, 1fr); }
       .photo:nth-child(even) { transform: translateY(20px); }
-      .proof { padding: 64px 5% 30px; gap: 3.6rem; }
+      .proof { padding: 64px 5% 30px; }
+      .testimonials { padding: 50px 5% 0; }
       .track { gap: 3.5rem; animation-duration: 30s; }
       .logo-item { width: 130px; height: 42px; }
       .logo-item.lg { height: 64px; }
@@ -296,18 +308,39 @@
         <div class="photo"><img src="/book/assets/img/bts-3.webp" alt="Bag kulisserne hos DAKE Visuals" loading="lazy" /></div>
         <div class="photo"><img src="/book/assets/img/bts-4.webp" alt="Bag kulisserne hos DAKE Visuals" loading="lazy" /></div>
       </div>
-      <figure class="quote">
-        <p class="label-sm">Hvad kunderne siger</p>
-        <blockquote>“Vi har samarbejdet med Daniel i næsten et år nu, og det, der virkelig adskiller ham, er hans fleksibilitet. (…) Indholdet ser altid skarpt og professionelt ud.”</blockquote>
-        <figcaption class="who">
-          <img src="/book/assets/img/carl.webp" alt="" loading="lazy" />
-          <span><b>Carl</b><small>Stifter, ICEFIT The Box</small></span>
-        </figcaption>
-      </figure>
+    </section>
+
+    <section class="testimonials">
+      <h2 class="label-sm">Hvad kunderne siger</h2>
+      <div class="t-grid">
+        <figure class="t-card">
+          <figcaption class="who">
+            <img src="/book/assets/img/carl.webp" alt="" loading="lazy" />
+            <span><b>Carl</b><small>Stifter, ICEFIT The Box</small></span>
+          </figcaption>
+          <blockquote>Vi har samarbejdet med Daniel i næsten et år nu (…) og det, der virkelig adskiller ham, er hans fleksibilitet.<span class="rest"> Han tilpasser sig altid vores behov og er utrolig hurtig, når videoerne skal leveres. Oveni har han et stærkt kunstnerisk blik, og indholdet ser altid skarpt og professionelt ud. Han er desuden blevet en værdifuld partner i planlægningen og hjælper os med at planlægge en hel måneds indhold på forhånd. Jeg kan varmt anbefale ham.</span></blockquote>
+          <button class="t-toggle" type="button" aria-expanded="false">Vis mere</button>
+        </figure>
+        <figure class="t-card">
+          <figcaption class="who">
+            <img src="/book/assets/img/nikolaj.webp" alt="" loading="lazy" />
+            <span><b>Nikolaj</b><small>Medstifter, RFSPORT</small></span>
+          </figcaption>
+          <blockquote>Før vi begyndte at arbejde sammen med Daniel, klippede vi selv vores YouTube-videoer.<span class="rest"> Problemet var, at vi simpelthen hverken havde tiden eller erfaringen til at nå det kvalitetsniveau, vi gik efter. (…) Daniel forstår vores brand og ved præcis, hvilken klippestil jeg er ude efter. (…) Kommunikationen med Daniel er nem og hurtig. (…) At have Daniel på holdet sparer os for utrolig meget tid, og YouTube er nu blevet en kanal, vi bruger aktivt.</span></blockquote>
+          <button class="t-toggle" type="button" aria-expanded="false">Vis mere</button>
+        </figure>
+        <figure class="t-card">
+          <figcaption class="who">
+            <img src="/book/assets/img/jasmin.webp" alt="" loading="lazy" />
+            <span><b>Jasmin</b><small>Stifter, Evie Cosmetics</small></span>
+          </figcaption>
+          <blockquote>Vi havde en rigtig god oplevelse med at arbejde sammen med Daniel.<span class="rest"> Han var effektiv, velforberedt og usædvanlig god til hurtigt at forstå vores vision og det look and feel, vi ønskede for vores brand. Samtidig formåede han at tænke ud af boksen og byde ind med kreative idéer, der løftede det endelige resultat.</span></blockquote>
+          <button class="t-toggle" type="button" aria-expanded="false">Vis mere</button>
+        </figure>
+      </div>
     </section>
 
     <section class="clients" aria-label="Udvalgte samarbejder">
-      <p class="label-sm">Udvalgte samarbejder</p>
       <div class="marquee">
         <div class="track" id="track">
           <div class="logo-item"><img src="/book/assets/clients/take-one.png" alt="TAKE ONE" /></div>
@@ -360,6 +393,15 @@
       }, { threshold: 0.2 });
       io.observe(el);
     })();
+
+    // Testimonials: "Vis mere" / "Vis mindre"
+    document.querySelectorAll('.t-toggle').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var open = btn.closest('.t-card').classList.toggle('open');
+        btn.textContent = open ? 'Vis mindre' : 'Vis mere';
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    });
 
     // Booking form
     (function () {
