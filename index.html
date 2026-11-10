@@ -326,6 +326,10 @@
       color: var(--blue);
       margin-bottom: 2rem;
     }
+    /* Danish drops the three blue taglines. English keeps them, so this hides
+       rather than deletes, and the heading takes over the gap they left. */
+    html[lang="da"] .service-col .service-tagline { display: none; }
+    html[lang="da"] .service-col h3 { margin-bottom: 2rem; }
     .service-col ul {
       list-style: none;
       display: flex;
@@ -913,7 +917,7 @@
         <h3>Create</h3>
         <p class="service-tagline" data-da="Hvert billede med præcision">Every frame with precision</p>
         <ul>
-          <li data-da="Manuskript &amp; præproduktion">Scriptwriting & Pre-Production</li>
+          <li data-da="Scripting &amp; præproduktion">Scriptwriting & Pre-Production</li>
           <li data-da="Produktion">Production</li>
           <li data-da="Postproduktion">Post-Production</li>
         </ul>
