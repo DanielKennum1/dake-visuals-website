@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book en uforpligtende snak — DAKE Visuals</title>
+  <meta name="description" content="Book en uforpligtende snak på telefonen med DAKE Visuals. 15 minutter, vi ringer dig op." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="/book/favicon.svg" type="image/svg+xml" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="DAKE Visuals" />
+  <meta property="og:title" content="Book en uforpligtende snak — DAKE Visuals" />
+  <meta property="og:description" content="15 minutter. Vi ringer dig op." />
+  <meta property="og:url" content="https://dakevisuals.com/book/" />
+  <meta property="og:image" content="https://dakevisuals.com/book/social-preview.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="628" />
+  <meta property="og:locale" content="da_DK" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#f7efdb" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;0,900;1,700;1,900&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Tinos:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+
+  <!--
+    META PIXEL: paste your Meta Pixel base code here (Events Manager → Pixel → Install code).
+    The form already fires fbq('track', 'Lead') on a successful submit once the pixel is installed.
+  -->
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --white: #ffffff; --black: #000000; --gray: #545454; --blue: #35529d; --cream: #f7efdb;
+      --line: rgba(0,0,0,0.16); --muted: rgba(0,0,0,0.55); --error: #b3261e;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    html { background: var(--cream); -webkit-text-size-adjust: 100%; }
+    body { font-family: 'Lato', sans-serif; background: var(--cream); color: var(--black); min-height: 100vh; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+
+    /* ─── TOP BAR ─── */
+    .top { height: 72px; display: flex; align-items: center; justify-content: space-between; padding: 0 4%; }
+    .logo { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: 1.1rem; letter-spacing: 0.03em; text-transform: uppercase; text-decoration: none; color: var(--black); }
+    .top-tag { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(0,0,0,0.5); }
+
+    /* ─── BOOKING ─── */
+    .book { max-width: 640px; margin: 0 auto; padding: 36px 20px 0; }
+    .intro { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 2rem; opacity: 0; transform: translateY(14px); animation: fadeUp 0.8s var(--ease) 0.05s forwards; }
+    .avatar { flex-shrink: 0; width: 84px; height: 84px; border-radius: 50%; overflow: hidden; background: #ddd; box-shadow: 0 0 0 3px var(--cream), 0 0 0 4px rgba(0,0,0,0.12); }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    h1 { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: clamp(1.35rem, 3.4vw, 1.75rem); line-height: 1.15; letter-spacing: -0.02em; }
+    .intro p { margin-top: 0.35rem; font-size: 1.05rem; color: var(--muted); }
+
+    .card { background: var(--white); border: 1px solid rgba(0,0,0,0.07); border-radius: 14px; padding: 40px 44px 36px; box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 12px 40px -18px rgba(0,0,0,0.18); opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s var(--ease) 0.15s forwards; }
+    @keyframes fadeUp { to { opacity: 1; transform: none; } }
+
+    .field { margin-bottom: 1.5rem; }
+    .field > label, .label { display: flex; align-items: center; gap: 0.3rem; font-weight: 700; font-size: 1rem; margin-bottom: 0.55rem; }
+    .req { color: var(--muted); font-weight: 400; }
+    .opt { color: var(--muted); font-weight: 400; font-size: 0.85rem; }
+
+    .control { width: 100%; font-family: 'Lato', sans-serif; font-size: 1rem; color: var(--black); background: var(--white); border: 1px solid var(--line); border-radius: 10px; padding: 0.85rem 1rem; outline: none; transition: border-color 0.15s, box-shadow 0.15s; -webkit-appearance: none; appearance: none; }
+    .control::placeholder { color: rgba(0,0,0,0.38); }
+    .control:hover { border-color: rgba(0,0,0,0.3); }
+    .control:focus, .phone:focus-within { border-color: var(--black); box-shadow: 0 0 0 3px rgba(53,82,157,0.18); }
+    textarea.control { min-height: 120px; resize: vertical; line-height: 1.55; }
+    select.control { padding-right: 2.6rem; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='16' viewBox='0 0 12 16' fill='none' stroke='%23333' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 6 6 2.5 9.5 6M2.5 10 6 13.5 9.5 10'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; }
+    select.control:invalid { color: rgba(0,0,0,0.38); }
+    select.control option { color: var(--black); }
+
+    /* phone with country code */
+    .phone { display: flex; align-items: stretch; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; transition: border-color 0.15s, box-shadow 0.15s; background: var(--white); }
+    .phone:hover { border-color: rgba(0,0,0,0.3); }
+    .phone select { flex: 0 0 auto; width: 6.6rem; font-family: 'Lato', sans-serif; font-size: 1rem; border: 0; border-right: 1px solid var(--line); background-color: transparent; padding: 0 2rem 0 0.9rem; outline: none; cursor: pointer; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='16' viewBox='0 0 12 16' fill='none' stroke='%23333' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 6 6 2.5 9.5 6M2.5 10 6 13.5 9.5 10'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.75rem center; }
+    .phone input { flex: 1; min-width: 0; border: 0; outline: none; font-family: 'Lato', sans-serif; font-size: 1rem; padding: 0.85rem 1rem; background: transparent; }
+    .phone input::placeholder { color: rgba(0,0,0,0.38); }
+
+    /* info tooltip */
+    .info { position: relative; display: inline-grid; place-items: center; width: 20px; height: 20px; margin-left: 0.2rem; border: 0; background: none; cursor: help; color: rgba(0,0,0,0.6); }
+    .info .tip { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px); width: 230px; padding: 0.6rem 0.75rem; border-radius: 8px; background: var(--black); color: var(--white); font-size: 0.8rem; font-weight: 400; line-height: 1.45; text-align: left; opacity: 0; pointer-events: none; transition: opacity 0.15s, transform 0.15s; z-index: 5; }
+    .info:hover .tip, .info:focus-visible .tip { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .field.invalid .control, .field.invalid .phone { border-color: var(--error); }
+    .err { display: none; font-size: 0.82rem; color: var(--error); margin-top: 0.45rem; }
+    .field.invalid .err { display: block; }
+    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+    .btn {
+      position: relative; overflow: hidden; isolation: isolate; width: 100%; margin-top: 0.6rem;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.8rem;
+      font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.82rem; letter-spacing: 0.15em; text-transform: uppercase;
+      padding: 1.1rem 2rem; border-radius: 999px; border: none; cursor: pointer;
+      background: var(--black); color: var(--cream); transition: color 0.35s var(--ease);
+    }
+    .btn::before { content: ''; position: absolute; inset: 0; background: var(--blue); transform: translateY(101%); transition: transform 0.45s var(--ease); z-index: -1; border-radius: inherit; }
+    .btn:hover::before, .btn:focus-visible::before { transform: translateY(0); }
+    .btn:hover, .btn:focus-visible { color: var(--white); }
+    .btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+    .btn .arrow { transition: transform 0.35s var(--ease); }
+    .btn:hover .arrow { transform: translateX(4px); }
+    .btn[disabled] { cursor: progress; opacity: 0.7; }
+    .form-error { display: none; margin-top: 1rem; font-size: 0.88rem; color: var(--error); }
+    .form-error.show { display: block; }
+    .consent { margin-top: 1rem; font-size: 0.78rem; line-height: 1.55; color: var(--muted); text-align: center; }
+
+    .success { display: none; text-align: center; padding: 1.5rem 0 0.5rem; }
+    .success:focus { outline: none; }
+    .card.done form { display: none; }
+    .card.done .success { display: block; animation: fadeUp 0.7s var(--ease) both; }
+    .success .check { width: 56px; height: 56px; border-radius: 50%; background: var(--black); display: grid; place-items: center; margin: 0 auto 1.5rem; }
+    .success h2 { font-family: 'Tinos', serif; font-style: italic; font-weight: 400; font-size: clamp(1.6rem, 4vw, 2rem); line-height: 1.3; margin-bottom: 0.8rem; }
+    .success p { color: var(--muted); line-height: 1.65; max-width: 25rem; margin: 0 auto 1.8rem; }
+    .link-pill { display: inline-block; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.85rem 1.8rem; border-radius: 999px; border: 1.5px solid rgba(0,0,0,0.6); text-decoration: none; transition: background 0.2s, color 0.2s; }
+    .link-pill:hover { background: var(--black); color: var(--cream); }
+
+    /* ─── STEPS ─── */
+    .steps { max-width: 640px; margin: 0 auto; padding: 44px 20px 0; }
+    .label-sm { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(0,0,0,0.45); margin-bottom: 1rem; }
+    .steps ol { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+    .steps li { border-top: 1px solid rgba(0,0,0,0.14); padding-top: 0.9rem; }
+    .steps .n { display: block; font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: 0.8rem; color: rgba(0,0,0,0.35); margin-bottom: 0.4rem; }
+    .steps strong { display: block; font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .steps span.d { font-size: 0.85rem; line-height: 1.5; color: var(--muted); }
+
+    /* ─── PROOF ─── */
+    .proof { display: grid; grid-template-columns: 1.4fr 1fr; gap: 3rem 5%; padding: 100px 4% 40px; align-items: center; max-width: 1400px; margin: 0 auto; }
+    .photos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
+    .photo { aspect-ratio: 3 / 4; border-radius: 4px; overflow: hidden; background: rgba(0,0,0,0.06); }
+    .photo img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.12); transition: transform 1.6s var(--ease); }
+    .photo:nth-child(even) { transform: translateY(28px); }
+    .in .photo img { transform: scale(1); }
+    .quote blockquote { font-family: 'Tinos', serif; font-style: italic; font-size: clamp(1.25rem, 2vw, 1.55rem); line-height: 1.45; }
+    .who { display: flex; align-items: center; gap: 0.9rem; margin-top: 1.6rem; }
+    .who img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; }
+    .who b { display: block; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .who small { font-size: 0.82rem; color: var(--gray); }
+
+    /* ─── CLIENTS ─── */
+    .clients { padding: 60px 0 70px; }
+    .clients .label-sm { text-align: center; margin-bottom: 1.6rem; }
+    .marquee { overflow: hidden; position: relative; padding: 12px 0; }
+    .marquee::before, .marquee::after { content: ''; position: absolute; top: 0; bottom: 0; width: 18%; z-index: 2; pointer-events: none; }
+    .marquee::before { left: 0; background: linear-gradient(to right, var(--cream), rgba(247,239,219,0)); }
+    .marquee::after { right: 0; background: linear-gradient(to left, var(--cream), rgba(247,239,219,0)); }
+    .track { display: flex; align-items: center; gap: 6rem; width: max-content; animation: marquee 45s linear infinite; }
+    .logo-item { flex-shrink: 0; width: 170px; height: 52px; display: flex; align-items: center; justify-content: center; opacity: 0.7; }
+    .logo-item img { max-width: 100%; max-height: 100%; object-fit: contain; filter: brightness(0); }
+    .logo-item.lg { height: 84px; }
+    .logo-item.rynkeby { height: 80px; transform: translateY(-16px); }
+    .logo-item.bliss { transform: translateY(-8px); }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    /* ─── FOOTER ─── */
+    footer { padding: 36px 0 40px; border-top: 1px solid rgba(0,0,0,0.08); margin: 0 4%; display: flex; flex-wrap: wrap; gap: 1rem 2.2rem; align-items: center; justify-content: space-between; font-size: 0.8rem; color: var(--gray); }
+    footer .f-logo { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; text-transform: uppercase; letter-spacing: 0.03em; color: rgba(0,0,0,0.3); }
+    footer nav { display: flex; flex-wrap: wrap; gap: 0.5rem 1.6rem; }
+    footer a { text-decoration: none; }
+    footer a:hover { color: var(--black); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 960px) {
+      .proof { grid-template-columns: 1fr; padding-top: 80px; }
+    }
+    @media (max-width: 600px) {
+      .top { height: 62px; padding: 0 5%; }
+      .top-tag { display: none; }
+      .book { padding: 20px 14px 0; }
+      .intro { gap: 1rem; margin-bottom: 1.5rem; }
+      .avatar { width: 64px; height: 64px; }
+      .intro p { font-size: 0.98rem; }
+      .card { padding: 28px 20px 26px; border-radius: 12px; }
+      .field { margin-bottom: 1.25rem; }
+      .info .tip { left: auto; right: -10px; transform: translateY(4px); }
+      .info:hover .tip, .info:focus-visible .tip { transform: none; }
+      .steps { padding: 36px 20px 0; }
+      .steps ol { grid-template-columns: 1fr; gap: 0.9rem; }
+      .photos { grid-template-columns: repeat(2, 1fr); }
+      .photo:nth-child(even) { transform: translateY(20px); }
+      .proof { padding: 64px 5% 30px; gap: 3.6rem; }
+      .track { gap: 3.5rem; animation-duration: 30s; }
+      .logo-item { width: 130px; height: 42px; }
+      .logo-item.lg { height: 64px; }
+      .logo-item.rynkeby { height: 60px; transform: translateY(-12px); }
+      footer { flex-direction: column; align-items: flex-start; margin: 0 5%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .intro, .card { animation: none; transform: none; opacity: 1; }
+      .track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; }
+      .track [aria-hidden="true"] { display: none; }
+      .photo img { transform: none; transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top">
+    <a class="logo" href="https://dakevisuals.com/">DAKE VISUALS</a>
+    <span class="top-tag">Videoproduktion · Aarhus</span>
+  </header>
+
+  <main>
+    <section class="book">
+      <div class="intro">
+        <div class="avatar"><img src="/book/assets/img/dake-avatar.jpg" alt="Daniel fra DAKE Visuals" width="84" height="84" /></div>
+        <div>
+          <h1>Book en uforpligtende snak på telefonen</h1>
+          <p>15 minutter. Vi ringer dig op.</p>
+        </div>
+      </div>
+
+      <div class="card" id="card">
+        <form id="leadForm" novalidate>
+          <div class="field">
+            <label for="name">Dit navn <span class="req" aria-hidden="true">*</span></label>
+            <input class="control" id="name" name="name" type="text" autocomplete="name" required />
+            <span class="err">Skriv venligst dit navn.</span>
+          </div>
+
+          <div class="field">
+            <label for="email">E-mailadresse <span class="req" aria-hidden="true">*</span></label>
+            <input class="control" id="email" name="email" type="email" inputmode="email" autocomplete="email" required />
+            <span class="err">Skriv venligst en gyldig e-mailadresse.</span>
+          </div>
+
+          <div class="field">
+            <div class="label">
+              <label for="phone">Dit telefonnummer</label> <span class="req" aria-hidden="true">*</span>
+              <button type="button" class="info" aria-label="Hvorfor skal vi bruge dit nummer?">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5.5" stroke-linecap="round"/><circle cx="12" cy="7.6" r="0.6" fill="currentColor"/></svg>
+                <span class="tip" role="tooltip">Vi bruger kun dit nummer til at ringe dig op til jeres snak.</span>
+              </button>
+            </div>
+            <div class="phone">
+              <select id="cc" name="cc" aria-label="Landekode">
+                <option value="+45" selected>🇩🇰 +45</option>
+                <option value="+46">🇸🇪 +46</option>
+                <option value="+47">🇳🇴 +47</option>
+                <option value="+49">🇩🇪 +49</option>
+                <option value="+44">🇬🇧 +44</option>
+              </select>
+              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="12 34 56 78" required />
+            </div>
+            <span class="err">Skriv venligst et gyldigt telefonnummer.</span>
+          </div>
+
+          <div class="field">
+            <label for="company">Virksomhed <span class="req" aria-hidden="true">*</span></label>
+            <input class="control" id="company" name="company" type="text" autocomplete="organization" required />
+            <span class="err">Skriv venligst navnet på din virksomhed.</span>
+          </div>
+
+          <div class="field">
+            <label for="need">Tilføj kommentar <span class="opt">(valgfri)</span></label>
+            <textarea class="control" id="need" name="need" rows="4" maxlength="1500" placeholder="Er der noget, du gerne vil fortælle mig på forhånd?"></textarea>
+          </div>
+
+          <div class="hp" aria-hidden="true">
+            <label for="website">Lad dette felt være tomt</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <button class="btn" type="submit">
+            <span class="btn-text">Book opkald</span>
+            <svg class="arrow" width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><path d="M1 6h13M9.5 1.5 14 6l-4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <p class="form-error" id="formError" role="alert">Noget gik galt. Prøv igen, eller skriv direkte til <a href="mailto:dake@dakevisuals.com">dake@dakevisuals.com</a>.</p>
+          <p class="consent">Når du sender formularen, giver du DAKE Visuals lov til at kontakte dig om din henvendelse. Dine oplysninger deles ikke med andre.</p>
+        </form>
+
+        <div class="success" id="success" role="status" aria-live="polite" tabindex="-1">
+          <div class="check"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#f7efdb" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h2 id="successTitle">Tak! Jeg har modtaget din henvendelse.</h2>
+          <p>Jeg ringer dig op hurtigst muligt. Indtil da er du velkommen til at se nogle af mine seneste projekter.</p>
+          <a class="link-pill" href="https://dakevisuals.com/work.html">Se mit arbejde</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="steps">
+      <h2 class="label-sm">Sådan foregår det</h2>
+      <ol>
+        <li><span class="n">01</span><strong>Udfyld formularen</strong><span class="d">Det tager under et minut.</span></li>
+        <li><span class="n">02</span><strong>Jeg ringer dig op</strong><span class="d">En kort snak om din virksomhed og dine mål.</span></li>
+        <li><span class="n">03</span><strong>Vi lægger en plan</strong><span class="d">Sammen finder vi den video, der passer til dig.</span></li>
+      </ol>
+    </section>
+
+    <section class="proof">
+      <div class="photos" id="photos">
+        <div class="photo"><img src="/book/assets/img/bts-1.webp" alt="Bag kulisserne: interviewoptagelse i studiet" loading="lazy" /></div>
+        <div class="photo"><img src="/book/assets/img/bts-2.webp" alt="Bag kulisserne: optagelse under skråvinduer" loading="lazy" /></div>
+        <div class="photo"><img src="/book/assets/img/bts-3.webp" alt="Bag kulisserne: kamera klar i træningscenteret" loading="lazy" /></div>
+        <div class="photo"><img src="/book/assets/img/bts-4.webp" alt="Bag kulisserne: kameraer på bordet" loading="lazy" /></div>
+      </div>
+      <figure class="quote">
+        <p class="label-sm">Hvad kunderne siger</p>
+        <blockquote>“Vi har samarbejdet med Daniel i næsten et år nu, og det, der virkelig adskiller ham, er hans fleksibilitet. (…) Indholdet ser altid skarpt og professionelt ud.”</blockquote>
+        <figcaption class="who">
+          <img src="/book/assets/img/carl.webp" alt="" loading="lazy" />
+          <span><b>Carl</b><small>Stifter, ICEFIT The Box</small></span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="clients" aria-label="Udvalgte samarbejder">
+      <p class="label-sm">Udvalgte samarbejder</p>
+      <div class="marquee">
+        <div class="track" id="track">
+          <div class="logo-item"><img src="/book/assets/clients/take-one.png" alt="TAKE ONE" /></div>
+          <div class="logo-item lg"><img src="/book/assets/clients/icefit.png" alt="ICEFIT The Box" /></div>
+          <div class="logo-item"><img src="/book/assets/clients/casablanca.png" alt="Casablanca" /></div>
+          <div class="logo-item"><img src="/book/assets/clients/evie.png" alt="EVIE Cosmetics" /></div>
+          <div class="logo-item"><img src="/book/assets/clients/aarhus-motion.png" alt="Aarhus Motion" /></div>
+          <div class="logo-item rynkeby"><img src="/book/assets/clients/rynkeby.png" alt="Rynkeby" /></div>
+          <div class="logo-item"><img src="/book/assets/clients/thy-rock.png" alt="THY Rock" /></div>
+          <div class="logo-item bliss"><img src="/book/assets/clients/bliss.png" alt="Bliss" /></div>
+          <div class="logo-item"><img src="/book/assets/clients/rfsport.png" alt="RF.Sport" /></div>
+          <div class="logo-item"><img src="/book/assets/clients/groft.png" alt="GROFT" /></div>
+          <div class="logo-item"><img src="/book/assets/clients/pace-club.png" alt="PACE Club" /></div>
+          <div class="logo-item lg"><img src="/book/assets/clients/psykiatri-fonden.png" alt="Psykiatri Fonden" /></div>
+          <div class="logo-item"><img src="/book/assets/clients/optimum-nutrition.png" alt="Optimum Nutrition" /></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span class="f-logo">DAKE VISUALS</span>
+    <nav>
+      <a href="mailto:dake@dakevisuals.com">dake@dakevisuals.com</a>
+      <a href="tel:+4553399909">+45 53 39 99 09</a>
+      <span>CVR: 45359077</span>
+      <a href="https://www.instagram.com/dake.visuals/" target="_blank" rel="noopener">Instagram</a>
+    </nav>
+    <span>© 2026 DAKE Visuals</span>
+  </footer>
+
+  <script>
+    // Duplicate the logo row so the marquee loops seamlessly
+    (function () {
+      var track = document.getElementById('track');
+      Array.prototype.slice.call(track.children).forEach(function (el) {
+        var c = el.cloneNode(true);
+        c.setAttribute('aria-hidden', 'true');
+        c.querySelector('img').alt = '';
+        track.appendChild(c);
+      });
+    })();
+
+    // Photo reveal on scroll
+    (function () {
+      var el = document.getElementById('photos');
+      if (!('IntersectionObserver' in window)) { el.classList.add('in'); return; }
+      var io = new IntersectionObserver(function (es) {
+        if (es[0].isIntersecting) { el.classList.add('in'); io.disconnect(); }
+      }, { threshold: 0.2 });
+      io.observe(el);
+    })();
+
+    // Booking form
+    (function () {
+      var form = document.getElementById('leadForm');
+      var f = form.elements;
+      var btn = form.querySelector('.btn');
+      var btnText = btn.querySelector('.btn-text');
+      var formError = document.getElementById('formError');
+      var card = document.getElementById('card');
+
+      var checks = {
+        name: function (v) { return v.trim().length >= 2; },
+        email: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); },
+        phone: function (v) {
+          var digits = v.replace(/\D/g, '');
+          return f.cc.value === '+45' ? digits.length === 8 || (digits.length === 10 && digits.indexOf('45') === 0) : digits.length >= 6;
+        },
+        company: function (v) { return v.trim().length >= 1; }
+      };
+
+      function validate(name) {
+        var input = f[name];
+        var ok = checks[name](input.value);
+        input.closest('.field').classList.toggle('invalid', !ok);
+        input.setAttribute('aria-invalid', ok ? 'false' : 'true');
+        return ok;
+      }
+
+      Object.keys(checks).forEach(function (k) {
+        var input = f[k];
+        var isSelect = input.tagName === 'SELECT';
+        input.addEventListener(isSelect ? 'change' : 'blur', function () { if (input.value) validate(k); });
+        input.addEventListener('input', function () {
+          if (input.closest('.field').classList.contains('invalid')) validate(k);
+        });
+      });
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        formError.classList.remove('show');
+        var firstBad = null;
+        Object.keys(checks).forEach(function (k) {
+          if (!validate(k) && !firstBad) firstBad = f[k];
+        });
+        if (firstBad) { firstBad.focus(); return; }
+
+        var digits = f.phone.value.replace(/\D/g, '');
+        if (f.cc.value === '+45' && digits.length === 10) digits = digits.slice(2);
+        var data = {
+          name: f.name.value.trim(),
+          email: f.email.value.trim(),
+          phone: f.cc.value + ' ' + digits,
+          company: f.company.value.trim(),
+          need: f.need.value.trim(),
+          website: f.website.value
+        };
+
+        btn.disabled = true;
+        btnText.textContent = 'Sender…';
+        try {
+          var res = await fetch('/book/submit.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+
+          var first = data.name.split(/\s+/)[0];
+          if (first) document.getElementById('successTitle').textContent = 'Tak, ' + first + '! Jeg har modtaget din henvendelse.';
+          card.classList.add('done');
+          document.getElementById('success').focus({ preventScroll: true });
+          document.querySelector('.intro').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (typeof window.fbq === 'function') window.fbq('track', 'Lead');
+        } catch (err) {
+          btn.disabled = false;
+          btnText.textContent = 'Book opkald';
+          formError.classList.add('show');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
