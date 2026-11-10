@@ -433,56 +433,72 @@ summary:focus-visible,
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   8 · FORM FIELDS  (contact page — dark grey panel)
-   An underline is the least confident input style there is, and the
-   contact form is where the money is. This gives each field a real
-   surface and a visible focus state without moving anything.
+   8 · THE CONTACT FORM
+   The form is a card, lifted off the dark panel.
+
+   Translucent fields floating directly on the grey were the real problem:
+   low contrast, no edges, and nothing drawing the eye to the one thing
+   this page exists for. A bright panel with real elevation does what Apple
+   does with a form on a tinted background — the form becomes the subject
+   and the dark slab becomes its backdrop. Everything inside flips to
+   ink-on-light as a consequence.
    ───────────────────────────────────────────────────────────────────────── */
+.contact-form {
+  background: var(--cream-raised);
+  border-radius: var(--r-lg);
+  padding: 2.3rem 2.1rem 2.1rem;
+  box-shadow: var(--e3);
+  align-self: start;
+}
 .contact-form .field {
   border-bottom: none;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: var(--white);
+  border: 1px solid var(--hairline-strong);
   border-radius: var(--r-md);
-  padding: 0.85rem 1rem 0.9rem;
+  padding: 0.72rem 0.95rem 0.78rem;
   transition: border-color var(--t-fast) var(--ds-ease),
-              background var(--t-fast) var(--ds-ease),
               box-shadow var(--t-fast) var(--ds-ease);
 }
 .contact-form .field:hover {
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(10, 10, 10, 0.32);
 }
 .contact-form .field:focus-within {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12);
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(53, 82, 157, 0.16);
 }
 .contact-form .field label {
   margin-bottom: 0.3rem;
+  color: var(--ink-500);
 }
-/* Placeholders at 20% white were close to invisible on the grey panel. */
+.contact-form .field:focus-within label {
+  color: var(--ink-900);
+}
+.contact-form .field input,
+.contact-form .field textarea {
+  color: var(--ink-900);
+}
 .contact-form .field input::placeholder,
 .contact-form .field textarea::placeholder {
-  color: rgba(255, 255, 255, 0.34);
+  color: var(--ink-200);
 }
 
 /* ── The primary action ──
    Send was a ghost outline: the most important button on the site styled
-   as the least important thing on its own page. This is the draft's
-   primary button inverted for a dark surface — a filled pill, the only
-   solid element in the column, so there is no question where to click.
-   Book a call stays an outline, which is now a deliberate second rank
-   rather than two buttons of equal weight sitting next to each other. */
+   as the least important thing on its own page. It is now solid ink on the
+   light card — the only filled element inside it, so there is no question
+   where to click. Book a call, out on the dark panel, stays an outline, so
+   the two read as a first and a second rank rather than equal weight. */
 .btn-submit {
-  background: var(--white);
-  border-color: var(--white);
-  color: var(--gray);
+  background: var(--ink-900);
+  border-color: var(--ink-900);
+  color: var(--cream);
   box-shadow: var(--e1);
 }
 .btn-submit:hover {
-  background: var(--white);
-  border-color: var(--white);
-  color: var(--ink-900);
-  box-shadow: var(--e3);
+  background: #1c1c1c;
+  border-color: #1c1c1c;
+  color: var(--cream);
+  box-shadow: var(--e2);
 }
 .btn-calendly {
   border-width: 1px;
@@ -549,27 +565,22 @@ summary:focus-visible,
   background: var(--gray);
 }
 
-/* ── The booking widget ──
-   A white third-party embed with square corners, sitting directly on the
-   dark panel. Given the same surface treatment as every other card on the
-   site, it stops looking bolted on. */
-.calendly-inline-widget {
-  background: var(--cream);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  box-shadow: var(--e2);
-}
+/* The Calendly embed is left alone. Putting a cream panel behind it only
+   drew a big empty square under the calendar — it did not make the embed
+   look any less like an embed. */
 /* The field itself now shows focus, so the inner control must not also
    draw a ring inside it. */
 .contact-form .field input:focus-visible,
 .contact-form .field textarea:focus-visible {
   outline: none;
 }
-/* Keep the autofill patch in step with the new field background. */
+/* The page patches autofill with a dark fill and white text, which would
+   now paint a dark block inside a white field. */
 .contact-form .field input:-webkit-autofill,
 .contact-form .field input:-webkit-autofill:hover,
 .contact-form .field input:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0 1000px #4e4a43 inset;
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+  -webkit-text-fill-color: #0a0a0a;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
