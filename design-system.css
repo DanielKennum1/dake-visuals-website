@@ -356,6 +356,15 @@ summary:focus-visible,
   margin-top: auto;
   padding-top: 1.1rem;
 }
+/* ...but only while they are all closed. The grid stretches every card to
+   the tallest in the row, so opening one quote dragged the other two up to
+   its height and left them mostly empty with their toggle stranded at the
+   bottom. As soon as any card is expanded the row stops stretching and the
+   closed cards keep their own size. Browsers without :has() simply keep the
+   old stretch behaviour. */
+.testimonials-grid:has(.testimonial-card.expanded) {
+  align-items: start;
+}
 
 /* Work grid and the homepage work rail. The thumbnail keeps its own
    scale-on-hover; this adds the lift underneath it. */
