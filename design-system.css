@@ -1,0 +1,489 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   DAKE VISUALS — DESIGN SYSTEM
+   ──────────────────────────────────────────────────────────────────────────
+   Loaded LAST in every page's <head>, after that page's own <style> block,
+   so it refines the existing design instead of replacing it.
+
+   RULES THIS FILE FOLLOWS:
+   · It never changes content, copy, markup or layout structure.
+   · It only upgrades surface, spacing, type detail, state and motion.
+   · It never touches anything a script owns:
+       – .btn-cta's transform        (the magnetic pull in index.html)
+       – .btn-cta-fill               (the blue flood span the CTA script appends)
+       – .lang-switch::before        (the sliding knob)
+       – .nav-pill                   (transitions.js measures and moves it)
+       – .cta-ink                    (the cloned heading layer)
+     Those keep their original rules. Adding a competing transform or
+     transition here would fight the script and break the animation.
+
+   The one thing that makes a system read as designed is that every value
+   below comes from the token block — nothing is invented further down.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Ink: one hue, optically even steps. Replaces the ad-hoc
+        rgba(0,0,0,0.08 / 0.25 / 0.3 / 0.4) scattered across the pages. */
+  --ink-900: #0a0a0a;
+  --ink-700: #2e2c28;
+  --ink-500: #56534c;
+  --ink-300: #8c887f;
+  --ink-200: #b4afa4;
+  --ink-100: #d8d2c3;
+
+  /* ── Surfaces. Depth comes from these first, shadows second. */
+  --cream-raised: #fcf7ea;
+  --cream-sunken: #f1e8d0;
+  --hairline:        rgba(10, 10, 10, 0.09);
+  --hairline-strong: rgba(10, 10, 10, 0.20);
+
+  /* ── Accent. Used for roughly 2% of the pixels on any screen. */
+  --blue-ink: #2a4280;
+
+  /* ── Warm the mid grey. #545454 is a cold grey sitting on a warm cream;
+        the same value rotated toward the paper reads as considered. */
+  --gray: #56524a;
+
+  /* ── Radii */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --r-pill: 999px;
+
+  /* ── Elevation: layered and low-contrast, so an edge reads as light
+        falling across a surface rather than a box with a shadow. */
+  --e1: 0 1px 2px rgba(10,10,10,0.04), 0 2px 8px rgba(10,10,10,0.04);
+  --e2: 0 2px 4px rgba(10,10,10,0.05), 0 10px 28px rgba(10,10,10,0.07);
+  --e3: 0 4px 8px rgba(10,10,10,0.06), 0 20px 52px rgba(10,10,10,0.10);
+
+  /* ── Motion: one easing family, three durations, nothing else. */
+  --ds-ease:       cubic-bezier(0.22, 1, 0.36, 1);
+  --ds-ease-press: cubic-bezier(0.4, 0, 0.2, 1);
+  --t-fast: 150ms;
+  --t:      260ms;
+  --t-slow: 420ms;
+
+  /* ── Focus ring colour. Flipped to white inside dark sections below. */
+  --ds-focus: var(--blue);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   1 · RENDERING
+   Font smoothing is the cheapest premium cue there is: Inter 900 italic
+   on cream is noticeably cleaner with subpixel AA turned off.
+   ───────────────────────────────────────────────────────────────────────── */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   2 · FOCUS
+   The site had no keyboard focus state at all. `outline` is used rather
+   than box-shadow because it follows each element's own border-radius,
+   so a pill button gets a pill ring for free.
+   ───────────────────────────────────────────────────────────────────────── */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--ds-focus);
+  outline-offset: 3px;
+}
+
+/* Dark sections need a light ring — blue on near-black is unreadable. */
+#navbar,
+.hero,
+.video-hero,
+.contact-body,
+.contact-hero,
+.project-hero,
+.mobile-menu,
+.bts-stage {
+  --ds-focus: rgba(255, 255, 255, 0.92);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   3 · DISPLAY TYPE
+   Tracking tightens as size grows. The site already sets -0.02em; at these
+   sizes Inter 900 italic wants more. Sizes and copy are untouched.
+   ───────────────────────────────────────────────────────────────────────── */
+.definition-name,
+.testimonials-title,
+.work-header h2,
+.clients-header h2,
+.contact-headline,
+.project-hero-title,
+.founder-name-left,
+.cta-section h2 {
+  letter-spacing: -0.032em;
+}
+
+.service-col h3,
+.project-title,
+.work-card-title {
+  letter-spacing: -0.028em;
+}
+
+/* Body copy: a touch more leading, and the warm ink instead of flat grey. */
+.definition-text,
+.founder-bio,
+.testimonial-card-quote,
+.quote-rest {
+  line-height: 1.68;
+}
+
+/* All-caps micro-labels want air between the letters, not inside them. */
+.label,
+.service-num,
+.project-section-label,
+.hero-services-label {
+  letter-spacing: 0.24em;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   4 · BUTTONS
+   One behaviour for every button on the site: a 1px lift with a deeper
+   shadow on hover, a 3% press, and the shared easing. Each button keeps
+   its own colours — a light button on cream and a glass button over video
+   are both correct in their context.
+   ───────────────────────────────────────────────────────────────────────── */
+.btn-outline,
+.btn-book,
+.btn-glass,
+.btn-submit,
+.btn-calendly,
+.quote-toggle,
+.btn-cta {
+  transition: transform var(--t) var(--ds-ease),
+              background-color var(--t) var(--ds-ease),
+              border-color var(--t) var(--ds-ease),
+              color var(--t) var(--ds-ease),
+              box-shadow var(--t) var(--ds-ease);
+  will-change: transform;
+}
+
+/* .btn-cta is deliberately absent from every rule below: index.html's
+   script owns its transform (magnetic pull) and appends the fill span. */
+.btn-outline,
+.btn-book,
+.btn-glass,
+.btn-submit,
+.btn-calendly {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-outline:hover,
+.btn-glass:hover,
+.btn-submit:hover,
+.btn-calendly:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--e2);
+}
+
+.btn-book:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.85);
+}
+
+/* Inside the open mobile menu the navbar flips to ink on cream. */
+#navbar.menu-open .btn-book:hover {
+  background: rgba(10, 10, 10, 0.06);
+  border-color: rgba(10, 10, 10, 0.55);
+}
+
+.btn-outline:active,
+.btn-book:active,
+.btn-glass:active,
+.btn-submit:active,
+.btn-calendly:active,
+.btn-cta:active {
+  transform: scale(0.972);
+  transition-duration: 90ms;
+  transition-timing-function: var(--ds-ease-press);
+}
+
+/* Comfortable, consistent hit areas. Values chosen to match the existing
+   padding as closely as possible so no layout shifts. */
+.btn-outline,
+.btn-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+}
+
+.btn-glass,
+.btn-calendly {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+}
+
+/* .btn-book is hidden below 481px by every page's own media query. Because
+   this file loads last, an unconditional `display` here would outrank that
+   rule and bring the button back on phones — so the display change is
+   confined to the widths where the button is meant to be visible. */
+@media (min-width: 481px) {
+  .btn-book {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+  }
+}
+
+/* Hairlines instead of hard 1.5px black — the border should describe the
+   shape, not outline it. */
+.btn-outline {
+  border-color: var(--hairline-strong);
+}
+.btn-outline:hover {
+  border-color: var(--ink-900);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   5 · TEXT LINKS
+   The chevron that nudges on hover. Added with ::after so no markup
+   changes: the label itself is untouched. Only on links that go somewhere
+   further — never on an email address or a phone number, where a
+   "continue" arrow would be meaningless.
+   ───────────────────────────────────────────────────────────────────────── */
+.quote-toggle::after {
+  content: '\203A';            /* › */
+  display: inline-block;
+  margin-left: 0.45em;
+  transform: translateX(0);
+  transition: transform var(--t) var(--ds-ease);
+}
+.quote-toggle:hover::after {
+  transform: translateX(3px);
+}
+.quote-toggle:hover {
+  color: var(--blue-ink);
+  opacity: 1;
+}
+
+/* The back link on project pages already has an arrow — nudge that instead,
+   leftward, since it points back. */
+.back-link::before {
+  display: inline-block;
+  transition: transform var(--t) var(--ds-ease);
+}
+.back-link:hover::before {
+  transform: translateX(-3px);
+}
+
+/* Footer links: colour alone was doing all the work. */
+.footer-nav a,
+.footer-socials a,
+.footer-legal a,
+.footer-contact-person a {
+  transition: color var(--t) var(--ds-ease), opacity var(--t) var(--ds-ease);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   6 · NAVIGATION
+   The pill itself belongs to transitions.js. These rules only soften the
+   link colour transition and give the language switch the same press.
+   ───────────────────────────────────────────────────────────────────────── */
+.nav-center a {
+  transition: color var(--t) var(--ds-ease), border-color var(--t) var(--ds-ease);
+}
+
+.lang-opt {
+  -webkit-tap-highlight-color: transparent;
+}
+.lang-switch {
+  transition: border-color var(--t) var(--ds-ease), box-shadow var(--t) var(--ds-ease);
+}
+.lang-switch:hover {
+  box-shadow: var(--e1);
+}
+
+.hamburger span {
+  transition: background var(--t) var(--ds-ease), transform var(--t) var(--ds-ease);
+}
+
+.mobile-menu a {
+  transition: color var(--t) var(--ds-ease), transform var(--t) var(--ds-ease);
+}
+.mobile-menu a:hover {
+  transform: translateX(4px);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   7 · CARDS AND SURFACES
+   A 1px line at 25% black draws a box. A hairline at 9% over a raised
+   surface, with a two-layer shadow, draws a card resting on a table.
+   ───────────────────────────────────────────────────────────────────────── */
+.testimonial-card {
+  background: var(--cream-raised);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  box-shadow: var(--e1);
+  transition: transform var(--t) var(--ds-ease), box-shadow var(--t) var(--ds-ease);
+}
+.testimonial-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--e2);
+}
+
+.testimonial-card-avatar {
+  box-shadow: 0 0 0 1px var(--hairline);
+}
+
+/* Work grid and the homepage work rail. The thumbnail keeps its own
+   scale-on-hover; this adds the lift underneath it. */
+.project-card,
+.project-card-placeholder {
+  border-radius: var(--r-md);
+  box-shadow: var(--e1);
+  transition: transform var(--t) var(--ds-ease), box-shadow var(--t) var(--ds-ease), background var(--t) var(--ds-ease);
+}
+.project-card:hover,
+.project-card-placeholder:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--e2);
+}
+
+.work-card-thumb {
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: var(--e1);
+  transition: transform var(--t) var(--ds-ease), box-shadow var(--t) var(--ds-ease);
+}
+.work-card:hover .work-card-thumb {
+  transform: translateY(-3px);
+  box-shadow: var(--e2);
+}
+
+/* Photography gets a soft radius rather than a hard corner. */
+.definition-photo-sq,
+.contact-photo,
+.frame-item,
+.bts-frame {
+  border-radius: var(--r-sm);
+  overflow: hidden;
+}
+
+.frame-item,
+.bts-frame {
+  box-shadow: var(--e1);
+  transition: transform var(--t) var(--ds-ease), box-shadow var(--t) var(--ds-ease);
+}
+.frame-item:hover {
+  box-shadow: var(--e2);
+}
+
+/* The two big grey panels. Larger radius so they read as a slab, not a box. */
+.contact-grey-box,
+.project-grey-box {
+  border-radius: var(--r-lg);
+  box-shadow: var(--e2);
+}
+
+/* The glass box on About — closer to real frosted glass. */
+.founder-glass-box {
+  border-radius: var(--r-lg);
+}
+
+.video-placeholder,
+.project-hero-placeholder {
+  border-radius: var(--r-sm);
+}
+
+/* Client logos: let them settle rather than jump. */
+.client-logo,
+.logo-item {
+  transition: opacity var(--t) var(--ds-ease), filter var(--t) var(--ds-ease);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   8 · FORM FIELDS  (contact page — dark grey panel)
+   An underline is the least confident input style there is, and the
+   contact form is where the money is. This gives each field a real
+   surface and a visible focus state without moving anything.
+   ───────────────────────────────────────────────────────────────────────── */
+.contact-form .field {
+  border-bottom: none;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--r-md);
+  padding: 0.85rem 1rem 0.9rem;
+  transition: border-color var(--t-fast) var(--ds-ease),
+              background var(--t-fast) var(--ds-ease),
+              box-shadow var(--t-fast) var(--ds-ease);
+}
+.contact-form .field:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.contact-form .field:focus-within {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12);
+}
+.contact-form .field label {
+  margin-bottom: 0.3rem;
+}
+/* Placeholders at 20% white were close to invisible on the grey panel. */
+.contact-form .field input::placeholder,
+.contact-form .field textarea::placeholder {
+  color: rgba(255, 255, 255, 0.34);
+}
+/* The field itself now shows focus, so the inner control must not also
+   draw a ring inside it. */
+.contact-form .field input:focus-visible,
+.contact-form .field textarea:focus-visible {
+  outline: none;
+}
+/* Keep the autofill patch in step with the new field background. */
+.contact-form .field input:-webkit-autofill,
+.contact-form .field input:-webkit-autofill:hover,
+.contact-form .field input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #4e4a43 inset;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   9 · MOTION DISCIPLINE
+   Scroll reveals get a small rise as well as a fade — the same move Apple
+   uses on every product page, and the reason their scroll feels composed.
+   ───────────────────────────────────────────────────────────────────────── */
+[data-animate] {
+  transform: translateY(14px);
+  transition: opacity var(--t-slow) var(--ds-ease),
+              transform var(--t-slow) var(--ds-ease);
+}
+[data-animate].in-view {
+  transform: translateY(0);
+}
+
+/* Elements whose transform belongs to a script must not be given one here. */
+[data-animate].btn-cta,
+[data-animate].cta-ink {
+  transform: none;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   10 · REDUCED MOTION
+   Respect the system setting. The site had no such fallback.
+   ───────────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-animate] {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
