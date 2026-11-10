@@ -139,9 +139,12 @@
     .s-col li { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(0,0,0,0.75); padding: 0.55rem 0; border-bottom: 1px solid rgba(0,0,0,0.1); }
     .s-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 3rem; }
     .s-chips span { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.55rem 1.1rem; border-radius: 999px; border: 1.5px solid rgba(0,0,0,0.3); }
-    .s-cta { display: inline-flex; align-items: center; gap: 0.7rem; margin-top: 2.4rem; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; color: var(--cream); background: var(--black); padding: 1rem 1.9rem; border-radius: 999px; transition: background 0.3s var(--ease); }
-    .s-cta:hover { background: var(--blue); }
-    .s-cta svg { transition: transform 0.3s var(--ease); }
+    .s-cta { position: relative; overflow: hidden; isolation: isolate; display: inline-flex; align-items: center; gap: 0.7rem; margin-top: 2.4rem; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; color: var(--cream); background: var(--black); padding: 1rem 1.9rem; border-radius: 999px; transition: color 0.35s var(--ease); }
+    .s-cta::before { content: ''; position: absolute; inset: 0; background: var(--blue); transform: translateY(101%); transition: transform 0.45s var(--ease); z-index: -1; border-radius: inherit; }
+    .s-cta:hover, .s-cta:focus-visible { color: var(--white); }
+    .s-cta:hover::before, .s-cta:focus-visible::before { transform: translateY(0); }
+    .s-cta:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+    .s-cta svg { transition: transform 0.35s var(--ease); }
     .s-cta:hover svg { transform: translateY(3px); }
     .book { scroll-margin-top: 16px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 56px; }
 
