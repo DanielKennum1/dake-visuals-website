@@ -283,8 +283,8 @@
         <div class="success" id="success" role="status" aria-live="polite" tabindex="-1">
           <div class="check"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#f7efdb" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <h2 id="successTitle">Tak! Jeg har modtaget din henvendelse.</h2>
-          <p>Jeg ringer dig op hurtigst muligt. Indtil da er du velkommen til at se nogle af mine seneste projekter.</p>
-          <a class="link-pill" href="https://dakevisuals.com/work.html">Se mit arbejde</a>
+          <p>Jeg ringer dig op hurtigst muligt.</p>
+          <a class="link-pill" href="https://dakevisuals.com/work.html">Projekter</a>
         </div>
       </div>
     </section>
@@ -428,6 +428,7 @@
           if (!res.ok) throw new Error('HTTP ' + res.status);
 
           var first = data.name.split(/\s+/)[0];
+          if (first) first = first.charAt(0).toUpperCase() + first.slice(1);
           if (first) document.getElementById('successTitle').textContent = 'Tak, ' + first + '! Jeg har modtaget din henvendelse.';
           card.classList.add('done');
           document.getElementById('success').focus({ preventScroll: true });
