@@ -117,10 +117,12 @@ summary:focus-visible,
 .clients-header h2,
 .contact-headline,
 .project-hero-title,
-.founder-name-left,
-.cta-section h2 {
+.founder-name-left {
   letter-spacing: -0.032em;
 }
+/* The CTA heading is Tinos, not Inter. A serif at display size wants its
+   own tracking — tightening it the way the italic sans wants would crowd
+   the serifs — so it keeps the page's own -0.01em. */
 
 .service-col h3,
 .project-title,
@@ -156,8 +158,7 @@ summary:focus-visible,
 .btn-glass,
 .btn-submit,
 .btn-calendly,
-.quote-toggle,
-.btn-cta {
+.quote-toggle {
   transition: transform var(--t) var(--ds-ease),
               background-color var(--t) var(--ds-ease),
               border-color var(--t) var(--ds-ease),
@@ -166,8 +167,10 @@ summary:focus-visible,
   will-change: transform;
 }
 
-/* .btn-cta is deliberately absent from every rule below: index.html's
-   script owns its transform (magnetic pull) and appends the fill span. */
+/* .btn-cta appears nowhere in this file. index.html's script owns its
+   transform (the magnetic pull) and appends the fill span, and even the
+   shared transition above was enough to cut the pull from 0.5s to 0.26s.
+   The closing CTA keeps every one of its original rules. */
 .btn-outline,
 .btn-book,
 .btn-glass,
@@ -200,8 +203,7 @@ summary:focus-visible,
 .btn-book:active,
 .btn-glass:active,
 .btn-submit:active,
-.btn-calendly:active,
-.btn-cta:active {
+.btn-calendly:active {
   transform: scale(0.972);
   transition-duration: 90ms;
   transition-timing-function: var(--ds-ease-press);
@@ -450,23 +452,276 @@ summary:focus-visible,
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
+   8b · CONTACT FORM RHYTHM
+   The original form had no gap of its own: every field's own
+   `padding: 1.4rem 0 0.6rem` above the underline was doing the spacing.
+   Boxing the fields removed that padding and collapsed the whole column.
+   The gap has to be given back explicitly, on the form itself.
+   ───────────────────────────────────────────────────────────────────────── */
+.contact-form {
+  gap: 0.95rem;
+}
+.form-row {
+  gap: 0.95rem;
+}
+.contact-form .field textarea {
+  min-height: 124px;
+}
+.form-submit {
+  padding-top: 1.9rem;
+}
+/* The sidebar and the photo grid were nudged down 1.4rem to line their first
+   label up with the first field's label. The field's top padding is now
+   0.8rem, so the same alignment needs the same number. */
+.contact-sidebar,
+.contact-photos {
+  padding-top: 0.8rem;
+}
+@media (min-width: 901px) {
+  /* Room to breathe between the headline and the first field. */
+  .contact-hero {
+    padding-bottom: 46px;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   8c · HOMEPAGE
+   Each page overrides some of these in its own media queries, and this file
+   loads last — so every layout value here is scoped to the width where the
+   page is NOT overriding it. (The same trap that brought .btn-book back on
+   phones.) The breakpoints below mirror index.html's own.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* ── Hero ── */
+@media (min-width: 601px) {
+  .hero-media {
+    border-radius: var(--r-md);
+  }
+}
+
+/* ── Definition ── */
+@media (min-width: 601px) {
+  .definition {
+    padding: 118px 4% 92px;
+    gap: 5rem;
+  }
+}
+.definition-photo-sq {
+  border-radius: var(--r-md);
+  box-shadow: var(--e1);
+}
+.definition-term {
+  letter-spacing: 0.24em;
+}
+.definition-text {
+  line-height: 1.78;
+}
+
+/* ── Services — "what I do" ──
+   The section that has to carry the most weight on the page, so it gets the
+   most attention.
+
+   Two earlier passes were wrong. Rounded pills read as blog tags. Hairline
+   dividers read as Swiss editorial — correct typography, but not what Apple
+   does. Apple builds a section like this out of tiles: large rounded panels
+   with a real surface and real depth, floating on the page background, with
+   a great deal of room inside them. That is what this is.
+
+   Every padding value is repeated per breakpoint on purpose. The page sets
+   .service-col padding four times in its own media queries, and this file
+   loads last — one unconditional value here would flatten all of them. */
+.services-grid {
+  border-top: none;
+  gap: 1.1rem;
+}
+
+.service-col {
+  background: var(--cream-raised);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  box-shadow: var(--e1);
+  transition: transform var(--t) var(--ds-ease),
+              box-shadow var(--t) var(--ds-ease),
+              border-color var(--t) var(--ds-ease);
+}
+/* The page removes the divider from the last column and draws the others
+   with border-right / border-bottom. As a tile, every side is a border. */
+.service-col,
+.service-col:last-child {
+  border-right: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+/* Hover stays quiet: the tile rises slightly and its shadow deepens, and
+   that is all. Darkening the border on hover drew a hard outline around
+   the tile — it read as a box appearing, not as the card lifting. */
+.service-col:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--e2);
+}
+
+/* Padding, per breakpoint — and `.service-col + .service-col` beats a plain
+   `.service-col`, so its padding-left has to be answered at equal weight. */
+@media (min-width: 901px) {
+  .service-col,
+  .service-col + .service-col,
+  .service-col:last-child {
+    padding: 3.4rem 2.8rem 3.1rem;
+  }
+  /* Tiles carry their weight by being taller than their content needs.
+     The room under the last line is the point, not an accident. */
+  .service-col {
+    min-height: 330px;
+  }
+}
+@media (min-width: 601px) and (max-width: 900px) {
+  .service-col,
+  .service-col + .service-col,
+  .service-col:last-child {
+    padding: 2.8rem 2.2rem 2.5rem;
+  }
+}
+@media (max-width: 600px) {
+  .service-col,
+  .service-col + .service-col,
+  .service-col:last-child {
+    padding: 2.4rem 1.7rem 2.1rem;
+  }
+}
+
+/* The index numeral in the heading's own typeface — Inter 900 italic —
+   rather than a generic bold caps label. A small tie between the two. */
+.service-num {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-200);
+  margin-bottom: 1.4rem;
+  transition: color var(--t) var(--ds-ease);
+}
+.service-col:hover .service-num {
+  color: var(--blue);
+}
+
+.service-col h3 {
+  margin-bottom: 0.65rem;
+}
+.service-col .service-tagline {
+  margin-bottom: 2rem;
+}
+html[lang="da"] .service-col h3 {
+  margin-bottom: 2rem;
+}
+
+/* Inside a tile the list wants to be quiet: no rules, no fills, just the
+   words and a small accent marker. The panel is already doing the framing. */
+.service-col ul {
+  gap: 0.85rem;
+  align-items: flex-start;
+  width: 100%;
+}
+.service-col ul li {
+  position: relative;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0 0 0 1.35rem;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.45;
+  color: var(--ink-700);
+  /* The page reveals these with a scale(0.82) pop, which suited a pill but
+     squeezes a text row. Same cascade and timing, different move. */
+  transform: translateY(8px);
+  transition: opacity 0.5s var(--ds-ease),
+              transform 0.5s var(--ds-ease),
+              color var(--t) var(--ds-ease);
+}
+.service-col.in-view ul li {
+  transform: translateY(0);
+}
+.service-col ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--blue);
+  opacity: 0.42;
+  transition: opacity var(--t) var(--ds-ease), transform var(--t) var(--ds-ease);
+}
+.service-col:hover ul li::before {
+  opacity: 0.85;
+}
+/* The page still had the pill's hover state — `.service-col.in-view ul
+   li:hover` filling the row with #d0cbbd and popping it 3px. On a pill that
+   was fine; with the fill gone it drew a grey slab behind the words. It
+   outranks `.service-col ul li`, so it has to be answered at its own
+   specificity rather than overridden from below. */
+.service-col.in-view ul li:hover {
+  background: none;
+  transform: translateY(0);
+}
+
+/* ── Testimonials ── */
+@media (min-width: 481px) {
+  .testimonials {
+    padding: 64px 4% 112px;
+  }
+}
+
+/* ── Clients ── */
+.clients {
+  padding: 40px 0 96px;
+}
+
+/* ── Closing CTA ──
+   Left exactly as it was, deliberately. Daniel asked for it back: the open
+   cream, the Tinos line and the pill at its original size. Nothing in this
+   file styles .cta-inner or .btn-cta's box — the magnetic pull and the blue
+   flood were already the best thing on the page. */
+
+/* ── Footer ── */
+.footer-grid {
+  border-bottom-color: var(--hairline);
+}
+.footer-col h4 {
+  letter-spacing: 0.22em;
+  color: var(--ink-300);
+}
+.footer-nav a:hover,
+.footer-socials a:hover,
+.footer-legal a:hover,
+.footer-contact-person a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
    9 · MOTION DISCIPLINE
    Scroll reveals get a small rise as well as a fade — the same move Apple
    uses on every product page, and the reason their scroll feels composed.
+
+   The CTA button and the ink clone are excluded with :not() rather than
+   reset afterwards. Resetting only the transform is not enough — this rule
+   also replaces the transition, and giving .btn-cta a 0.42s transform
+   transition puts that much lag into the magnetic pull, which is exactly
+   the thing it must not touch. :not() keeps the page's own rules intact.
    ───────────────────────────────────────────────────────────────────────── */
-[data-animate] {
+[data-animate]:not(.btn-cta):not(.cta-ink) {
   transform: translateY(14px);
   transition: opacity var(--t-slow) var(--ds-ease),
               transform var(--t-slow) var(--ds-ease);
 }
-[data-animate].in-view {
+[data-animate]:not(.btn-cta):not(.cta-ink).in-view {
   transform: translateY(0);
-}
-
-/* Elements whose transform belongs to a script must not be given one here. */
-[data-animate].btn-cta,
-[data-animate].cta-ink {
-  transform: none;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
