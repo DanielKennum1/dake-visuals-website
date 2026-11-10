@@ -464,6 +464,101 @@ summary:focus-visible,
 .contact-form .field textarea::placeholder {
   color: rgba(255, 255, 255, 0.34);
 }
+
+/* ── The primary action ──
+   Send was a ghost outline: the most important button on the site styled
+   as the least important thing on its own page. This is the draft's
+   primary button inverted for a dark surface — a filled pill, the only
+   solid element in the column, so there is no question where to click.
+   Book a call stays an outline, which is now a deliberate second rank
+   rather than two buttons of equal weight sitting next to each other. */
+.btn-submit {
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--gray);
+  box-shadow: var(--e1);
+}
+.btn-submit:hover {
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--ink-900);
+  box-shadow: var(--e3);
+}
+.btn-calendly {
+  border-width: 1px;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.btn-calendly:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.75);
+}
+
+/* ── Photographs ──
+   The page animates these in with `clip-path: inset(... round 4px)`, which
+   clips the corners independently of border-radius — so the radius set
+   anywhere else is simply overridden once the animation lands. Both have
+   to agree, or the corners snap back to 4px as each photo arrives. */
+.contact-photo {
+  border-radius: var(--r-md);
+  box-shadow: var(--e2);
+}
+.contact-photo.slide-in {
+  clip-path: inset(0 0 0 0 round var(--r-md));
+}
+
+/* ── Sidebar ──
+   Labels to the same specification as every other label on the site, and
+   the 40px divider stubs become full-width hairlines so the column reads
+   as three sections rather than three paragraphs with marks between them. */
+.sidebar-block h4,
+.calendly-label {
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  color: rgba(255, 255, 255, 0.42);
+  margin-bottom: 0.95rem;
+}
+.sidebar-block p,
+.sidebar-block a {
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+.sidebar-divider {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Instagram goes somewhere, so it gets the chevron. The email address and
+   the phone number above it do not. */
+.sidebar-socials a::after {
+  content: '\203A';
+  display: inline-block;
+  margin-left: 0.45em;
+  font-size: 1.5em;
+  line-height: 0;
+  position: relative;
+  top: 0.05em;
+  transition: transform var(--t) var(--ds-ease);
+}
+.sidebar-socials a:hover::after {
+  transform: translateX(4px);
+}
+
+/* The success screen hardcodes the old #545454, so it would now show as a
+   slightly different grey from the panel it replaces. */
+.form-success.visible {
+  background: var(--gray);
+}
+
+/* ── The booking widget ──
+   A white third-party embed with square corners, sitting directly on the
+   dark panel. Given the same surface treatment as every other card on the
+   site, it stops looking bolted on. */
+.calendly-inline-widget {
+  background: var(--cream);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--e2);
+}
 /* The field itself now shows focus, so the inner control must not also
    draw a ring inside it. */
 .contact-form .field input:focus-visible,
