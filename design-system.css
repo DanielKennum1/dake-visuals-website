@@ -531,6 +531,15 @@ summary:focus-visible,
    clips the corners independently of border-radius — so the radius set
    anywhere else is simply overridden once the animation lands. Both have
    to agree, or the corners snap back to 4px as each photo arrives. */
+/* The grid was set to 72% of its column, so the photos floated small with
+   a strip of empty panel to their right. At full column width they grow
+   from 126px to 177px at 1440, and their right edge now lines up with the
+   page margin instead of stopping short of it. */
+@media (min-width: 901px) {
+  .contact-photos {
+    width: 100%;
+  }
+}
 .contact-photo {
   border-radius: var(--r-md);
   box-shadow: var(--e2);
