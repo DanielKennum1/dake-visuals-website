@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>DAKE Visuals — Design Draft</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,900;1,700;1,900&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+<style>
+/* ══════════════════════════════════════════════════════════════════
+   DRAFT TOKENS
+   The whole proposal is these ~30 values. Every component below is
+   built only from them — that is what makes a system feel designed
+   rather than assembled.
+   ══════════════════════════════════════════════════════════════════ */
+:root {
+  /* ── Ink: one hue, optically even steps. Replaces the ad-hoc
+        rgba(0,0,0,0.25) / 0.3 / 0.4 / 0.08 scattered through the site. */
+  --ink-900: #0a0a0a;
+  --ink-700: #2e2c28;
+  --ink-500: #56534c;
+  --ink-300: #8c887f;
+  --ink-200: #b4afa4;
+  --ink-100: #d8d2c3;
+
+  /* ── Surfaces: the cream, plus a lifted and a recessed sibling.
+        Depth comes from these, not from drop shadows alone. */
+  --cream:        #f7efdb;
+  --cream-raised: #fcf7ea;
+  --cream-sunken: #f1e8d0;
+  --hairline:        rgba(10,10,10,0.09);
+  --hairline-strong: rgba(10,10,10,0.20);
+
+  /* ── One accent. Used for ~2% of the pixels on any screen. */
+  --blue:     #35529d;
+  --blue-ink: #2a4280;
+
+  /* ── Radii */
+  --r-sm: 8px;  --r-md: 14px;  --r-lg: 22px;  --r-pill: 999px;
+
+  /* ── Elevation: layered and low-contrast, so edges read as light
+        falling on a surface instead of a box with a shadow. */
+  --e1: 0 1px 2px rgba(10,10,10,0.04), 0 2px 8px rgba(10,10,10,0.04);
+  --e2: 0 2px 4px rgba(10,10,10,0.05), 0 10px 28px rgba(10,10,10,0.07);
+  --e3: 0 4px 8px rgba(10,10,10,0.06), 0 20px 52px rgba(10,10,10,0.10);
+
+  /* ── Motion: one family of curves, three durations. Nothing else. */
+  --ease:       cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-press: cubic-bezier(0.4, 0, 0.2, 1);
+  --t-fast: 150ms;  --t: 260ms;  --t-slow: 420ms;
+
+  /* ── Space: a 4px grid. Every margin on the site snaps to it. */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px;
+  --s6:32px; --s7:48px; --s8:64px; --s9:96px; --s10:128px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--cream);
+  color: var(--ink-900);
+  font-family: 'Lato', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ══════════ DRAFT TYPE SCALE ══════════
+   Tracking tightens as size grows, leading loosens as size shrinks.
+   This is the single biggest "premium" lever and it costs nothing. */
+.d-display {
+  font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic;
+  font-size: clamp(2.6rem, 7vw, 5.2rem);
+  line-height: 0.94; letter-spacing: -0.035em; text-transform: uppercase;
+}
+.d-h1 {
+  font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic;
+  font-size: clamp(1.9rem, 4.2vw, 3.1rem);
+  line-height: 1.02; letter-spacing: -0.028em; text-transform: uppercase;
+}
+.d-h2 {
+  font-family: 'Inter', sans-serif; font-weight: 700;
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  line-height: 1.22; letter-spacing: -0.016em;
+}
+.d-body {
+  font-size: 1.0625rem; line-height: 1.65; color: var(--ink-700);
+  max-width: 62ch; font-weight: 400;
+}
+.d-small { font-size: 0.9rem; line-height: 1.6; color: var(--ink-500); max-width: 60ch; }
+.d-label {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--ink-300);
+}
+.d-quote {
+  font-family: 'Tinos', serif; font-style: italic;
+  font-size: 1.15rem; line-height: 1.55; color: var(--ink-700);
+}
+
+/* ══════════ DRAFT BUTTONS ══════════
+   One base, three intents. 48px minimum height everywhere, a real
+   press state, and a visible keyboard focus ring. */
+.b {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0.6em;
+  min-height: 48px; padding: 0 1.8rem;
+  border: 1px solid transparent; border-radius: var(--r-pill);
+  font-family: 'Lato', sans-serif; font-weight: 700;
+  font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+  transition: transform var(--t) var(--ease),
+              background-color var(--t) var(--ease),
+              border-color var(--t) var(--ease),
+              color var(--t) var(--ease),
+              box-shadow var(--t) var(--ease);
+  will-change: transform;
+}
+.b:active { transform: scale(0.972); transition-duration: 90ms; transition-timing-function: var(--ease-press); }
+.b:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--cream), 0 0 0 4px var(--blue); }
+
+.b--primary { background: var(--ink-900); color: var(--cream); box-shadow: var(--e1); }
+.b--primary:hover, .b--primary.is-hover { transform: translateY(-1px); box-shadow: var(--e2); background: #1c1c1c; }
+
+.b--secondary { background: transparent; color: var(--ink-900); border-color: var(--hairline-strong); }
+.b--secondary:hover, .b--secondary.is-hover { background: rgba(10,10,10,0.05); border-color: rgba(10,10,10,0.32); transform: translateY(-1px); }
+
+.b--quiet { background: rgba(10,10,10,0.05); color: var(--ink-900); }
+.b--quiet:hover, .b--quiet.is-hover { background: rgba(10,10,10,0.09); transform: translateY(-1px); }
+
+.b--sm { min-height: 38px; padding: 0 1.15rem; font-size: 0.7rem; }
+
+/* Text link with a chevron that nudges — the detail everyone copies
+   from Apple, because it tells you the link is going somewhere. */
+.b-link {
+  display: inline-flex; align-items: center; gap: 0.4em;
+  font-family: 'Lato', sans-serif; font-size: 0.95rem; font-weight: 400;
+  color: var(--blue); text-decoration: none; background: none; border: 0;
+  cursor: pointer; padding: 4px 0;
+}
+.b-link svg { transition: transform var(--t) var(--ease); }
+.b-link:hover svg, .b-link.is-hover svg { transform: translateX(3px); }
+.b-link:hover, .b-link.is-hover { color: var(--blue-ink); }
+.b-link:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--cream), 0 0 0 4px var(--blue); border-radius: 4px; }
+
+/* ══════════ DRAFT CARD ══════════ */
+.d-card {
+  background: var(--cream-raised);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  padding: var(--s6) var(--s5) var(--s5);
+  box-shadow: var(--e1);
+  transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease);
+  display: flex; flex-direction: column;
+}
+.d-card:hover, .d-card.is-hover { transform: translateY(-3px); box-shadow: var(--e2); }
+
+/* ══════════ DRAFT FIELD ══════════ */
+.d-field { display: flex; flex-direction: column; gap: 6px; }
+.d-field label {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--ink-500);
+  transition: color var(--t-fast) var(--ease);
+}
+.d-field input, .d-field textarea {
+  font-family: 'Lato', sans-serif; font-size: 1rem; color: var(--ink-900);
+  background: var(--cream-raised);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-md);
+  padding: 0.85rem 1rem; width: 100%; outline: none; resize: none;
+  transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), background var(--t-fast);
+}
+.d-field input::placeholder, .d-field textarea::placeholder { color: var(--ink-200); }
+.d-field input:focus, .d-field textarea:focus, .d-field .is-focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(53,82,157,0.14);
+  background: var(--cream-raised);
+}
+.d-field:focus-within label { color: var(--ink-900); }
+
+/* ══════════════════════════════════════════════════════════════════
+   THE DRAFT PAGE'S OWN CHROME
+   ══════════════════════════════════════════════════════════════════ */
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 var(--s7); }
+@media (max-width: 760px) { .wrap { padding: 0 var(--s5); } }
+
+.sheet-head { padding: var(--s9) 0 var(--s8); border-bottom: 1px solid var(--hairline); }
+.sheet-head .d-label { margin-bottom: var(--s5); }
+.sheet-head .d-body { margin-top: var(--s5); }
+
+section.block { padding: var(--s9) 0; border-bottom: 1px solid var(--hairline); }
+.block-head { margin-bottom: var(--s7); }
+.block-head .d-label { margin-bottom: var(--s3); }
+.block-head .d-small { margin-top: var(--s3); }
+
+/* side-by-side comparison frame */
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); }
+@media (max-width: 860px) { .compare { grid-template-columns: 1fr; } }
+.pane {
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  background: var(--cream-sunken);
+  padding: var(--s5);
+  min-height: 150px;
+  display: flex; flex-direction: column; gap: var(--s4);
+}
+.pane--new { background: var(--cream-raised); border-color: var(--hairline); box-shadow: var(--e1); }
+.pane-tag {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--ink-300);
+  display: flex; align-items: center; gap: 8px;
+}
+.pane--new .pane-tag { color: var(--blue); }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; display: inline-block; }
+.row { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: center; }
+.stack { display: flex; flex-direction: column; gap: var(--s4); align-items: flex-start; }
+.state-note { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-300); }
+
+/* ── the site's CURRENT components, copied verbatim for comparison ── */
+.old-btn-outline {
+  display:inline-block; font-family:'Lato',sans-serif; font-weight:700;
+  font-size:0.78rem; letter-spacing:0.12em; text-transform:uppercase;
+  text-decoration:none; padding:0.8rem 2rem; border:1.5px solid #000;
+  color:#000; background:transparent; cursor:pointer; border-radius:999px;
+  transition:background 0.35s cubic-bezier(0.22,1,0.36,1), color 0.35s, border-color 0.35s;
+}
+.old-btn-outline:hover, .old-btn-outline.is-hover { background:#000; color:var(--cream); }
+.old-btn-cta {
+  display:inline-block; font-family:'Tinos',serif; font-size:1.1rem;
+  text-decoration:none; padding:1.1rem 3.2rem; background:transparent;
+  color:#000; border-radius:999px; border:1.5px solid rgba(0,0,0,0.4);
+  letter-spacing:0.02em;
+}
+.old-card {
+  background: var(--cream); border-radius:16px; padding:2rem 1.8rem;
+  border:1px solid rgba(0,0,0,0.25); display:flex; flex-direction:column;
+}
+.old-quote { font-family:'Tinos',serif; font-style:italic; font-size:0.95rem; line-height:1.5; color:#545454; }
+.old-toggle {
+  align-self:flex-start; margin-top:0.85rem; padding:0; background:none; border:none;
+  cursor:pointer; font-family:'Lato',sans-serif; font-weight:700; font-size:0.72rem;
+  letter-spacing:0.12em; text-transform:uppercase; color:var(--blue);
+}
+.old-field { display:flex; flex-direction:column; border-bottom:1px solid rgba(0,0,0,0.2); padding:1.4rem 0 0.6rem; }
+.old-field label { font-family:'Lato',sans-serif; font-size:0.65rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:#8c887f; margin-bottom:0.5rem; }
+.old-field input { font-family:'Lato',sans-serif; font-size:1rem; color:#0a0a0a; background:transparent; border:none; outline:none; width:100%; padding:0; }
+
+/* ── swatches / scale strips ── */
+.swatches { display:grid; grid-template-columns:repeat(6,1fr); gap:var(--s3); }
+@media (max-width:760px){ .swatches{ grid-template-columns:repeat(3,1fr);} }
+.sw { border-radius:var(--r-sm); overflow:hidden; border:1px solid var(--hairline); }
+.sw-chip { height:68px; }
+.sw-meta { padding:8px 10px; background:var(--cream-raised); }
+.sw-name { font-size:0.66rem; font-weight:700; letter-spacing:0.06em; }
+.sw-hex { font-size:0.6rem; color:var(--ink-300); font-family:ui-monospace,Menlo,monospace; letter-spacing:0; }
+
+.elev-row { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s5); }
+@media (max-width:760px){ .elev-row{ grid-template-columns:1fr; } }
+.elev {
+  background:var(--cream-raised); border:1px solid var(--hairline);
+  border-radius:var(--r-md); padding:var(--s5); min-height:104px;
+  display:flex; flex-direction:column; justify-content:flex-end; gap:4px;
+}
+
+.spec { font-family:ui-monospace,Menlo,monospace; font-size:0.68rem; color:var(--ink-300); letter-spacing:0; }
+
+/* ── the "applied" demo ── */
+.demo {
+  border:1px solid var(--hairline); border-radius:var(--r-lg);
+  overflow:hidden; box-shadow:var(--e2); background:var(--cream-raised);
+}
+.demo-nav {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:var(--s4) var(--s5);
+  border-bottom:1px solid var(--hairline);
+  background:rgba(252,247,234,0.72);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+}
+.demo-logo { font-family:'Inter',sans-serif; font-weight:900; font-style:italic; font-size:0.95rem; letter-spacing:0.01em; text-transform:uppercase; }
+.demo-links { display:flex; gap:var(--s2); align-items:center; }
+.demo-links a {
+  font-size:0.74rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--ink-500); text-decoration:none; padding:8px 14px; border-radius:var(--r-pill);
+  transition:background var(--t) var(--ease), color var(--t) var(--ease);
+}
+.demo-links a:hover, .demo-links a.is-hover { background:rgba(10,10,10,0.055); color:var(--ink-900); }
+.demo-links a.active { background:var(--ink-900); color:var(--cream); }
+.demo-body { padding:var(--s9) var(--s7); }
+@media (max-width:760px){ .demo-body{ padding:var(--s8) var(--s5);} }
+.demo-body .d-label { margin-bottom:var(--s4); }
+.demo-body .d-body { margin-top:var(--s5); }
+.demo-actions { display:flex; gap:var(--s3); margin-top:var(--s7); flex-wrap:wrap; }
+.demo-rule { height:1px; background:var(--hairline); margin:var(--s8) 0; }
+.demo-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s4); }
+@media (max-width:860px){ .demo-grid{ grid-template-columns:1fr; } }
+
+.changes { display:grid; grid-template-columns:repeat(2,1fr); gap:var(--s5) var(--s7); margin-top:var(--s6); }
+@media (max-width:860px){ .changes{ grid-template-columns:1fr; } }
+.change { border-top:1px solid var(--hairline); padding-top:var(--s4); }
+.change h4 { font-family:'Inter',sans-serif; font-weight:700; font-size:0.95rem; letter-spacing:-0.01em; margin-bottom:6px; }
+.change p { font-size:0.88rem; line-height:1.6; color:var(--ink-500); }
+
+.foot { padding:var(--s8) 0 var(--s10); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+  html { scroll-behavior:auto; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ─────────── HEAD ─────────── -->
+  <header class="sheet-head">
+    <p class="d-label">Design draft · not live</p>
+    <h1 class="d-display">A premium<br>pass</h1>
+    <p class="d-body">
+      The goal is not to look like Apple. It is to take the thing Apple actually does —
+      one small set of decisions, applied without exception — and run it through your
+      brand. Same cream, same ink, same Inter italic display. What changes is the
+      consistency, the spacing, and the behaviour of everything you can touch.
+    </p>
+    <div class="demo-actions" style="margin-top:var(--s6)">
+      <a href="#buttons" class="b b--primary">See the buttons</a>
+      <a href="#applied" class="b b--secondary">See it applied</a>
+    </div>
+  </header>
+
+  <!-- ─────────── FOUNDATIONS ─────────── -->
+  <section class="block">
+    <div class="block-head">
+      <p class="d-label">01 — Foundations</p>
+      <h2 class="d-h1">One ink, one accent</h2>
+      <p class="d-small">
+        Today the site mixes <span class="spec">rgba(0,0,0,0.08)</span>,
+        <span class="spec">0.25</span>, <span class="spec">0.3</span>, <span class="spec">0.4</span>
+        and <span class="spec">#545454</span> for what is really the same idea: "quieter than black".
+        A fixed ramp removes that guesswork, and warm greys sit better on cream than pure black does.
+      </p>
+    </div>
+
+    <div class="swatches">
+      <div class="sw"><div class="sw-chip" style="background:#0a0a0a"></div><div class="sw-meta"><div class="sw-name">Ink 900</div><div class="sw-hex">#0a0a0a</div></div></div>
+      <div class="sw"><div class="sw-chip" style="background:#2e2c28"></div><div class="sw-meta"><div class="sw-name">Ink 700</div><div class="sw-hex">#2e2c28</div></div></div>
+      <div class="sw"><div class="sw-chip" style="background:#56534c"></div><div class="sw-meta"><div class="sw-name">Ink 500</div><div class="sw-hex">#56534c</div></div></div>
+      <div class="sw"><div class="sw-chip" style="background:#8c887f"></div><div class="sw-meta"><div class="sw-name">Ink 300</div><div class="sw-hex">#8c887f</div></div></div>
+      <div class="sw"><div class="sw-chip" style="background:#d8d2c3"></div><div class="sw-meta"><div class="sw-name">Ink 100</div><div class="sw-hex">#d8d2c3</div></div></div>
+      <div class="sw"><div class="sw-chip" style="background:#35529d"></div><div class="sw-meta"><div class="sw-name">Accent</div><div class="sw-hex">#35529d</div></div></div>
+    </div>
+
+    <div class="swatches" style="margin-top:var(--s4)">
+      <div class="sw"><div class="sw-chip" style="background:#fcf7ea"></div><div class="sw-meta"><div class="sw-name">Raised</div><div class="sw-hex">#fcf7ea</div></div></div>
+      <div class="sw"><div class="sw-chip" style="background:#f7efdb"></div><div class="sw-meta"><div class="sw-name">Base cream</div><div class="sw-hex">#f7efdb</div></div></div>
+      <div class="sw"><div class="sw-chip" style="background:#f1e8d0"></div><div class="sw-meta"><div class="sw-name">Sunken</div><div class="sw-hex">#f1e8d0</div></div></div>
+    </div>
+
+    <h3 class="d-h2" style="margin:var(--s8) 0 var(--s5)">Elevation</h3>
+    <div class="elev-row">
+      <div class="elev" style="box-shadow:var(--e1)"><div class="d-label">Level 1</div><div class="spec">resting cards, buttons</div></div>
+      <div class="elev" style="box-shadow:var(--e2)"><div class="d-label">Level 2</div><div class="spec">hover, sticky nav</div></div>
+      <div class="elev" style="box-shadow:var(--e3)"><div class="d-label">Level 3</div><div class="spec">modals, menu overlay</div></div>
+    </div>
+
+    <h3 class="d-h2" style="margin:var(--s8) 0 var(--s5)">Type scale</h3>
+    <div class="stack" style="gap:var(--s5)">
+      <div><p class="state-note" style="margin-bottom:6px">Display · −0.035em</p><p class="d-display" style="font-size:3.2rem">Direct</p></div>
+      <div><p class="state-note" style="margin-bottom:6px">H1 · −0.028em</p><p class="d-h1">What the clients say</p></div>
+      <div><p class="state-note" style="margin-bottom:6px">H2 · −0.016em</p><p class="d-h2">Scripting &amp; pre-production</p></div>
+      <div><p class="state-note" style="margin-bottom:6px">Body · 1.65 leading, 62ch measure</p><p class="d-body">A creative studio in Aarhus, Denmark, working with brands that want to lift their presence online. Cinematic craft combined with strategic storytelling.</p></div>
+      <div><p class="state-note" style="margin-bottom:6px">Label · +0.22em</p><p class="d-label">Selected work</p></div>
+    </div>
+  </section>
+
+  <!-- ─────────── BUTTONS ─────────── -->
+  <section class="block" id="buttons">
+    <div class="block-head">
+      <p class="d-label">02 — Buttons</p>
+      <h2 class="d-h1">Three intents, one shape</h2>
+      <p class="d-small">
+        Right now the site has at least four unrelated button treatments. The draft keeps one
+        base and changes only the fill. Every one is 48px tall — the size a thumb actually hits —
+        presses down 3% when clicked, and shows a keyboard focus ring.
+      </p>
+    </div>
+
+    <div class="compare">
+      <div class="pane">
+        <p class="pane-tag"><span class="dot"></span> Current</p>
+        <div class="stack">
+          <a href="#buttons" class="old-btn-outline">Let's create</a>
+          <p class="state-note">Hover</p>
+          <a href="#buttons" class="old-btn-outline is-hover">Let's create</a>
+          <p class="state-note">The homepage CTA — a different font and size again</p>
+          <a href="#buttons" class="old-btn-cta">Let's create</a>
+        </div>
+      </div>
+      <div class="pane pane--new">
+        <p class="pane-tag"><span class="dot"></span> Draft</p>
+        <div class="stack">
+          <a href="#buttons" class="b b--primary">Book a call</a>
+          <a href="#buttons" class="b b--secondary">See the work</a>
+          <a href="#buttons" class="b b--quiet">Download deck</a>
+          <p class="state-note">Hover — lifts 1px, shadow deepens</p>
+          <div class="row">
+            <span class="b b--primary is-hover">Book a call</span>
+            <span class="b b--secondary is-hover">See the work</span>
+          </div>
+          <p class="state-note">Small · inside cards and filters</p>
+          <div class="row">
+            <span class="b b--secondary b--sm">All</span>
+            <span class="b b--quiet b--sm">Commercial</span>
+            <span class="b b--quiet b--sm">Documentary</span>
+          </div>
+          <p class="state-note">Text link — the chevron nudges on hover</p>
+          <div class="row" style="gap:var(--s6)">
+            <a href="#buttons" class="b-link">Read the case<svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3.5L10.5 8L6 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <span class="b-link is-hover">Read the case<svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3.5L10.5 8L6 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="d-small" style="margin-top:var(--s5)">
+      Click any draft button to feel the press. Tab to it to see the focus ring — today the site
+      has none, which is both an accessibility gap and something people read as unfinished.
+    </p>
+  </section>
+
+  <!-- ─────────── CARDS ─────────── -->
+  <section class="block">
+    <div class="block-head">
+      <p class="d-label">03 — Cards</p>
+      <h2 class="d-h1">Lift, don't outline</h2>
+      <p class="d-small">
+        A 1px line at 25% black draws a box. A hairline at 9% plus a raised surface and a
+        two-layer shadow draws a card sitting on a table. Same content, different weight.
+      </p>
+    </div>
+
+    <div class="compare">
+      <div class="pane">
+        <p class="pane-tag"><span class="dot"></span> Current</p>
+        <div class="old-card">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem">
+            <div style="width:40px;height:40px;border-radius:50%;background:#c8bfad"></div>
+            <div>
+              <p style="font-family:'Lato';font-weight:700;font-size:0.8rem">Carl</p>
+              <p style="font-family:'Lato';font-size:0.7rem;color:#545454">Founder — ICEFIT The Box</p>
+            </div>
+          </div>
+          <p class="old-quote">We have worked with Daniel for almost two years now, and he is a brilliant person to have in the room.</p>
+          <button class="old-toggle">Read more</button>
+        </div>
+      </div>
+      <div class="pane pane--new">
+        <p class="pane-tag"><span class="dot"></span> Draft</p>
+        <div class="d-card">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:var(--s4)">
+            <div style="width:44px;height:44px;border-radius:50%;background:var(--ink-100);flex-shrink:0"></div>
+            <div>
+              <p style="font-weight:700;font-size:0.85rem;letter-spacing:-0.005em">Carl</p>
+              <p style="font-size:0.72rem;color:var(--ink-300)">Founder — ICEFIT The Box</p>
+            </div>
+          </div>
+          <p class="d-quote">We have worked with Daniel for almost two years now, and he is a brilliant person to have in the room.</p>
+          <button class="b-link" style="margin-top:var(--s4);align-self:flex-start">Read more<svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3.5L10.5 8L6 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── FIELDS ─────────── -->
+  <section class="block">
+    <div class="block-head">
+      <p class="d-label">04 — Form fields</p>
+      <h2 class="d-h1">Make the target obvious</h2>
+      <p class="d-small">
+        The contact form is where the money is, and an underline is the least confident input
+        style there is. A filled field with a real focus state tells people exactly where to type.
+      </p>
+    </div>
+
+    <div class="compare">
+      <div class="pane">
+        <p class="pane-tag"><span class="dot"></span> Current</p>
+        <div class="old-field"><label>Name</label><input type="text" placeholder="" /></div>
+        <div class="old-field"><label>Email</label><input type="text" placeholder="" /></div>
+      </div>
+      <div class="pane pane--new">
+        <p class="pane-tag"><span class="dot"></span> Draft</p>
+        <div class="d-field"><label for="dn">Name</label><input id="dn" type="text" placeholder="Your name" /></div>
+        <div class="d-field"><label for="de">Email</label><input id="de" type="text" placeholder="you@company.com" /></div>
+        <p class="state-note">Focused</p>
+        <div class="d-field">
+          <label style="color:var(--ink-900)">Project</label>
+          <input class="is-focus" type="text" value="Brand film, Q1" />
+        </div>
+        <div style="margin-top:var(--s2)"><span class="b b--primary">Send enquiry</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── APPLIED ─────────── -->
+  <section class="block" id="applied">
+    <div class="block-head">
+      <p class="d-label">05 — Applied</p>
+      <h2 class="d-h1">A page in the new language</h2>
+      <p class="d-small">
+        Nothing here is new content. It is your existing homepage material, spaced on the 4px
+        grid, set in the draft type scale, with the draft nav and buttons.
+      </p>
+    </div>
+
+    <div class="demo">
+      <nav class="demo-nav">
+        <span class="demo-logo">DAKE Visuals</span>
+        <span class="demo-links">
+          <a href="#applied" class="active">Work</a>
+          <a href="#applied">BTS</a>
+          <a href="#applied" class="is-hover">About</a>
+          <a href="#applied">Contact</a>
+        </span>
+      </nav>
+      <div class="demo-body">
+        <p class="d-label">Aarhus, Denmark</p>
+        <h3 class="d-display" style="font-size:clamp(2.2rem,5.5vw,4rem)">Video that<br>earns attention</h3>
+        <p class="d-body">
+          A creative studio working with brands that want to lift their presence online.
+          Cinematic craft combined with strategic storytelling — video that makes an impression.
+        </p>
+        <div class="demo-actions">
+          <a href="#applied" class="b b--primary">Book a call</a>
+          <a href="#applied" class="b b--secondary">See selected work</a>
+        </div>
+
+        <div class="demo-rule"></div>
+
+        <p class="d-label" style="margin-bottom:var(--s5)">What we do</p>
+        <div class="demo-grid">
+          <div class="d-card">
+            <p class="d-label" style="color:var(--ink-200);margin-bottom:var(--s4)">01</p>
+            <h4 class="d-h1" style="font-size:1.8rem;margin-bottom:var(--s4)">Direct</h4>
+            <p class="d-small" style="color:var(--ink-500)">Concept development · Creative direction · Visual identity</p>
+          </div>
+          <div class="d-card">
+            <p class="d-label" style="color:var(--ink-200);margin-bottom:var(--s4)">02</p>
+            <h4 class="d-h1" style="font-size:1.8rem;margin-bottom:var(--s4)">Create</h4>
+            <p class="d-small" style="color:var(--ink-500)">Scriptwriting &amp; pre-production · Production · Post-production</p>
+          </div>
+          <div class="d-card">
+            <p class="d-label" style="color:var(--ink-200);margin-bottom:var(--s4)">03</p>
+            <h4 class="d-h1" style="font-size:1.8rem;margin-bottom:var(--s4)">Share</h4>
+            <p class="d-small" style="color:var(--ink-500)">Campaign strategy · Platform optimisation · Community engagement</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── WHAT CHANGES ─────────── -->
+  <section class="block">
+    <div class="block-head">
+      <p class="d-label">06 — If you approve</p>
+      <h2 class="d-h1">What I'd change, concretely</h2>
+    </div>
+    <div class="changes">
+      <div class="change">
+        <h4>Buttons become one component</h4>
+        <p>Four treatments collapse into primary / secondary / quiet, plus the text link. The blue-fill CTA animation on the homepage stays — it becomes the primary button's signature move.</p>
+      </div>
+      <div class="change">
+        <h4>Every grey comes from the ramp</h4>
+        <p>No more one-off rgba values. Warm greys instead of pure black on cream, which is the single change that reads most as "expensive".</p>
+      </div>
+      <div class="change">
+        <h4>Spacing snaps to 4px</h4>
+        <p>Section padding, card padding and gaps all come from the scale. Rhythm is what makes a page feel considered rather than assembled.</p>
+      </div>
+      <div class="change">
+        <h4>One motion curve</h4>
+        <p>Three durations, one easing family, transform and opacity only. Plus a reduced-motion fallback, which the site does not have today.</p>
+      </div>
+      <div class="change">
+        <h4>Focus states everywhere</h4>
+        <p>Keyboard users currently get nothing. This is a real accessibility gap and a visible quality signal.</p>
+      </div>
+      <div class="change">
+        <h4>Cards lift instead of outline</h4>
+        <p>Testimonials, work cards and the project pages get the raised surface and hairline treatment.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p class="d-label">Draft only — dakevisuals.com is untouched</p>
+  </footer>
+
+</div>
+</body>
+</html>
