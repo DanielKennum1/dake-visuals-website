@@ -1152,11 +1152,39 @@
       btn.textContent = btn.getAttribute(
         'data-' + (open ? 'less' : 'more') + '-' + (da ? 'da' : 'en'));
     }
+    // Opening one quote must leave the other two exactly as they were. The
+    // grid sizes every card to the tallest in the row, so on its own it either
+    // stretches the closed cards to match the open one or, with the row
+    // released, lets them shrink to their own content. Neither is "unchanged".
+    // So the closed height is measured once while all three are still even,
+    // and held until everything is closed again.
+    var tCards = [].slice.call(document.querySelectorAll('.testimonial-card'));
+    function anyExpanded() {
+      return tCards.some(function (c) { return c.classList.contains('expanded'); });
+    }
+    function measureClosedHeights() {        // only valid while all are closed
+      tCards.forEach(function (c) { c.dataset.baseH = c.getBoundingClientRect().height; });
+    }
+    function applyCardHeights() {
+      var open = anyExpanded();
+      tCards.forEach(function (c) {
+        c.style.height = !open ? ''
+          : c.classList.contains('expanded') ? 'auto'
+          : c.dataset.baseH + 'px';
+      });
+    }
     document.querySelectorAll('.quote-toggle').forEach(function(btn) {
       btn.addEventListener('click', function() {
+        if (!anyExpanded()) measureClosedHeights();
         btn.closest('.testimonial-card').classList.toggle('expanded');
+        applyCardHeights();
         quoteLabel(btn);
       });
+    });
+    // A width change invalidates the measurement, so let the row size itself
+    // again whenever nothing is open.
+    window.addEventListener('resize', function () {
+      if (!anyExpanded()) tCards.forEach(function (c) { c.style.height = ''; });
     });
     document.addEventListener('dv:lang', function() {
       document.querySelectorAll('.quote-toggle').forEach(quoteLabel);
