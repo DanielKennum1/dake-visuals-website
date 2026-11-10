@@ -347,6 +347,15 @@ summary:focus-visible,
 .testimonial-card-avatar {
   box-shadow: 0 0 0 1px var(--hairline);
 }
+/* The cards are equal height, but the quotes are not, so each "Show more"
+   sat wherever its quote happened to end. The toggle is the card's last
+   child, so pushing it down with an auto top margin lands all three on one
+   line — the same line the card bottoms already share. The padding keeps a
+   minimum gap for the card whose quote runs longest. */
+.testimonial-card .quote-toggle {
+  margin-top: auto;
+  padding-top: 1.1rem;
+}
 
 /* Work grid and the homepage work rail. The thumbnail keeps its own
    scale-on-hover; this adds the lift underneath it. */
