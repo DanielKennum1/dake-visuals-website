@@ -767,13 +767,14 @@ summary:focus-visible,
   color: var(--blue);
 }
 
-.service-col h3 {
-  margin-bottom: 0.65rem;
-}
+/* The blue taglines under Direct / Create / Share are gone in both
+   languages now. Danish dropped them a while back; English keeps the words
+   in the markup but no longer shows them, so nothing is deleted and they
+   can come back by removing one rule. The heading takes over their gap. */
 .service-col .service-tagline {
-  margin-bottom: 2rem;
+  display: none;
 }
-html[lang="da"] .service-col h3 {
+.service-col h3 {
   margin-bottom: 2rem;
 }
 
