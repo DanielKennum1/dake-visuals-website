@@ -134,8 +134,13 @@ function notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notio
     require $cfg;
     if (empty($SLACK_WEBHOOK_URL)) return false;
 
+    // Who gets pinged: "<@U…>" (a member ID) in slack-config.php, else everyone in the channel.
+    $mention = !empty($SLACK_MENTION) ? $SLACK_MENTION : '<!channel>';
+
     $e = 'slack_escape';
     $lines = [
+        $mention . ' ring dem op 📲',
+        '',
         '*Navn:* ' . $e($name),
         '*Telefon:* ' . $e($phone),
         '*E-mail:* ' . $e($email),
@@ -159,7 +164,7 @@ function notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notio
         CURLOPT_POST           => true,
         CURLOPT_TIMEOUT        => 8,
         CURLOPT_POSTFIELDS     => json_encode([
-            'text'   => 'Ny booking: ' . $company . ' – ' . $name . ', ' . $phone,
+            'text'   => $mention . ' Ny booking: ' . $company . ' – ' . $name . ', ' . $phone,
             'blocks' => $blocks,
         ]),
         CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
