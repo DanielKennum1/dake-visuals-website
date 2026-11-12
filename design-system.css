@@ -728,13 +728,12 @@ summary:focus-visible,
   .service-col,
   .service-col + .service-col,
   .service-col:last-child {
-    padding: 3.4rem 2.8rem 3.1rem;
+    padding: 2.8rem 2.4rem 2.6rem;
   }
-  /* Tiles carry their weight by being taller than their content needs.
-     The room under the last line is the point, not an accident. */
-  .service-col {
-    min-height: 330px;
-  }
+  /* No min-height. The tiles were sized for a taller column — heading,
+     tagline and list. With the taglines gone that left a band of empty
+     cream under the last line. They now take their height from their
+     content, and the grid still makes all three equal. */
 }
 @media (min-width: 601px) and (max-width: 900px) {
   .service-col,
