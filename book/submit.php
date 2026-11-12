@@ -1,6 +1,7 @@
 <?php
 // Lead endpoint for the Meta Ads landing page.
-// Saves each lead to the same Notion database as the main site's contact form.
+// Saves each lead to the same Notion database as the main site's contact form,
+// then posts it to Slack (#bookinger) so Daniel can call back quickly.
 // Credentials: put a notion-config.php ($NOTION_TOKEN, $DATABASE_ID) next to this
 // file, or leave it out and the main site's ../notion-config.php is used.
 
@@ -114,11 +115,67 @@ if ($status === 400) {
     // A property was renamed or removed in Notion: don't lose the lead.
     [$status, $response] = create_page($fallback, $children, $NOTION_TOKEN, $DATABASE_ID);
 }
+$detail    = json_decode($response, true);
+$notionOk  = $status === 200;
+$notionUrl = $notionOk ? ($detail['url'] ?? '') : '';
 
-if ($status === 200) {
+// ── Slack notification ──────────────────────────────────────────────────────
+// Posts the booking to #bookinger via the webhook in slack-config.php (next to
+// this file, or the site root). Missing config or a Slack error never blocks the lead.
+function slack_escape($text) {
+    return str_replace(['&', '<', '>'], ['&amp;', '&lt;', '&gt;'], $text);
+}
+
+function notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notionOk) {
+    $cfg = file_exists(__DIR__ . '/slack-config.php')
+        ? __DIR__ . '/slack-config.php'
+        : __DIR__ . '/../slack-config.php';
+    if (!file_exists($cfg)) return false;
+    require $cfg;
+    if (empty($SLACK_WEBHOOK_URL)) return false;
+
+    $e = 'slack_escape';
+    $lines = [
+        '*Navn:* ' . $e($name),
+        '*Telefon:* ' . $e($phone),
+        '*E-mail:* ' . $e($email),
+    ];
+    if ($need !== '') {
+        $lines[] = '*Kommentar:* ' . $e($need);
+    }
+    $blocks = [
+        ['type' => 'header', 'text' => ['type' => 'plain_text', 'emoji' => true,
+            'text' => mb_substr('📞 Ny booking: ' . $company, 0, 150)]],
+        ['type' => 'section', 'text' => ['type' => 'mrkdwn', 'text' => implode("\n", $lines)]],
+    ];
+    $context = $notionOk
+        ? ($notionUrl ? '<' . $notionUrl . '|Åbn i Notion> · fra dakevisuals.com/book' : 'Gemt i Notion · fra dakevisuals.com/book')
+        : '⚠️ Kunne ikke gemmes i Notion. Ring eller skriv til dem herfra.';
+    $blocks[] = ['type' => 'context', 'elements' => [['type' => 'mrkdwn', 'text' => $context]]];
+
+    $ch = curl_init($SLACK_WEBHOOK_URL);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST           => true,
+        CURLOPT_TIMEOUT        => 8,
+        CURLOPT_POSTFIELDS     => json_encode([
+            'text'   => 'Ny booking: ' . $company . ' – ' . $name . ', ' . $phone,
+            'blocks' => $blocks,
+        ]),
+        CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
+    ]);
+    curl_exec($ch);
+    $ok = curl_getinfo($ch, CURLINFO_HTTP_CODE) === 200;
+    curl_close($ch);
+    return $ok;
+}
+
+$slackOk = notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notionOk);
+
+// The lead counts as received if it reached Notion or Slack.
+if ($notionOk || $slackOk) {
     echo json_encode(['ok' => true]);
 } else {
-    $detail = json_decode($response, true);
     http_response_code(500);
     echo json_encode(['error' => $detail['message'] ?? 'Failed to create lead']);
 }
