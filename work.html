@@ -42,7 +42,9 @@
     .mobile-menu.open { transform: translateY(0); opacity: 1; visibility: visible; pointer-events: auto; }
     .mobile-menu a { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--black); text-decoration: none; }
     .work-grid-wrap { padding: 0.5rem; }
-    .work-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; background: var(--cream); }
+    /* Three across on desktop. Tablet and phone stay at two — the overrides
+       below (≤900, ≤600 and 768–1024) are unchanged. */
+    .work-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; background: var(--cream); }
     .project-card { cursor: pointer; position: relative; overflow: hidden; display: block; text-decoration: none; border-radius: 8px; }
     .project-thumb { width: 100%; aspect-ratio: 16/9; background: var(--cream); position: relative; overflow: hidden; }
     .project-thumb-bg { width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94); }
@@ -348,7 +350,21 @@
       </div>
     </a>
 
+    <!-- Three Coming Soon cards fill the last row: 15 projects + 3 makes 18,
+         which is exactly six rows of three with no gap at the bottom. -->
     <a class="project-card coming-card" href="projects/coming-soon-2.html" data-animate style="transition-delay:0.9s">
+      <div class="project-thumb">
+        <div class="coming-title"><span data-da="Kommer snart">Coming Soon</span></div>
+      </div>
+    </a>
+
+    <a class="project-card coming-card" href="projects/coming-soon-2.html" data-animate style="transition-delay:1s">
+      <div class="project-thumb">
+        <div class="coming-title"><span data-da="Kommer snart">Coming Soon</span></div>
+      </div>
+    </a>
+
+    <a class="project-card coming-card" href="projects/coming-soon-2.html" data-animate style="transition-delay:1.1s">
       <div class="project-thumb">
         <div class="coming-title"><span data-da="Kommer snart">Coming Soon</span></div>
       </div>
