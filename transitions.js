@@ -261,7 +261,15 @@
   }
 
   // ---------- leaving ----------
+  // Leaving a project page never plays the cover. Stepping back out of a case
+  // study — by the back link or by the nav — is a return, not a move between
+  // the site's main sections, and the named cover made it feel like a longer
+  // trip than it is. The transition is for tapping through the nav from the
+  // ordinary pages; arriving at a project page never had one either way.
+  var inProject = /^\/projects\//.test(here || '');
+
   document.addEventListener('click', function (e) {
+    if (inProject) return;
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     var a = e.target.closest ? e.target.closest('a') : null;
     if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
