@@ -19,6 +19,16 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="theme-color" content="#f7efdb" />
 
+  <script>
+    // Always land at the top (headline + animation), even after a reload or from a link ending in #book
+    (function () {
+      try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+      if (location.hash) { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
+      window.scrollTo(0, 0);
+      window.addEventListener('pageshow', function () { window.scrollTo(0, 0); });
+    })();
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;0,900;1,700;1,900&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Tinos:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
@@ -175,15 +185,10 @@
     .reel-frame::before { left: 0; background: linear-gradient(to right, var(--cream), rgba(247,239,219,0)); }
     .reel-frame::after { right: 0; background: linear-gradient(to left, var(--cream), rgba(247,239,219,0)); }
     .reel-video { display: block; width: 100%; height: auto; aspect-ratio: 1600 / 466; background: var(--cream); }
-    /* Image strip used when a phone blocks video autoplay — scrolls by itself like the logos */
-    .reel-strip { display: flex; flex-direction: column; gap: 14px; padding: 6px 0; overflow: hidden; }
-    .reel-strip[hidden] { display: none; }
-    .reel-frame.is-strip .reel-video { display: none; }
-    .reel-row { display: flex; gap: 14px; padding-right: 14px; width: max-content; animation: reelLeft 60s linear infinite; }
-    .reel-row.rev { animation-name: reelRight; animation-duration: 68s; }
-    .reel-row img { width: clamp(200px, 22vw, 320px); aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; display: block; flex-shrink: 0; }
-    @keyframes reelLeft { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-    @keyframes reelRight { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+    /* Animated image (like a GIF) used when a phone blocks video autoplay — it always moves */
+    .reel-anim { display: block; width: 100%; height: auto; aspect-ratio: 1600 / 466; }
+    .reel-anim[hidden] { display: none; }
+    .reel-frame.is-anim .reel-video { display: none; }
 
     /* ─── CLIENTS ─── */
     .clients { padding: 90px 0 20px; }
@@ -237,11 +242,6 @@
       .reel { padding: 56px 0 56px; }
       .reel-frame { width: 200%; max-width: none; margin-left: -50%; }
       .reel-frame::before, .reel-frame::after { width: 27%; }
-      .reel-frame.is-strip { width: auto; margin-left: 0; }
-      .reel-frame.is-strip::before, .reel-frame.is-strip::after { width: 12%; }
-      .reel-row img { width: 46vw; border-radius: 10px; }
-      .reel-strip, .reel-row { gap: 10px; }
-      .reel-row { padding-right: 10px; }
       .track { gap: 3.5rem; animation-duration: 30s; }
       .logo-item { width: 130px; height: 42px; }
       .logo-item.lg { height: 64px; }
@@ -434,7 +434,7 @@
     <section class="reel" aria-label="Udvalgte projekter">
       <div class="reel-frame">
         <video class="reel-video" data-src="/book/assets/video/clips.mp4" data-src-mobile="/book/assets/video/clips-mobile.mp4" poster="/book/assets/video/clips-poster.jpg" muted loop playsinline webkit-playsinline preload="none" width="1600" height="466"></video>
-        <div class="reel-strip" aria-hidden="true" hidden></div>
+        <img class="reel-anim" alt="" aria-hidden="true" width="720" height="210" hidden />
       </div>
     </section>
 
@@ -529,16 +529,17 @@
       }, DELAY);
     })();
 
-    // Project reel: load and play the video only when it comes near the screen.
-    // Phones get a lighter file. If a phone blocks autoplay (e.g. iPhone Low Power Mode),
-    // the video is swapped for an image strip that scrolls by itself, like the logos.
+    // Project reel. The video file starts loading when it's near the screen and plays once it's visible
+    // (iPhone Safari only plays muted video that's on screen). Phones get a lighter file.
+    // Only if the phone really won't play it (e.g. iPhone Low Power Mode) is it swapped for an
+    // animated WebP of the same clips (like a GIF), which always moves.
     (function () {
       var v = document.querySelector('.reel-video');
       if (!v) return;
       var frame = v.closest('.reel-frame');
-      var strip = frame.querySelector('.reel-strip');
+      var anim = frame.querySelector('.reel-anim');
       var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var TILES = 16, usingStrip = false, checkTimer = null;
+      var usingStrip = false, hasPlayed = false, checkTimer = null;
 
       function load() {
         if (v.getAttribute('src')) return;
@@ -547,47 +548,51 @@
         v.src = (mobile && v.getAttribute('data-src-mobile')) || v.getAttribute('data-src');
         v.load();
       }
-      function row(from, to, rev) {
-        var r = document.createElement('div');
-        r.className = 'reel-row' + (rev ? ' rev' : '');
-        for (var pass = 0; pass < 2; pass++) {              // two copies for a seamless loop
-          for (var i = from; i <= to; i++) {
-            var img = document.createElement('img');
-            img.src = '/book/assets/reel/r' + (i < 10 ? '0' : '') + i + '.jpg';
-            img.alt = ''; img.decoding = 'async';
-            r.appendChild(img);
-          }
-        }
-        return r;
-      }
-      function useStrip() {
-        if (usingStrip) return;
+      function useAnim() {
+        if (usingStrip || hasPlayed) return;
         usingStrip = true;
         clearTimeout(checkTimer);
         v.pause(); v.removeAttribute('src'); v.load();      // stop downloading the video
-        strip.appendChild(row(1, TILES / 2, false));
-        strip.appendChild(row(TILES / 2 + 1, TILES, true));
-        strip.hidden = false;
-        frame.classList.add('is-strip');
+        anim.src = '/book/assets/video/clips-anim.webp';
+        anim.hidden = false;
+        frame.classList.add('is-anim');
       }
-      function start() {
+      v.addEventListener('playing', function () { hasPlayed = true; clearTimeout(checkTimer); });
+
+      function tryPlay() {
         if (usingStrip || reduce) return;
         load();
         var p = v.play();
-        if (p && p.catch) p.catch(useStrip);
-        // some phones neither play nor complain: fall back if nothing is moving after 4s
-        clearTimeout(checkTimer);
-        checkTimer = setTimeout(function () { if (v.paused || v.currentTime === 0) useStrip(); }, 4000);
-      }
-      if (!('IntersectionObserver' in window)) { start(); return; }
-      var io = new IntersectionObserver(function (es) {
-        es.forEach(function (e) {
-          if (usingStrip) return;
-          if (e.isIntersecting) { if (v.paused) start(); }
-          else { clearTimeout(checkTimer); if (!v.paused) v.pause(); }
+        if (p && p.catch) p.catch(function (err) {
+          if (err && err.name === 'NotAllowedError') useAnim();   // the phone refuses autoplay
         });
-      }, { rootMargin: '300px 0px' });
-      io.observe(v);
+        // Still nothing after 6 s on screen with the video ready to go: treat it as blocked.
+        clearTimeout(checkTimer);
+        checkTimer = setTimeout(function () {
+          if (!hasPlayed && v.paused && v.readyState >= 2) useAnim();
+        }, 6000);
+      }
+
+      if (!('IntersectionObserver' in window)) { tryPlay(); return; }
+      new IntersectionObserver(function (es) {                    // near the screen: start loading
+        if (es[0].isIntersecting && !reduce) load();
+      }, { rootMargin: '400px 0px' }).observe(v);
+      new IntersectionObserver(function (es) {                    // on screen: play; off screen: pause
+        if (usingStrip) return;
+        if (es[0].isIntersecting) { if (v.paused) tryPlay(); }
+        else { clearTimeout(checkTimer); if (!v.paused) v.pause(); }
+      }, { threshold: 0.2 }).observe(v);
+    })();
+
+    // "Book en uforpligtende snak" scrolls to the form without changing the address
+    (function () {
+      var cta = document.querySelector('.s-cta');
+      var target = document.getElementById('book');
+      if (!cta || !target) return;
+      cta.addEventListener('click', function (e) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
     })();
 
     // Booking form
