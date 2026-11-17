@@ -294,8 +294,10 @@
     .rn[disabled] { opacity: 0.3; pointer-events: none; }
     .reels-track { display: flex; gap: 14px; padding: 0 max(4%, calc((100% - 1280px) / 2 + 4%)); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; scroll-padding: 0 max(4%, calc((100% - 1280px) / 2 + 4%)); }
     .reels-track::-webkit-scrollbar { display: none; }
-    .rc { flex: 0 0 220px; aspect-ratio: 9 / 16; border-radius: 18px; overflow: hidden; background: #ddd; scroll-snap-align: start; box-shadow: 0 14px 30px -18px rgba(0,0,0,0.45); }
-    .rc video { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .rc { position: relative; flex: 0 0 220px; aspect-ratio: 9 / 16; border-radius: 18px; overflow: hidden; background: #e8dfca; scroll-snap-align: start; box-shadow: 0 14px 30px -18px rgba(0,0,0,0.45); }
+    .rc img, .rc video { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+    .rc video { opacity: 0; transition: opacity 0.3s ease; }   /* the still image shows until the video really plays */
+    .rc video.on { opacity: 1; }
     @media (hover: none), (max-width: 600px) { .reels-nav { display: none; } }
     @media (max-width: 600px) {
       .reels { padding: 40px 0 4px; }
@@ -341,16 +343,16 @@
         </div>
       </div>
       <div class="reels-track">
-        <div class="rc"><video data-src="/book/assets/reels/r1.mp4" poster="/book/assets/reels/r1.jpg" muted loop playsinline preload="none"></video></div>
-        <div class="rc"><video data-src="/book/assets/reels/r2.mp4" poster="/book/assets/reels/r2.jpg" muted loop playsinline preload="none"></video></div>
-        <div class="rc"><video data-src="/book/assets/reels/r10.mp4" poster="/book/assets/reels/r10.jpg" muted loop playsinline preload="none"></video></div>
-        <div class="rc"><video data-src="/book/assets/reels/r3.mp4" poster="/book/assets/reels/r3.jpg" muted loop playsinline preload="none"></video></div>
-        <div class="rc"><video data-src="/book/assets/reels/r4.mp4" poster="/book/assets/reels/r4.jpg" muted loop playsinline preload="none"></video></div>
-        <div class="rc"><video data-src="/book/assets/reels/r5.mp4" poster="/book/assets/reels/r5.jpg" muted loop playsinline preload="none"></video></div>
-        <div class="rc"><video data-src="/book/assets/reels/r6.mp4" poster="/book/assets/reels/r6.jpg" muted loop playsinline preload="none"></video></div>
-        <div class="rc"><video data-src="/book/assets/reels/r7.mp4" poster="/book/assets/reels/r7.jpg" muted loop playsinline preload="none"></video></div>
-        <div class="rc"><video data-src="/book/assets/reels/r8.mp4" poster="/book/assets/reels/r8.jpg" muted loop playsinline preload="none"></video></div>
-        <div class="rc"><video data-src="/book/assets/reels/r9.mp4" poster="/book/assets/reels/r9.jpg" muted loop playsinline preload="none"></video></div>
+        <div class="rc"><img src="/book/assets/reels/r1.jpg" alt="" decoding="async"><video data-src="/book/assets/reels/r1.mp4" muted loop playsinline preload="none"></video></div>
+        <div class="rc"><img src="/book/assets/reels/r2.jpg" alt="" decoding="async"><video data-src="/book/assets/reels/r2.mp4" muted loop playsinline preload="none"></video></div>
+        <div class="rc"><img src="/book/assets/reels/r10.jpg" alt="" decoding="async"><video data-src="/book/assets/reels/r10.mp4" muted loop playsinline preload="none"></video></div>
+        <div class="rc"><img src="/book/assets/reels/r3.jpg" alt="" decoding="async"><video data-src="/book/assets/reels/r3.mp4" muted loop playsinline preload="none"></video></div>
+        <div class="rc"><img src="/book/assets/reels/r4.jpg" alt="" decoding="async"><video data-src="/book/assets/reels/r4.mp4" muted loop playsinline preload="none"></video></div>
+        <div class="rc"><img src="/book/assets/reels/r5.jpg" alt="" decoding="async"><video data-src="/book/assets/reels/r5.mp4" muted loop playsinline preload="none"></video></div>
+        <div class="rc"><img src="/book/assets/reels/r6.jpg" alt="" decoding="async"><video data-src="/book/assets/reels/r6.mp4" muted loop playsinline preload="none"></video></div>
+        <div class="rc"><img src="/book/assets/reels/r7.jpg" alt="" decoding="async"><video data-src="/book/assets/reels/r7.mp4" muted loop playsinline preload="none"></video></div>
+        <div class="rc"><img src="/book/assets/reels/r8.jpg" alt="" decoding="async"><video data-src="/book/assets/reels/r8.mp4" muted loop playsinline preload="none"></video></div>
+        <div class="rc"><img src="/book/assets/reels/r9.jpg" alt="" decoding="async"><video data-src="/book/assets/reels/r9.mp4" muted loop playsinline preload="none"></video></div>
       </div>
     </section>
 
@@ -654,11 +656,6 @@
       new IntersectionObserver(function (es) {                    // near the screen: start loading
         if (es[0].isIntersecting && !reduce) load();
       }, { rootMargin: '1200px 0px' }).observe(v);
-      // The reel sits right under the top, so fetch it as soon as the page itself has loaded
-      if (!reduce) {
-        var early = function () { setTimeout(load, 200); };
-        if (document.readyState === 'complete') early(); else window.addEventListener('load', early, { once: true });
-      }
       new IntersectionObserver(function (es) {                    // on screen: play; off screen: pause
         if (usingStrip) return;
         if (es[0].isIntersecting) { if (v.paused) tryPlay(); }
@@ -677,7 +674,7 @@
       });
     })();
 
-    // Reels: load when near, play only while mostly in view; arrows + a one-time "peek" show it scrolls
+    // Reels: load ahead, play only while mostly in view; arrows + a one-time "peek" show it scrolls
     (function () {
       var track = document.querySelector('.reels-track');
       if (!track) return;
@@ -692,18 +689,42 @@
       next.addEventListener('click', function () { track.scrollBy({ left: step() * 2, behavior: 'smooth' }); });
       track.addEventListener('scroll', updateNav, { passive: true });
       updateNav();
-      if (!('IntersectionObserver' in window)) return;
-      var near = new IntersectionObserver(function (es) {
-        es.forEach(function (e) { if (e.isIntersecting && !e.target.getAttribute('src')) e.target.src = e.target.getAttribute('data-src'); });
-      }, { rootMargin: '300px' });
+      // Fetch a reel before it's needed: the first ones as soon as the row is near the screen,
+      // and while swiping, the next few ahead of the one in view.
+      function load(v) {
+        if (!v || v.getAttribute('src')) return;
+        v.muted = true; v.playsInline = true; v.preload = 'auto';
+        v.src = v.getAttribute('data-src');
+        v.load();
+      }
+      vids.forEach(function (v) {
+        function on() { v.classList.add('on'); }
+        v.addEventListener('playing', on);
+        v.addEventListener('timeupdate', function () { if (v.currentTime > 0) on(); });
+      });
+      var rowNear = false;
+      function loadAhead() {
+        if (!rowNear) return;
+        var first = Math.max(0, Math.floor(track.scrollLeft / step()));
+        for (var i = first; i < first + 3; i++) load(vids[i]);
+      }
+      var ticking = false;
+      track.addEventListener('scroll', function () {
+        if (ticking) return; ticking = true;
+        requestAnimationFrame(function () { ticking = false; loadAhead(); });
+      }, { passive: true });
+      if (!('IntersectionObserver' in window)) { rowNear = true; loadAhead(); vids.forEach(function (v) { v.play(); }); return; }
+      new IntersectionObserver(function (es) {
+        if (es[0].isIntersecting) { rowNear = true; loadAhead(); }
+      }, { rootMargin: '800px 0px' }).observe(track);
       var seen = new IntersectionObserver(function (es) {
         es.forEach(function (e) {
           var v = e.target;
-          if (e.intersectionRatio >= 0.6) { if (!v.getAttribute('src')) v.src = v.getAttribute('data-src'); var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+          if (e.intersectionRatio >= 0.6) { load(v); var p = v.play(); if (p && p.catch) p.catch(function () {}); }
           else if (!v.paused) v.pause();
         });
       }, { threshold: [0, 0.6, 1] });
-      vids.forEach(function (v) { near.observe(v); seen.observe(v); });
+      vids.forEach(function (v) { seen.observe(v); });
       // one-time peek: nudge the row sideways and back the first time it's seen
       var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!reduce) {

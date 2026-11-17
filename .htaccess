@@ -9,13 +9,18 @@ AddType video/quicktime .mov
   </FilesMatch>
 </IfModule>
 
-<IfModule mod_expires.c>
-  ExpiresActive On
-  ExpiresByType text/html "access plus 0 seconds"
-</IfModule>
-
+# Caching
+# Pages, scripts and styles: the browser always checks for a newer version
+# (a quick "not modified" if nothing changed), so updates show up right away.
+# Images and videos: kept for a day, so repeat visits and Hostinger's CDN don't
+# download them again every time (this is what makes the videos load fast on phones).
+# If you replace an image or video under the SAME file name, some visitors can
+# see the old one for up to a day; give it a new file name to avoid that.
 <IfModule mod_headers.c>
-  Header set Cache-Control "no-cache, no-store, must-revalidate"
-  Header set Pragma "no-cache"
-  Header set Expires 0
+  Header set Cache-Control "no-cache"
+  Header unset Pragma
+  Header unset Expires
+  <FilesMatch "\.(mp4|m4v|mov|webm|jpe?g|png|webp|gif|svg|ico|woff2?)$">
+    Header set Cache-Control "public, max-age=86400"
+  </FilesMatch>
 </IfModule>
