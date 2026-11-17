@@ -504,7 +504,7 @@
     .testimonials-title { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: clamp(1.6rem,4vw,2.8rem); letter-spacing:-0.02em; line-height:1.1; color: var(--black); text-transform: uppercase; margin-bottom: 4rem; }
     .testimonials-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 1.5rem;
       align-items: stretch;
     }
@@ -571,6 +571,7 @@
       color: var(--blue);
       margin-top: 0.15rem;
     }
+    @media (max-width: 1200px) { .testimonials-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 900px) { .testimonials-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 600px) { .testimonials-grid { grid-template-columns: 1fr; } }
 
@@ -954,6 +955,17 @@
       </div>
       <div class="testimonial-card" data-animate style="transition-delay:0.22s">
         <div class="testimonial-card-footer">
+          <div class="testimonial-card-avatar"><img loading="lazy" src="Testimonial Portraits/Thor.webp" style="width:100%;height:100%;object-fit:cover;"></div>
+          <div>
+            <p class="testimonial-card-name">Thor</p>
+            <p class="testimonial-card-company" data-da="Stifter — DenWay">Founder — DenWay</p>
+          </div>
+        </div>
+        <p class="testimonial-card-quote" data-da-html="Samarbejdet med DAKE Visuals har spillet en kæmpe rolle i forhold til vores performance for vores kunder og de resultater, vi har formået at skabe (…) Han har stået for alt lige fra de helt simple videoer til de mere avancerede, højkvalitets-reklamevideoer (…)&lt;span class=&quot;quote-rest&quot;&gt; Daniel er vanvittigt dygtig og har haft en kæmpe rolle i det, vi har skabt. Så hvis du er et reklamebureau, som leder efter en partner, der kan stå for alt på content-delen (…) så kan jeg kun give de største anbefalinger til DAKE Visuals.&lt;/span&gt;">Working with DAKE Visuals has played a huge role in our performance for our clients and the results we have been able to create (…) He has handled everything from the simplest videos to the more advanced, high-quality commercials (…)<span class="quote-rest"> Daniel is incredibly talented and has played a huge part in what we have built. So if you are an advertising agency looking for a partner who can handle everything on the content side (…) I can only give DAKE Visuals my highest recommendation.</span></p>
+        <button class="quote-toggle" type="button" data-more-en="Show more" data-less-en="Show less" data-more-da="Vis mere" data-less-da="Vis mindre">Show more</button>
+      </div>
+      <div class="testimonial-card" data-animate style="transition-delay:0.34s">
+        <div class="testimonial-card-footer">
           <div class="testimonial-card-avatar"><img loading="lazy" src="Testimonial Portraits/Nikolja.webp" style="width:100%;height:100%;object-fit:cover;"></div>
           <div>
             <p class="testimonial-card-name">Nikolaj</p>
@@ -963,7 +975,7 @@
         <p class="testimonial-card-quote" data-da-html="Før vi begyndte at arbejde sammen med Daniel, klippede vi selv vores YouTube-videoer. Problemet var, at vi simpelthen hverken havde tiden eller erfaringen til at nå det kvalitetsniveau, vi gik efter.<span class=&quot;quote-rest&quot;> (...) Daniel forstår vores brand og ved præcis, hvilken klippestil jeg er ude efter. (...) Kommunikationen med Daniel er nem og hurtig. (...) At have Daniel på holdet sparer os for utrolig meget tid, og YouTube er nu blevet en kanal, vi bruger aktivt.</span>">Before we started working with Daniel, we edited our YouTube videos ourselves. The problem was that we simply didn't have the time or the expertise to achieve the level of quality we were aiming for.<span class="quote-rest"> (...) Daniel understands our brand and knows exactly the style of editing I'm looking for. (...) Communication with Daniel is easy and fast. (...) Having Daniel on the team saves us an incredible amount of time, and YouTube has now become a channel that we actively use.</span></p>
         <button class="quote-toggle" type="button" data-more-en="Show more" data-less-en="Show less" data-more-da="Vis mere" data-less-da="Vis mindre">Show more</button>
       </div>
-      <div class="testimonial-card" data-animate style="transition-delay:0.34s">
+      <div class="testimonial-card" data-animate style="transition-delay:0.46s">
         <div class="testimonial-card-footer">
           <div class="testimonial-card-avatar"><img loading="lazy" src="Testimonial Portraits/Jasmin.webp" style="width:100%;height:100%;object-fit:cover;"></div>
           <div>
@@ -1152,11 +1164,11 @@
       btn.textContent = btn.getAttribute(
         'data-' + (open ? 'less' : 'more') + '-' + (da ? 'da' : 'en'));
     }
-    // Opening one quote must leave the other two exactly as they were. The
+    // Opening one quote must leave the others exactly as they were. The
     // grid sizes every card to the tallest in the row, so on its own it either
     // stretches the closed cards to match the open one or, with the row
     // released, lets them shrink to their own content. Neither is "unchanged".
-    // So the closed height is measured once while all three are still even,
+    // So the closed height is measured once while all cards are still even,
     // and held until everything is closed again.
     var tCards = [].slice.call(document.querySelectorAll('.testimonial-card'));
     function anyExpanded() {
