@@ -145,7 +145,7 @@
 
     /* ─── PROOF ─── */
     /* ─── TESTIMONIALS ─── */
-    .testimonials { padding: 100px 4% 0; max-width: 1100px; margin: 0 auto; }
+    .testimonials { padding: 60px 4% 0; max-width: 1100px; margin: 0 auto; }
     .t-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; align-items: stretch; }
     .t-card { border: 1px solid rgba(0,0,0,0.2); border-radius: 14px; padding: 1.5rem 1.4rem 1.3rem; display: flex; flex-direction: column; }
     .t-card blockquote { flex: 1; font-family: 'Tinos', serif; font-style: italic; font-size: 1.08rem; line-height: 1.5; margin-top: 1.1rem; }
@@ -155,12 +155,12 @@
     .who small { font-size: 0.82rem; color: var(--gray); }
 
     /* ─── PROJECT REEL (video) ─── */
-    .reel { padding: 90px 0 0; overflow: hidden; }
+    .reel { padding: 90px 0 80px; overflow: hidden; }
     .reel-video { display: block; width: 100%; max-width: 1600px; height: auto; aspect-ratio: 1600 / 466; margin: 0 auto; background: var(--cream);
       -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); }
 
     /* ─── CLIENTS ─── */
-    .clients { padding: 60px 0 70px; }
+    .clients { padding: 90px 0 20px; }
     .clients .label-sm { text-align: center; margin-bottom: 1.6rem; }
     .marquee { overflow: hidden; position: relative; padding: 12px 0; }
     .marquee::before, .marquee::after { content: ''; position: absolute; top: 0; bottom: 0; width: 18%; z-index: 2; pointer-events: none; }
@@ -206,8 +206,9 @@
       .book { padding-top: 40px; }
       .s-intro { font-size: 1.02rem; margin-top: 1.1rem; }
       .s-cta { width: 100%; justify-content: center; white-space: nowrap; font-size: 0.72rem; letter-spacing: 0.1em; padding: 1rem 1.2rem; }
-      .testimonials { padding: 64px 5% 0; }
-      .reel { padding-top: 56px; }
+      .clients { padding: 64px 0 10px; }
+      .testimonials { padding: 44px 5% 0; }
+      .reel { padding: 56px 0 56px; }
       .reel-video { width: 200%; max-width: none; margin-left: -50%; }
       .track { gap: 3.5rem; animation-duration: 30s; }
       .logo-item { width: 130px; height: 42px; }
@@ -346,6 +347,26 @@
     </section>
 
 
+    <section class="clients" aria-label="Udvalgte samarbejder">
+      <div class="marquee">
+        <div class="track" id="track">
+          <div class="logo-item"><img src="/book/assets/clients/take-one.png" alt="TAKE ONE" /></div>
+          <div class="logo-item lg"><img src="/book/assets/clients/icefit.png" alt="ICEFIT The Box" /></div>
+          <div class="logo-item"><img src="/book/assets/clients/casablanca.png" alt="Casablanca" /></div>
+          <div class="logo-item"><img src="/book/assets/clients/evie.png" alt="EVIE Cosmetics" /></div>
+          <div class="logo-item"><img src="/book/assets/clients/aarhus-motion.png" alt="Aarhus Motion" /></div>
+          <div class="logo-item rynkeby"><img src="/book/assets/clients/rynkeby.png" alt="Rynkeby" /></div>
+          <div class="logo-item"><img src="/book/assets/clients/thy-rock.png" alt="THY Rock" /></div>
+          <div class="logo-item bliss"><img src="/book/assets/clients/bliss.png" alt="Bliss" /></div>
+          <div class="logo-item"><img src="/book/assets/clients/rfsport.png" alt="RF.Sport" /></div>
+          <div class="logo-item"><img src="/book/assets/clients/groft.png" alt="GROFT" /></div>
+          <div class="logo-item"><img src="/book/assets/clients/pace-club.png" alt="PACE Club" /></div>
+          <div class="logo-item lg"><img src="/book/assets/clients/psykiatri-fonden.png" alt="Psykiatri Fonden" /></div>
+          <div class="logo-item"><img src="/book/assets/clients/optimum-nutrition.png" alt="Optimum Nutrition" /></div>
+        </div>
+      </div>
+    </section>
+
     <section class="testimonials">
       <h2 class="label-sm">Hvad kunderne siger</h2>
       <div class="t-grid">
@@ -377,25 +398,6 @@
       <video class="reel-video" data-src="/book/assets/video/clips.mp4" poster="/book/assets/video/clips-poster.jpg" muted loop playsinline preload="none" width="1600" height="466"></video>
     </section>
 
-    <section class="clients" aria-label="Udvalgte samarbejder">
-      <div class="marquee">
-        <div class="track" id="track">
-          <div class="logo-item"><img src="/book/assets/clients/take-one.png" alt="TAKE ONE" /></div>
-          <div class="logo-item lg"><img src="/book/assets/clients/icefit.png" alt="ICEFIT The Box" /></div>
-          <div class="logo-item"><img src="/book/assets/clients/casablanca.png" alt="Casablanca" /></div>
-          <div class="logo-item"><img src="/book/assets/clients/evie.png" alt="EVIE Cosmetics" /></div>
-          <div class="logo-item"><img src="/book/assets/clients/aarhus-motion.png" alt="Aarhus Motion" /></div>
-          <div class="logo-item rynkeby"><img src="/book/assets/clients/rynkeby.png" alt="Rynkeby" /></div>
-          <div class="logo-item"><img src="/book/assets/clients/thy-rock.png" alt="THY Rock" /></div>
-          <div class="logo-item bliss"><img src="/book/assets/clients/bliss.png" alt="Bliss" /></div>
-          <div class="logo-item"><img src="/book/assets/clients/rfsport.png" alt="RF.Sport" /></div>
-          <div class="logo-item"><img src="/book/assets/clients/groft.png" alt="GROFT" /></div>
-          <div class="logo-item"><img src="/book/assets/clients/pace-club.png" alt="PACE Club" /></div>
-          <div class="logo-item lg"><img src="/book/assets/clients/psykiatri-fonden.png" alt="Psykiatri Fonden" /></div>
-          <div class="logo-item"><img src="/book/assets/clients/optimum-nutrition.png" alt="Optimum Nutrition" /></div>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer>
