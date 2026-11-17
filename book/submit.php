@@ -83,8 +83,8 @@ function para($text) {
 $children = [
     heading('Booking fra dakevisuals.com/book'),
     para("Navn: $name\nTelefon: $phone\nE-mail: $email\nVirksomhed: $company"),
-    heading('Kommentar'),
-    para($need !== '' ? $need : 'Ingen kommentar.'),
+    heading('Hvad søger de hjælp til?'),
+    para($need !== '' ? $need : 'Ikke udfyldt.'),
 ];
 
 function create_page($properties, $children, $token, $dbId) {
@@ -146,7 +146,7 @@ function notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notio
         '*E-mail:* ' . $e($email),
     ];
     if ($need !== '') {
-        $lines[] = '*Kommentar:* ' . $e($need);
+        $lines[] = '*Søger hjælp til:* ' . $e($need);
     }
     $blocks = [
         ['type' => 'header', 'text' => ['type' => 'plain_text', 'emoji' => true,

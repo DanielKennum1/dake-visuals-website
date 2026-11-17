@@ -62,7 +62,7 @@
     .control::placeholder { color: rgba(0,0,0,0.38); }
     .control:hover { border-color: rgba(0,0,0,0.3); }
     .control:focus, .phone:focus-within { border-color: var(--black); box-shadow: 0 0 0 3px rgba(53,82,157,0.18); }
-    textarea.control { min-height: 120px; resize: vertical; line-height: 1.55; }
+    textarea.control { display: block; height: auto; min-height: 0; resize: none; overflow: hidden; line-height: 1.4; }
     select.control { padding-right: 2.6rem; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='16' viewBox='0 0 12 16' fill='none' stroke='%23333' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 6 6 2.5 9.5 6M2.5 10 6 13.5 9.5 10'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; }
     select.control:invalid { color: rgba(0,0,0,0.38); }
     select.control option { color: var(--black); }
@@ -100,7 +100,6 @@
     .btn[disabled] { cursor: progress; opacity: 0.7; }
     .form-error { display: none; margin-top: 1rem; font-size: 0.88rem; color: var(--error); }
     .form-error.show { display: block; }
-    .consent { margin-top: 1rem; font-size: 0.78rem; line-height: 1.55; color: var(--muted); text-align: center; }
 
     .success { display: none; text-align: center; padding: 1.5rem 0 0.5rem; }
     .success:focus { outline: none; }
@@ -156,11 +155,6 @@
     .t-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; align-items: stretch; }
     .t-card { border: 1px solid rgba(0,0,0,0.2); border-radius: 14px; padding: 1.5rem 1.4rem 1.3rem; display: flex; flex-direction: column; }
     .t-card blockquote { flex: 1; font-family: 'Tinos', serif; font-style: italic; font-size: 1.08rem; line-height: 1.5; margin-top: 1.1rem; }
-    .t-card .rest { display: none; }
-    .t-card.open .rest { display: inline; animation: fadeIn 0.4s var(--ease); }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .t-toggle { align-self: flex-start; margin-top: 0.9rem; padding: 0; background: none; border: 0; cursor: pointer; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); }
-    .t-toggle:hover { opacity: 0.6; }
     .who { display: flex; align-items: center; gap: 0.9rem; }
     .who img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; }
     .who b { display: block; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
@@ -297,7 +291,7 @@
           </div>
 
           <div class="field">
-            <label for="email">E-mailadresse <span class="req" aria-hidden="true">*</span></label>
+            <label for="email">E-mail <span class="req" aria-hidden="true">*</span></label>
             <input class="control" id="email" name="email" type="email" inputmode="email" autocomplete="email" required />
             <span class="err">Skriv venligst en gyldig e-mailadresse.</span>
           </div>
@@ -330,8 +324,8 @@
           </div>
 
           <div class="field">
-            <label for="need">Tilføj kommentar <span class="opt">(valgfri)</span></label>
-            <textarea class="control" id="need" name="need" rows="4" maxlength="1500"></textarea>
+            <label for="need">Hvad søger du hjælp til? <span class="opt">(valgfri)</span></label>
+            <textarea class="control" id="need" name="need" rows="1" maxlength="1500"></textarea>
           </div>
 
           <div class="hp" aria-hidden="true">
@@ -344,7 +338,6 @@
             <svg class="arrow" width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><path d="M1 6h13M9.5 1.5 14 6l-4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
           <p class="form-error" id="formError" role="alert">Noget gik galt. Prøv igen, eller skriv direkte til <a href="mailto:dake@dakevisuals.com">dake@dakevisuals.com</a>.</p>
-          <p class="consent">Når du sender formularen, giver du DAKE Visuals lov til at kontakte dig om din henvendelse. Dine oplysninger deles ikke med andre.</p>
         </form>
 
         <div class="success" id="success" role="status" aria-live="polite" tabindex="-1">
@@ -373,24 +366,21 @@
             <img src="/book/assets/img/carl.webp" alt="" loading="lazy" />
             <span><b>Carl</b><small>Stifter, ICEFIT The Box</small></span>
           </figcaption>
-          <blockquote>Vi har samarbejdet med Daniel i næsten et år nu (…) og det, der virkelig adskiller ham, er hans fleksibilitet.<span class="rest"> Han tilpasser sig altid vores behov og er utrolig hurtig, når videoerne skal leveres. Oveni har han et stærkt kunstnerisk blik, og indholdet ser altid skarpt og professionelt ud. Han er desuden blevet en værdifuld partner i planlægningen og hjælper os med at planlægge en hel måneds indhold på forhånd. Jeg kan varmt anbefale ham.</span></blockquote>
-          <button class="t-toggle" type="button" aria-expanded="false">Vis mere</button>
+          <blockquote>Vi har samarbejdet med Daniel i næsten et år nu (…) og det, der virkelig adskiller ham, er hans fleksibilitet. Han tilpasser sig altid vores behov og er utrolig hurtig, når videoerne skal leveres. Oveni har han et stærkt kunstnerisk blik, og indholdet ser altid skarpt og professionelt ud. Han er desuden blevet en værdifuld partner i planlægningen og hjælper os med at planlægge en hel måneds indhold på forhånd. Jeg kan varmt anbefale ham.</blockquote>
         </figure>
         <figure class="t-card">
           <figcaption class="who">
             <img src="/book/assets/img/nikolaj.webp" alt="" loading="lazy" />
             <span><b>Nikolaj</b><small>Medstifter, RFSPORT</small></span>
           </figcaption>
-          <blockquote>Før vi begyndte at arbejde sammen med Daniel, klippede vi selv vores YouTube-videoer.<span class="rest"> Problemet var, at vi simpelthen hverken havde tiden eller erfaringen til at nå det kvalitetsniveau, vi gik efter. (…) Daniel forstår vores brand og ved præcis, hvilken klippestil jeg er ude efter. (…) Kommunikationen med Daniel er nem og hurtig. (…) At have Daniel på holdet sparer os for utrolig meget tid, og YouTube er nu blevet en kanal, vi bruger aktivt.</span></blockquote>
-          <button class="t-toggle" type="button" aria-expanded="false">Vis mere</button>
+          <blockquote>Før vi begyndte at arbejde sammen med Daniel, klippede vi selv vores YouTube-videoer. Problemet var, at vi simpelthen hverken havde tiden eller erfaringen til at nå det kvalitetsniveau, vi gik efter. (…) Daniel forstår vores brand og ved præcis, hvilken klippestil jeg er ude efter. (…) Kommunikationen med Daniel er nem og hurtig. (…) At have Daniel på holdet sparer os for utrolig meget tid, og YouTube er nu blevet en kanal, vi bruger aktivt.</blockquote>
         </figure>
         <figure class="t-card">
           <figcaption class="who">
             <img src="/book/assets/img/jasmin.webp" alt="" loading="lazy" />
             <span><b>Jasmin</b><small>Stifter, Evie Cosmetics</small></span>
           </figcaption>
-          <blockquote>Vi havde en rigtig god oplevelse med at arbejde sammen med Daniel.<span class="rest"> Han var effektiv, velforberedt og usædvanlig god til hurtigt at forstå vores vision og det look and feel, vi ønskede for vores brand. Samtidig formåede han at tænke ud af boksen og byde ind med kreative idéer, der løftede det endelige resultat.</span></blockquote>
-          <button class="t-toggle" type="button" aria-expanded="false">Vis mere</button>
+          <blockquote>Vi havde en rigtig god oplevelse med at arbejde sammen med Daniel. Han var effektiv, velforberedt og usædvanlig god til hurtigt at forstå vores vision og det look and feel, vi ønskede for vores brand. Samtidig formåede han at tænke ud af boksen og byde ind med kreative idéer, der løftede det endelige resultat.</blockquote>
         </figure>
       </div>
     </section>
@@ -496,15 +486,6 @@
       io.observe(el);
     })();
 
-    // Testimonials: "Vis mere" / "Vis mindre"
-    document.querySelectorAll('.t-toggle').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var open = btn.closest('.t-card').classList.toggle('open');
-        btn.textContent = open ? 'Vis mindre' : 'Vis mere';
-        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      });
-    });
-
     // Booking form
     (function () {
       var form = document.getElementById('leadForm');
@@ -513,6 +494,12 @@
       var btnText = btn.querySelector('.btn-text');
       var formError = document.getElementById('formError');
       var card = document.getElementById('card');
+
+      // "Hvad søger du hjælp til?" starts one line tall, like the other fields, and grows as people type
+      var need = f.need;
+      function fitNeed() { need.style.height = 'auto'; need.style.height = need.scrollHeight + 'px'; }
+      need.addEventListener('input', fitNeed);
+      fitNeed();
 
       var checks = {
         name: function (v) { return v.trim().length >= 2; },
