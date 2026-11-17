@@ -593,7 +593,12 @@
       if (!('IntersectionObserver' in window)) { tryPlay(); return; }
       new IntersectionObserver(function (es) {                    // near the screen: start loading
         if (es[0].isIntersecting && !reduce) load();
-      }, { rootMargin: '400px 0px' }).observe(v);
+      }, { rootMargin: '1200px 0px' }).observe(v);
+      // The reel sits right under the top, so fetch it as soon as the page itself has loaded
+      if (!reduce) {
+        var early = function () { setTimeout(load, 200); };
+        if (document.readyState === 'complete') early(); else window.addEventListener('load', early, { once: true });
+      }
       new IntersectionObserver(function (es) {                    // on screen: play; off screen: pause
         if (usingStrip) return;
         if (es[0].isIntersecting) { if (v.paused) tryPlay(); }
