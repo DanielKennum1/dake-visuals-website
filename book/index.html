@@ -141,6 +141,19 @@
     .s-cta:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
     .s-cta svg { transition: transform 0.35s var(--ease); }
     .s-cta:hover svg { transform: translateY(3px); }
+
+    /* Load-in: headline word by word, then the rest */
+    .services h2 .w { display: inline-block; opacity: 0; transform: translateY(0.35em); filter: blur(8px); animation: wordIn 0.9s var(--ease) var(--d, 0s) forwards; }
+    .reveal { opacity: 0; transform: translateY(12px); animation: revealIn 0.8s var(--ease) var(--d, 0s) forwards; }
+    @keyframes wordIn { to { opacity: 1; transform: none; filter: blur(0); } }
+    @keyframes revealIn { to { opacity: 1; transform: none; } }
+
+    /* Numbers row */
+    .stats { display: flex; justify-content: center; margin: 2.2rem auto 0; padding-top: 1.6rem; border-top: 1px solid rgba(0,0,0,0.08); max-width: 420px; }
+    .stat { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+    .stat + .stat { border-left: 1px solid rgba(0,0,0,0.08); }
+    .stat-n { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700; font-size: clamp(2rem, 4vw, 2.6rem); line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+    .stat-l { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(0,0,0,0.5); }
     .book { scroll-margin-top: 16px; padding-top: 64px; }
 
     /* ─── PROOF ─── */
@@ -217,6 +230,7 @@
       footer { flex-direction: column; align-items: flex-start; margin: 0 5%; }
     }
     @media (prefers-reduced-motion: reduce) {
+      .services h2 .w, .reveal { animation: none; opacity: 1; transform: none; filter: none; }
       .intro, .steps, .card { animation: none; transform: none; opacity: 1; }
       .track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; }
       .track [aria-hidden="true"] { display: none; }
@@ -250,14 +264,18 @@
     <section class="services" aria-labelledby="services-title">
       <div class="glass">
       <div class="services-head">
-        <p class="label-sm">Jeg hjælper med at skabe</p>
-        <h2 id="services-title">Video som konverterer</h2>
+        <p class="label-sm reveal" style="--d:0s">Jeg hjælper med at skabe</p>
+        <h2 id="services-title" aria-label="Video som konverterer"><span class="w" style="--d:.12s" aria-hidden="true">Video</span> <span class="w" style="--d:.24s" aria-hidden="true">som</span> <span class="w" style="--d:.36s" aria-hidden="true">konverterer</span></h2>
       </div>
 
-      <p class="s-intro">Reklamefilm, brandfilm og content til sociale medier for virksomheder, der vil skille sig ud. Vi står for det hele, fra idé og script til optagelse og færdigt produkt.</p>
-      <a class="s-cta" href="#book">Book en uforpligtende snak
+      <p class="s-intro reveal" style="--d:.6s">Reklamefilm, brandfilm og content til sociale medier for virksomheder, der vil skille sig ud. Vi står for det hele, fra idé og script til optagelse og færdigt produkt.</p>
+      <a class="s-cta reveal" style="--d:.72s" href="#book">Book en uforpligtende snak
         <svg width="12" height="14" viewBox="0 0 12 14" fill="none" aria-hidden="true"><path d="M6 1v11M1.5 7.5 6 12l4.5-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
+      <div class="stats reveal" style="--d:.84s">
+        <div class="stat" aria-label="200+ projekter"><span class="stat-n" aria-hidden="true"><span class="num" data-to="200">200</span>+</span><span class="stat-l" aria-hidden="true">Projekter</span></div>
+        <div class="stat" aria-label="50+ brands"><span class="stat-n" aria-hidden="true"><span class="num" data-to="50">50</span>+</span><span class="stat-l" aria-hidden="true">Brands</span></div>
+      </div>
       </div>
     </section>
 
@@ -470,6 +488,24 @@
       });
     })();
 
+
+    // Numbers count up from 0 once the row fades in
+    (function () {
+      var nums = document.querySelectorAll('.stats .num');
+      if (!nums.length) return;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      nums.forEach(function (n) { n.textContent = '0'; });
+      var DELAY = 850, DURATION = 1300;
+      setTimeout(function () {
+        var t0 = performance.now();
+        (function tick(now) {
+          var p = Math.min(1, (now - t0) / DURATION);
+          var e = 1 - Math.pow(1 - p, 3);             // fast start, soft landing
+          nums.forEach(function (n) { n.textContent = Math.round(e * Number(n.getAttribute('data-to'))); });
+          if (p < 1) requestAnimationFrame(tick);
+        })(t0);
+      }, DELAY);
+    })();
 
     // Project reel: load and play the video only when it comes near the screen
     (function () {
