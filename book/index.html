@@ -153,9 +153,7 @@
     .s-cta:hover svg { transform: translateY(3px); }
 
     /* Load-in: headline word by word, then the rest */
-    .services h2 .w { display: inline-block; opacity: 0; transform: translateY(0.35em); filter: blur(8px); animation: wordIn 0.9s var(--ease) var(--d, 0s) forwards; }
-    .reveal { opacity: 0; transform: translateY(12px); animation: revealIn 0.8s var(--ease) var(--d, 0s) forwards; }
-    @keyframes wordIn { to { opacity: 1; transform: none; filter: blur(0); } }
+    .reveal { opacity: 0; transform: translateY(6px); animation: revealIn 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) var(--d, 0s) forwards; }
     @keyframes revealIn { to { opacity: 1; transform: none; } }
 
     /* Numbers row */
@@ -249,7 +247,7 @@
       footer { flex-direction: column; align-items: flex-start; margin: 0 5%; }
     }
     @media (prefers-reduced-motion: reduce) {
-      .services h2 .w, .reveal { animation: none; opacity: 1; transform: none; filter: none; }
+      .reveal { animation: none; opacity: 1; transform: none; }
       .intro, .steps, .card { animation: none; transform: none; opacity: 1; }
       .track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; }
       .track [aria-hidden="true"] { display: none; }
@@ -283,15 +281,14 @@
     <section class="services" aria-labelledby="services-title">
       <div class="glass">
       <div class="services-head">
-        <p class="label-sm reveal" style="--d:0s">Jeg hjælper med at skabe</p>
-        <h2 id="services-title" aria-label="Video som konverterer"><span class="w" style="--d:.12s" aria-hidden="true">Video</span> <span class="w" style="--d:.24s" aria-hidden="true">som</span> <span class="w" style="--d:.36s" aria-hidden="true">konverterer</span></h2>
+        <h2 id="services-title" class="reveal" style="--d:.05s">Video som konverterer</h2>
       </div>
 
-      <p class="s-intro reveal" style="--d:.6s">Reklamefilm, brandfilm og content til sociale medier for virksomheder, der vil skille sig ud. Vi står for det hele, fra idé og script til optagelse og færdigt produkt.</p>
-      <a class="s-cta reveal" style="--d:.72s" href="#book">Book en uforpligtende snak
+      <p class="s-intro reveal" style="--d:.2s">Reklamefilm, brandfilm og content til sociale medier for virksomheder, der vil skille sig ud. Vi står for det hele, fra idé og script til optagelse og færdigt produkt.</p>
+      <a class="s-cta reveal" style="--d:.35s" href="#book">Book en uforpligtende snak
         <svg width="12" height="14" viewBox="0 0 12 14" fill="none" aria-hidden="true"><path d="M6 1v11M1.5 7.5 6 12l4.5-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
-      <div class="stats reveal" style="--d:.84s">
+      <div class="stats reveal" style="--d:.5s">
         <div class="stat" aria-label="200+ projekter"><span class="stat-n" aria-hidden="true"><span class="num" data-to="200">200</span>+</span><span class="stat-l" aria-hidden="true">Projekter</span></div>
         <div class="stat" aria-label="50+ brands"><span class="stat-n" aria-hidden="true"><span class="num" data-to="50">50</span>+</span><span class="stat-l" aria-hidden="true">Brands</span></div>
       </div>
@@ -517,7 +514,7 @@
       if (!nums.length) return;
       if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       nums.forEach(function (n) { n.textContent = '0'; });
-      var DELAY = 850, DURATION = 1300;
+      var DELAY = 600, DURATION = 1300;
       setTimeout(function () {
         var t0 = performance.now();
         (function tick(now) {
