@@ -433,8 +433,8 @@
 
     <section class="reel" aria-label="Udvalgte projekter">
       <div class="reel-frame">
-        <video class="reel-video" data-src="/book/assets/video/clips.mp4" poster="/book/assets/video/clips-poster.jpg" muted loop playsinline webkit-playsinline preload="none" width="1600" height="466"></video>
-        <img class="reel-anim" alt="" aria-hidden="true" width="1000" height="292" hidden />
+        <video class="reel-video" data-src="/book/assets/video/clips.mp4" data-src-mobile="/book/assets/video/clips-mobile.mp4" poster="/book/assets/video/clips-poster.jpg" muted loop playsinline webkit-playsinline preload="none" width="1600" height="466"></video>
+        <img class="reel-anim" alt="" aria-hidden="true" width="640" height="186" hidden />
       </div>
     </section>
 
@@ -529,8 +529,8 @@
       }, DELAY);
     })();
 
-    // Project reel. Phones always get the animated version (like a GIF), which moves even in Low Power Mode.
-    // Computers get the video: it starts loading near the screen and plays once it's visible.
+    // Project reel. Video everywhere (phones get a lighter file): it starts loading near the screen and
+    // plays once it's visible (iPhone Safari only plays muted video that's on screen).
     // Only if the phone really won't play it (e.g. iPhone Low Power Mode) is it swapped for an
     // animated WebP of the same clips (like a GIF), which always moves.
     (function () {
@@ -544,7 +544,8 @@
       function load() {
         if (v.getAttribute('src')) return;
         v.muted = true; v.defaultMuted = true; v.playsInline = true;
-        v.src = v.getAttribute('data-src');
+        var mobile = window.matchMedia('(max-width: 700px)').matches;
+        v.src = (mobile && v.getAttribute('data-src-mobile')) || v.getAttribute('data-src');
         v.load();
       }
       function useAnim() {
@@ -572,14 +573,6 @@
         }, 6000);
       }
 
-      if (window.matchMedia('(max-width: 700px)').matches) {
-        if (!('IntersectionObserver' in window)) { useAnim(); return; }
-        var near = new IntersectionObserver(function (es) {
-          if (es[0].isIntersecting) { useAnim(); near.disconnect(); }
-        }, { rootMargin: '600px 0px' });
-        near.observe(v);
-        return;
-      }
       if (!('IntersectionObserver' in window)) { tryPlay(); return; }
       new IntersectionObserver(function (es) {                    // near the screen: start loading
         if (es[0].isIntersecting && !reduce) load();
