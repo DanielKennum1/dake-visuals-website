@@ -178,7 +178,7 @@
 
     /* ─── PROOF ─── */
     /* ─── TESTIMONIALS ─── */
-    .testimonials { padding: 60px 4% 0; max-width: 1100px; margin: 0 auto; }
+    .testimonials { padding: 60px 4% 90px; max-width: 1100px; margin: 0 auto; }
     .t-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; align-items: stretch; max-width: 900px; margin: 0 auto; }
     /* odd number of testimonials: the last one spans the full width (2×2 once there are four) */
     .t-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
@@ -190,7 +190,7 @@
     .who small { font-size: 0.82rem; color: var(--gray); }
 
     /* ─── PROJECT REEL (video) ─── */
-    .reel { padding: 90px 0 80px; overflow: hidden; }
+    .reel { padding: 70px 0 10px; overflow: hidden; }
     .reel-frame { position: relative; max-width: 1600px; margin: 0 auto; }
     /* soft fade at both ends — overlays, because Safari mishandles mask-image on <video> */
     .reel-frame::before, .reel-frame::after { content: ''; position: absolute; top: 0; bottom: 0; width: 8%; z-index: 1; pointer-events: none; }
@@ -252,8 +252,8 @@
       .s-intro { font-size: 1.02rem; margin-top: 1.1rem; }
       .s-cta { width: 100%; justify-content: center; white-space: nowrap; font-size: 0.72rem; letter-spacing: 0.1em; padding: 1rem 1.2rem; }
       .clients { padding: 64px 0 10px; }
-      .testimonials { padding: 44px 5% 0; }
-      .reel { padding: 56px 0 56px; }
+      .testimonials { padding: 44px 5% 60px; }
+      .reel { padding: 44px 0 4px; }
       .reel-frame { width: 200%; max-width: none; margin-left: -50%; }
       .reel-frame::before, .reel-frame::after { width: 27%; }
       .track { gap: 3.5rem; animation-duration: 30s; }
@@ -309,6 +309,13 @@
         <div class="stat" aria-label="200+ projekter"><span class="stat-n" aria-hidden="true"><span class="num" data-to="200">200</span>+</span><span class="stat-l" aria-hidden="true">Projekter</span></div>
         <div class="stat" aria-label="50+ brands"><span class="stat-n" aria-hidden="true"><span class="num" data-to="50">50</span>+</span><span class="stat-l" aria-hidden="true">Brands</span></div>
       </div>
+      </div>
+    </section>
+
+    <section class="reel" aria-label="Udvalgte projekter">
+      <div class="reel-frame">
+        <video class="reel-video" data-src="/book/assets/video/clips.mp4" data-src-mobile="/book/assets/video/clips-mobile.mp4" poster="/book/assets/video/clips-poster.jpg" muted loop playsinline webkit-playsinline preload="none" width="1600" height="466"></video>
+        <img class="reel-anim" alt="" aria-hidden="true" width="640" height="186" hidden />
       </div>
     </section>
 
@@ -451,12 +458,6 @@
       </div>
     </section>
 
-    <section class="reel" aria-label="Udvalgte projekter">
-      <div class="reel-frame">
-        <video class="reel-video" data-src="/book/assets/video/clips.mp4" data-src-mobile="/book/assets/video/clips-mobile.mp4" poster="/book/assets/video/clips-poster.jpg" muted loop playsinline webkit-playsinline preload="none" width="1600" height="466"></video>
-        <img class="reel-anim" alt="" aria-hidden="true" width="640" height="186" hidden />
-      </div>
-    </section>
 
   </main>
 
