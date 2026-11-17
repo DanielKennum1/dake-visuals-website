@@ -175,9 +175,15 @@
     .reel-frame::before { left: 0; background: linear-gradient(to right, var(--cream), rgba(247,239,219,0)); }
     .reel-frame::after { right: 0; background: linear-gradient(to left, var(--cream), rgba(247,239,219,0)); }
     .reel-video { display: block; width: 100%; height: auto; aspect-ratio: 1600 / 466; background: var(--cream); }
-    .reel-play { position: absolute; left: 50%; top: 50%; z-index: 2; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.8); color: var(--black); cursor: pointer; display: grid; place-items: center; padding-left: 3px;
-      background: rgba(255,255,255,0.7); -webkit-backdrop-filter: blur(14px) saturate(160%); backdrop-filter: blur(14px) saturate(160%); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.35); }
-    .reel-play[hidden] { display: none; }
+    /* Image strip used when a phone blocks video autoplay — scrolls by itself like the logos */
+    .reel-strip { display: flex; flex-direction: column; gap: 14px; padding: 6px 0; overflow: hidden; }
+    .reel-strip[hidden] { display: none; }
+    .reel-frame.is-strip .reel-video { display: none; }
+    .reel-row { display: flex; gap: 14px; padding-right: 14px; width: max-content; animation: reelLeft 60s linear infinite; }
+    .reel-row.rev { animation-name: reelRight; animation-duration: 68s; }
+    .reel-row img { width: clamp(200px, 22vw, 320px); aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; display: block; flex-shrink: 0; }
+    @keyframes reelLeft { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes reelRight { from { transform: translateX(-50%); } to { transform: translateX(0); } }
 
     /* ─── CLIENTS ─── */
     .clients { padding: 90px 0 20px; }
@@ -231,6 +237,11 @@
       .reel { padding: 56px 0 56px; }
       .reel-frame { width: 200%; max-width: none; margin-left: -50%; }
       .reel-frame::before, .reel-frame::after { width: 27%; }
+      .reel-frame.is-strip { width: auto; margin-left: 0; }
+      .reel-frame.is-strip::before, .reel-frame.is-strip::after { width: 12%; }
+      .reel-row img { width: 46vw; border-radius: 10px; }
+      .reel-strip, .reel-row { gap: 10px; }
+      .reel-row { padding-right: 10px; }
       .track { gap: 3.5rem; animation-duration: 30s; }
       .logo-item { width: 130px; height: 42px; }
       .logo-item.lg { height: 64px; }
@@ -423,9 +434,7 @@
     <section class="reel" aria-label="Udvalgte projekter">
       <div class="reel-frame">
         <video class="reel-video" data-src="/book/assets/video/clips.mp4" data-src-mobile="/book/assets/video/clips-mobile.mp4" poster="/book/assets/video/clips-poster.jpg" muted loop playsinline webkit-playsinline preload="none" width="1600" height="466"></video>
-        <button class="reel-play" type="button" aria-label="Afspil video" hidden>
-          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>
-        </button>
+        <div class="reel-strip" aria-hidden="true" hidden></div>
       </div>
     </section>
 
@@ -521,12 +530,15 @@
     })();
 
     // Project reel: load and play the video only when it comes near the screen.
-    // Phones get a lighter file; if the phone blocks autoplay (e.g. iPhone Low Power Mode), a play button appears.
+    // Phones get a lighter file. If a phone blocks autoplay (e.g. iPhone Low Power Mode),
+    // the video is swapped for an image strip that scrolls by itself, like the logos.
     (function () {
       var v = document.querySelector('.reel-video');
       if (!v) return;
-      var btn = document.querySelector('.reel-play');
+      var frame = v.closest('.reel-frame');
+      var strip = frame.querySelector('.reel-strip');
       var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var TILES = 16, usingStrip = false, checkTimer = null;
 
       function load() {
         if (v.getAttribute('src')) return;
@@ -535,24 +547,44 @@
         v.src = (mobile && v.getAttribute('data-src-mobile')) || v.getAttribute('data-src');
         v.load();
       }
-      function play() {
+      function row(from, to, rev) {
+        var r = document.createElement('div');
+        r.className = 'reel-row' + (rev ? ' rev' : '');
+        for (var pass = 0; pass < 2; pass++) {              // two copies for a seamless loop
+          for (var i = from; i <= to; i++) {
+            var img = document.createElement('img');
+            img.src = '/book/assets/reel/r' + (i < 10 ? '0' : '') + i + '.jpg';
+            img.alt = ''; img.decoding = 'async';
+            r.appendChild(img);
+          }
+        }
+        return r;
+      }
+      function useStrip() {
+        if (usingStrip) return;
+        usingStrip = true;
+        clearTimeout(checkTimer);
+        v.pause(); v.removeAttribute('src'); v.load();      // stop downloading the video
+        strip.appendChild(row(1, TILES / 2, false));
+        strip.appendChild(row(TILES / 2 + 1, TILES, true));
+        strip.hidden = false;
+        frame.classList.add('is-strip');
+      }
+      function start() {
+        if (usingStrip || reduce) return;
         load();
         var p = v.play();
-        if (p && p.then) p.then(function () { btn.hidden = true; }).catch(function () { btn.hidden = false; });
-      }
-      btn.addEventListener('click', play);
-      v.addEventListener('playing', function () { btn.hidden = true; });
-
-      function start() {
-        load();
-        if (reduce) { btn.hidden = false; return; }
-        play();
+        if (p && p.catch) p.catch(useStrip);
+        // some phones neither play nor complain: fall back if nothing is moving after 4s
+        clearTimeout(checkTimer);
+        checkTimer = setTimeout(function () { if (v.paused || v.currentTime === 0) useStrip(); }, 4000);
       }
       if (!('IntersectionObserver' in window)) { start(); return; }
       var io = new IntersectionObserver(function (es) {
         es.forEach(function (e) {
-          if (e.isIntersecting) { if (v.paused && (btn.hidden || !v.getAttribute('src'))) start(); }
-          else if (!v.paused) v.pause();
+          if (usingStrip) return;
+          if (e.isIntersecting) { if (v.paused) start(); }
+          else { clearTimeout(checkTimer); if (!v.paused) v.pause(); }
         });
       }, { rootMargin: '300px 0px' });
       io.observe(v);
