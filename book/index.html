@@ -192,10 +192,6 @@
     /* ─── PROJECT REEL (video) ─── */
     .reel { padding: 70px 0 10px; overflow: hidden; }
     .reel-frame { position: relative; max-width: 1600px; margin: 0 auto; }
-    /* soft fade at both ends — overlays, because Safari mishandles mask-image on <video> */
-    .reel-frame::before, .reel-frame::after { content: ''; position: absolute; top: 0; bottom: 0; width: 8%; z-index: 1; pointer-events: none; }
-    .reel-frame::before { left: 0; background: linear-gradient(to right, var(--cream), rgba(247,239,219,0)); }
-    .reel-frame::after { right: 0; background: linear-gradient(to left, var(--cream), rgba(247,239,219,0)); }
     .reel-video { display: block; width: 100%; height: auto; aspect-ratio: 1600 / 466; background: var(--cream); }
     /* Animated image (like a GIF) used when a phone blocks video autoplay — it always moves */
     .reel-anim { display: block; width: 100%; height: auto; aspect-ratio: 1600 / 466; }
@@ -255,7 +251,6 @@
       .testimonials { padding: 44px 5% 60px; }
       .reel { padding: 44px 0 4px; }
       .reel-frame { width: 200%; max-width: none; margin-left: -50%; }
-      .reel-frame::before, .reel-frame::after { width: 27%; }
       .track { gap: 3.5rem; animation-duration: 30s; }
       .logo-item { width: 130px; height: 42px; }
       .logo-item.lg { height: 64px; }
