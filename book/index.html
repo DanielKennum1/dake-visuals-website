@@ -40,7 +40,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --white: #ffffff; --black: #000000; --gray: #545454; --blue: #35529d; --cream: #f7efdb;
-      --glass-bottom: #fdf6e8; /* the colour the glass card at the top fades to */
+      --glass-mid: #fdf9ec; /* the colour of the glass card at the top, halfway down */
       --line: rgba(0,0,0,0.16); --muted: rgba(0,0,0,0.55); --error: #b3261e;
       --ease: cubic-bezier(0.22, 1, 0.36, 1);
     }
@@ -61,7 +61,7 @@
     .intro p { margin-top: 0.35rem; font-size: 1.05rem; color: var(--muted); }
     .h1-meta { font-family: 'Lato', sans-serif; font-weight: 400; font-size: 1rem; letter-spacing: 0; color: var(--muted); white-space: nowrap; }
 
-    .card { background: var(--glass-bottom); border: 1px solid rgba(0,0,0,0.07); border-radius: 14px; padding: 40px 44px 36px; box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 12px 40px -18px rgba(0,0,0,0.18); opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s var(--ease) 0.15s forwards; }
+    .card { background: var(--glass-mid); border: 1px solid rgba(0,0,0,0.07); border-radius: 14px; padding: 40px 44px 36px; box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 12px 40px -18px rgba(0,0,0,0.18); opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s var(--ease) 0.15s forwards; }
     @keyframes fadeUp { to { opacity: 1; transform: none; } }
 
     .field { margin-bottom: 1.5rem; }
