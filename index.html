@@ -504,7 +504,6 @@
     .testimonials-title { font-family: 'Inter', sans-serif; font-weight: 900; font-style: italic; font-size: clamp(1.6rem,4vw,2.8rem); letter-spacing:-0.02em; line-height:1.1; color: var(--black); text-transform: uppercase; margin-bottom: 4rem; }
     .testimonials-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
       gap: 1.5rem;
       align-items: stretch;
     }
@@ -571,9 +570,20 @@
       color: var(--blue);
       margin-top: 0.15rem;
     }
-    @media (max-width: 1200px) { .testimonials-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 900px) { .testimonials-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 600px) { .testimonials-grid { grid-template-columns: 1fr; } }
+    /* 3 cards per row on wide screens, 2 on tablets, 1 on phones; a short last row is centred.
+       Each layout only applies in its own width range, so they never mix. */
+    .testimonials-grid { grid-template-columns: 1fr; }
+    @media (min-width: 1201px) {
+      .testimonials-grid { grid-template-columns: repeat(6, 1fr); }
+      .testimonial-card { grid-column: span 2; }
+      .testimonial-card:nth-child(3n+1):nth-last-child(2) { grid-column: 2 / span 2; }
+      .testimonial-card:nth-child(3n+1):last-child { grid-column: 3 / span 2; }
+    }
+    @media (min-width: 601px) and (max-width: 1200px) {
+      .testimonials-grid { grid-template-columns: repeat(4, 1fr); }
+      .testimonial-card { grid-column: span 2; }
+      .testimonial-card:nth-child(2n+1):last-child { grid-column: 2 / span 2; }
+    }
 
     /* ─── CTA SECTION ─── */
     .cta-section {
@@ -772,7 +782,6 @@
     /* ── iPad landscape: work cards slightly wider for better fill ── */
     @media (min-width: 901px) and (max-width: 1024px) {
       .work-card { flex: 0 0 36vw; }
-      .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -984,6 +993,17 @@
           </div>
         </div>
         <p class="testimonial-card-quote" data-da-html="Vi havde en rigtig god oplevelse med at arbejde sammen med Daniel. Han var effektiv, velforberedt og usædvanlig god til hurtigt at forstå vores vision og det look and feel, vi ønskede for vores brand.<span class=&quot;quote-rest&quot;> Samtidig formåede han at tænke ud af boksen og byde ind med kreative idéer, der løftede det endelige resultat.</span>">We had a great experience working with Daniel. He was efficient, well-prepared, and exceptionally good at quickly understanding our vision, look and feel we wanted for our brand.<span class="quote-rest"> At the same time, he was able to think outside the box and bring creative ideas to the table that elevated the final result.</span></p>
+        <button class="quote-toggle" type="button" data-more-en="Show more" data-less-en="Show less" data-more-da="Vis mere" data-less-da="Vis mindre">Show more</button>
+      </div>
+      <div class="testimonial-card" data-animate style="transition-delay:0.58s">
+        <div class="testimonial-card-footer">
+          <div class="testimonial-card-avatar"><img loading="lazy" src="Testimonial Portraits/Steven.webp" style="width:100%;height:100%;object-fit:cover;"></div>
+          <div>
+            <p class="testimonial-card-name">Steven</p>
+            <p class="testimonial-card-company" data-da="Head of Marketing — Optimum Nutrition">Head of Marketing — Optimum Nutrition</p>
+          </div>
+        </div>
+        <p class="testimonial-card-quote" data-da-html="Høj kvalitet, nem kommunikation og stor fleksibilitet, da vores planer ændrede sig (…) Alt content var tro mod Optimum Nutritions brand og havde et godt tempo, der gjorde det nemt at følge med (…)&lt;span class=&quot;quote-rest&quot;&gt; Han leverede hurtigt, og hvis vi havde ændringer til noget, modtog vi kort efter de opdaterede versioner, stor anbefaling herfra.&lt;/span&gt;">Great quality, easy communication and great flexibility when our plans changed (…) All the content was true to the Optimum Nutrition brand and had a great tempo that made it easy to follow (…)<span class="quote-rest"> He delivered quickly, and whenever we had changes, we received the updated versions shortly after. Highly recommended.</span></p>
         <button class="quote-toggle" type="button" data-more-en="Show more" data-less-en="Show less" data-more-da="Vis mere" data-less-da="Vis mindre">Show more</button>
       </div>
     </div>
