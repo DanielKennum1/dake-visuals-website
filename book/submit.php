@@ -53,23 +53,27 @@ function rt($text) {
     return [['type' => 'text', 'text' => ['content' => $text]]];
 }
 
-// Every lead from this page is marked with Source = "Booking (/book)" in
-// "DAKE Visuals - CRM", so it can be filtered or grouped there.
-const BOOKING_SOURCE = 'Booking (/book)';
+// Every lead is marked with the page it came from in Source in
+// "DAKE Visuals - CRM", so /book and /annoncer can be told apart there.
+// Only known pages are accepted; anything else counts as /book.
+$fromAds   = strpos((string)($input['page'] ?? ''), '/annoncer') === 0;
+$pagePath  = $fromAds ? '/annoncer' : '/book';
+$pageLabel = 'dakevisuals.com' . $pagePath;
+$source    = $fromAds ? 'Annoncer (/annoncer)' : 'Booking (/book)';
 
 $properties = [
     'Name'    => ['title' => rt($company)],
     'Email'   => ['email' => $email],
     'Phone'   => ['phone_number' => $phone],
     'Status'  => ['select' => ['name' => 'Not Contacted']],
-    'Source'  => ['select' => ['name' => BOOKING_SOURCE]],
+    'Source'  => ['select' => ['name' => $source]],
     'Person'  => ['rich_text' => rt($name)],
     'Company' => ['rich_text' => rt($company)],
 ];
 // Safety net if the CRM's properties are ever renamed: save the lead with the
 // title and email only, and put the marker in the title so it still stands out.
 $fallback = [
-    'Name'  => ['title' => rt('[Booking] ' . $company)],
+    'Name'  => ['title' => rt('[' . ($fromAds ? 'Annoncer' : 'Booking') . '] ' . $company)],
     'Email' => ['email' => $email],
 ];
 
@@ -81,7 +85,7 @@ function para($text) {
 }
 
 $children = [
-    heading('Booking fra dakevisuals.com/book'),
+    heading('Booking fra ' . $pageLabel),
     para("Navn: $name\nTelefon: $phone\nE-mail: $email\nVirksomhed: $company"),
     heading('Hvad søger de hjælp til?'),
     para($need !== '' ? $need : 'Ikke udfyldt.'),
@@ -126,7 +130,7 @@ function slack_escape($text) {
     return str_replace(['&', '<', '>'], ['&amp;', '&lt;', '&gt;'], $text);
 }
 
-function notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notionOk) {
+function notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notionOk, $pageLabel) {
     $cfg = file_exists(__DIR__ . '/slack-config.php')
         ? __DIR__ . '/slack-config.php'
         : __DIR__ . '/../slack-config.php';
@@ -150,12 +154,12 @@ function notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notio
     }
     $blocks = [
         ['type' => 'header', 'text' => ['type' => 'plain_text', 'emoji' => true,
-            'text' => mb_substr('📞 Ny booking: ' . $company, 0, 150)]],
+            'text' => mb_substr('📞 Ny booking (' . substr($pageLabel, strlen('dakevisuals.com')) . '): ' . $company, 0, 150)]],
         ['type' => 'section', 'text' => ['type' => 'mrkdwn', 'text' => implode("\n", $lines)]],
     ];
     $context = $notionOk
-        ? ($notionUrl ? '<' . $notionUrl . '|Åbn i Notion> · fra dakevisuals.com/book' : 'Gemt i Notion · fra dakevisuals.com/book')
-        : '⚠️ Kunne ikke gemmes i Notion. Ring eller skriv til dem herfra.';
+        ? ($notionUrl ? '<' . $notionUrl . '|Åbn i Notion> · fra ' . $pageLabel : 'Gemt i Notion · fra ' . $pageLabel)
+        : '⚠️ Kunne ikke gemmes i Notion. Ring eller skriv til dem herfra. · fra ' . $pageLabel;
     $blocks[] = ['type' => 'context', 'elements' => [['type' => 'mrkdwn', 'text' => $context]]];
 
     $ch = curl_init($SLACK_WEBHOOK_URL);
@@ -175,7 +179,7 @@ function notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notio
     return $ok;
 }
 
-$slackOk = notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notionOk);
+$slackOk = notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notionOk, $pageLabel);
 
 // The lead counts as received if it reached Notion or Slack.
 if ($notionOk || $slackOk) {
