@@ -534,14 +534,14 @@
   </div>
 
   <script>
-    // 1.2 seconds after the page opens, glide down to the booking form, unless the
-    // visitor has already scrolled, tapped or typed. Eased (slow-fast-slow) over
-    // about 0.7 s; stops at once if they touch the page while it moves.
+    // 0.2 s after the Projekter/Brands numbers have finished counting, glide down to
+    // the booking form, unless the visitor has already scrolled, tapped or typed.
+    // Eased (slow-fast-slow) over about 0.7 s; stops at once if they touch the page.
     (function () {
       var section = document.getElementById('book');
       if (!section || location.hash) return;
       var target = section.querySelector('.intro') || section;
-      var DELAY = 1200, DURATION = 700, GAP = 20;
+      var AFTER_COUNT = 200, DURATION = 700, GAP = 20;
       var cancelled = false;
       var startY = window.scrollY;
 
@@ -557,7 +557,19 @@
         document.documentElement.style.scrollBehavior = '';
       }
 
-      setTimeout(function () {
+      // Wait for the count-up below to say it's done (it sets a flag and fires an
+      // event); a 4 s safety net makes sure the scroll still happens if it never does.
+      var started = false;
+      function afterCount() {
+        if (started) return;
+        started = true;
+        setTimeout(glide, AFTER_COUNT);
+      }
+      if (window.__dakeStatsDone) afterCount();
+      else window.addEventListener('dake:stats-done', afterCount, { once: true });
+      setTimeout(afterCount, 4000);
+
+      function glide() {
         if (cancelled || Math.abs(window.scrollY - startY) > 40) return cleanUp();
         var targetY = function () { return target.getBoundingClientRect().top + window.scrollY - GAP; };
         if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -576,7 +588,7 @@
           if (p < 1) requestAnimationFrame(step); else cleanUp();
         }
         requestAnimationFrame(step);
-      }, DELAY);
+      }
     })();
   </script>
 
@@ -632,11 +644,16 @@
     })();
 
 
-    // Numbers count up from 0 once the row fades in
+    // Numbers count up from 0 once the row fades in. When they're done it says so
+    // (flag + "dake:stats-done" event), which starts the glide down to the form.
     (function () {
+      function done() {
+        window.__dakeStatsDone = true;
+        window.dispatchEvent(new Event('dake:stats-done'));
+      }
       var nums = document.querySelectorAll('.stats .num');
-      if (!nums.length) return;
-      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (!nums.length) return done();
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return done();
       nums.forEach(function (n) { n.textContent = '0'; });
       var DELAY = 600, DURATION = 1300;
       setTimeout(run, DELAY);
@@ -646,7 +663,7 @@
           var p = Math.min(1, (now - t0) / DURATION);
           var e = 1 - Math.pow(1 - p, 3);             // fast start, soft landing
           nums.forEach(function (n) { n.textContent = Math.round(e * Number(n.getAttribute('data-to'))); });
-          if (p < 1) requestAnimationFrame(tick);
+          if (p < 1) requestAnimationFrame(tick); else done();
         })(t0);
       }
     })();
