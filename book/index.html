@@ -278,8 +278,6 @@
     .cookie { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; background: var(--white); color: var(--black); border-top: 1px solid rgba(0,0,0,0.08); box-shadow: 0 -10px 30px -18px rgba(0,0,0,0.3); padding: 10px max(4%, calc((100% - 1100px) / 2)); padding-bottom: calc(10px + env(safe-area-inset-bottom)); display: flex; align-items: center; gap: 20px; animation: cookieIn 0.5s var(--ease) both; }
     @keyframes cookieIn { from { opacity: 0; transform: translateY(100%); } to { opacity: 1; transform: none; } }
     .cookie[hidden] { display: none; }
-    .cookie.cookie-out { animation: cookieOut 0.35s var(--ease) both; pointer-events: none; }
-    @keyframes cookieOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(100%); } }
     .cookie-text { flex: 1; font-size: 0.8rem; line-height: 1.4; color: rgba(0,0,0,0.72); }
     .cookie-text b { color: var(--black); }
     .cookie-actions { display: flex; gap: 8px; flex-shrink: 0; }
@@ -562,21 +560,6 @@
 
       if (choice === 'granted') loadPixel();
       else if (choice !== 'denied') banner.hidden = false;
-
-      // Less in the way: the banner slides away once the visitor starts scrolling.
-      // That is NOT consent (scrolling can't count as consent in the EU), so nothing
-      // is stored and the Pixel stays off; the banner simply shows again next visit.
-      if (!banner.hidden) {
-        var startY = window.scrollY;
-        var onScroll = function () {
-          if (Math.abs(window.scrollY - startY) < 120) return;
-          window.removeEventListener('scroll', onScroll);
-          if (banner.hidden) return;
-          banner.classList.add('cookie-out');
-          setTimeout(function () { banner.hidden = true; }, 350);
-        };
-        window.addEventListener('scroll', onScroll, { passive: true });
-      }
 
       banner.querySelectorAll('button').forEach(function (btn) {
         btn.addEventListener('click', function () {
