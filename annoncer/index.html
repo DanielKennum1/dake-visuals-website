@@ -275,23 +275,23 @@
       .track [aria-hidden="true"] { display: none; }
     }
     /* ─── COOKIE BANNER: a standard bar along the bottom of the screen ─── */
-    .cookie { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; background: var(--white); color: var(--black); border-top: 1px solid rgba(0,0,0,0.08); box-shadow: 0 -10px 30px -18px rgba(0,0,0,0.3); padding: 16px max(4%, calc((100% - 1100px) / 2)); padding-bottom: calc(16px + env(safe-area-inset-bottom)); display: flex; align-items: center; gap: 24px; animation: cookieIn 0.5s var(--ease) both; }
+    .cookie { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; background: var(--white); color: var(--black); border-top: 1px solid rgba(0,0,0,0.08); box-shadow: 0 -10px 30px -18px rgba(0,0,0,0.3); padding: 10px max(4%, calc((100% - 1100px) / 2)); padding-bottom: calc(10px + env(safe-area-inset-bottom)); display: flex; align-items: center; gap: 20px; animation: cookieIn 0.5s var(--ease) both; }
     @keyframes cookieIn { from { opacity: 0; transform: translateY(100%); } to { opacity: 1; transform: none; } }
     .cookie[hidden] { display: none; }
     .cookie.cookie-out { animation: cookieOut 0.35s var(--ease) both; pointer-events: none; }
     @keyframes cookieOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(100%); } }
-    .cookie-text { flex: 1; font-size: 0.85rem; line-height: 1.5; color: rgba(0,0,0,0.72); }
-    .cookie-text b { display: block; color: var(--black); font-size: 0.9rem; margin-bottom: 2px; }
+    .cookie-text { flex: 1; font-size: 0.8rem; line-height: 1.4; color: rgba(0,0,0,0.72); }
+    .cookie-text b { color: var(--black); }
     .cookie-actions { display: flex; gap: 8px; flex-shrink: 0; }
-    .cookie button { min-width: 120px; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.75rem 1.2rem; border-radius: 999px; cursor: pointer; border: 1.5px solid var(--black); transition: background 0.2s, color 0.2s; }
+    .cookie button { min-width: 100px; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.55rem 1rem; border-radius: 999px; cursor: pointer; border: 1.5px solid var(--black); transition: background 0.2s, color 0.2s; }
     .cookie-no { background: transparent; color: var(--black); }
     .cookie-no:hover { background: rgba(0,0,0,0.06); }
     .cookie-yes { background: var(--black); color: var(--cream); }
     .cookie-yes:hover { background: var(--blue); border-color: var(--blue); color: var(--white); }
     .cookie button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
     @media (max-width: 600px) {
-      .cookie { flex-direction: column; align-items: stretch; gap: 12px; padding: 14px 16px calc(14px + env(safe-area-inset-bottom)); }
-      .cookie-text { font-size: 0.8rem; }
+      .cookie { flex-direction: column; align-items: stretch; gap: 8px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); }
+      .cookie-text { font-size: 0.75rem; }
       .cookie-actions button { flex: 1; min-width: 0; }
     }
     /* ─── Swipeable vertical reels under the glass card ─── */
@@ -528,7 +528,7 @@
   </footer>
 
   <div class="cookie" id="cookie" role="dialog" aria-label="Cookies" hidden>
-    <p class="cookie-text"><b>Vi bruger cookies</b>Vi bruger cookies til statistik og til at måle vores annoncer, bl.a. via Meta. Du bestemmer selv, om du vil tillade dem.</p>
+    <p class="cookie-text"><b>Vi bruger cookies</b> til statistik og til at måle vores annoncer, bl.a. via Meta.</p>
     <div class="cookie-actions">
       <button type="button" class="cookie-no" data-consent="denied">Afvis</button>
       <button type="button" class="cookie-yes" data-consent="granted">Accepter</button>
