@@ -32,12 +32,15 @@ $email     = field($input, 'email', 160);
 $company   = field($input, 'company', 160);
 $need      = field($input, 'need', 1500);
 
-if (!$name || !$phone || !$company
-    || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+if (!$name || !$phone || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     http_response_code(400);
     echo json_encode(['error' => 'Missing required fields']);
     exit;
 }
+
+// Company and "Hvad søger du hjælp til?" are optional (the form doesn't ask for
+// them right now). A lead is named after the company when given, else the person.
+$leadTitle = $company !== '' ? $company : $name;
 
 $config = file_exists(__DIR__ . '/notion-config.php')
     ? __DIR__ . '/notion-config.php'
@@ -78,21 +81,21 @@ $adSet     = $utm['utm_term'] ?? '';
 $ad        = $utm['utm_content'] ?? '';
 
 $properties = [
-    'Name'    => ['title' => rt($company)],
+    'Name'    => ['title' => rt($leadTitle)],
     'Email'   => ['email' => $email],
     'Phone'   => ['phone_number' => $phone],
     'Status'  => ['select' => ['name' => 'Not Contacted']],
     'Source'  => ['select' => ['name' => $source]],
     'Person'  => ['rich_text' => rt($name)],
-    'Company' => ['rich_text' => rt($company)],
 ];
+if ($company !== '') $properties['Company'] = ['rich_text' => rt($company)];
 foreach (['Platform' => $platform, 'Campaign' => $campaign, 'Ad set' => $adSet, 'Ad' => $ad] as $prop => $val) {
     if ($val !== '') $properties[$prop] = ['rich_text' => rt($val)];
 }
 // Safety net if the CRM's properties are ever renamed: save the lead with the
 // title and email only, and put the marker in the title so it still stands out.
 $fallback = [
-    'Name'  => ['title' => rt('[' . ($fromAds ? 'Annoncer' : 'Booking') . '] ' . $company)],
+    'Name'  => ['title' => rt('[' . ($fromAds ? 'Annoncer' : 'Booking') . '] ' . $leadTitle)],
     'Email' => ['email' => $email],
 ];
 
@@ -105,10 +108,12 @@ function para($text) {
 
 $children = [
     heading('Booking fra ' . $pageLabel),
-    para("Navn: $name\nTelefon: $phone\nE-mail: $email\nVirksomhed: $company"),
-    heading('Hvad søger de hjælp til?'),
-    para($need !== '' ? $need : 'Ikke udfyldt.'),
+    para("Navn: $name\nTelefon: $phone\nE-mail: $email" . ($company !== '' ? "\nVirksomhed: $company" : '')),
 ];
+if ($need !== '') {
+    $children[] = heading('Hvad søger de hjælp til?');
+    $children[] = para($need);
+}
 if ($utm) {
     $labels = [
         'utm_source' => 'Platform', 'utm_campaign' => 'Kampagne', 'utm_term' => 'Annoncesæt',
@@ -190,7 +195,7 @@ function notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notio
     }
     $blocks = [
         ['type' => 'header', 'text' => ['type' => 'plain_text', 'emoji' => true,
-            'text' => mb_substr('📞 Ny booking (' . substr($pageLabel, strlen('dakevisuals.com')) . '): ' . $company, 0, 150)]],
+            'text' => mb_substr('📞 Ny booking (' . substr($pageLabel, strlen('dakevisuals.com')) . '): ' . ($company !== '' ? $company : $name), 0, 150)]],
         ['type' => 'section', 'text' => ['type' => 'mrkdwn', 'text' => implode("\n", $lines)]],
     ];
     $context = $notionOk
@@ -204,7 +209,7 @@ function notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notio
         CURLOPT_POST           => true,
         CURLOPT_TIMEOUT        => 8,
         CURLOPT_POSTFIELDS     => json_encode([
-            'text'   => $mention . ' Ny booking: ' . $company . ' – ' . $name . ', ' . $phone,
+            'text'   => $mention . ' Ny booking: ' . ($company !== '' ? $company . ' – ' : '') . $name . ', ' . $phone,
             'blocks' => $blocks,
         ]),
         CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],

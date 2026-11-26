@@ -403,28 +403,22 @@
               </button>
             </div>
             <div class="phone">
-              <select id="cc" name="cc" aria-label="Landekode" autocomplete="tel-country-code">
+              <select id="cc" name="cc" aria-label="Landekode">
                 <option value="+45" selected>🇩🇰 +45</option>
                 <option value="+46">🇸🇪 +46</option>
                 <option value="+47">🇳🇴 +47</option>
                 <option value="+49">🇩🇪 +49</option>
                 <option value="+44">🇬🇧 +44</option>
               </select>
-              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="12 34 56 78" enterkeyhint="next" required />
+              <!-- autocomplete="tel" (the full number) is what every autofill supports, including
+                   Instagram/Facebook's; normalizePhone() moves a +45/+46… prefix into the picker -->
+              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="12 34 56 78" enterkeyhint="send" required />
             </div>
             <span class="err">Skriv venligst et gyldigt telefonnummer.</span>
           </div>
 
-          <div class="field">
-            <label for="company">Virksomhed <span class="req" aria-hidden="true">*</span></label>
-            <input class="control" id="company" name="company" type="text" autocomplete="organization" autocapitalize="words" enterkeyhint="next" required />
-            <span class="err">Skriv venligst navnet på din virksomhed.</span>
-          </div>
-
-          <div class="field">
-            <label for="need">Hvad søger du hjælp til? <span class="opt">(valgfri)</span></label>
-            <textarea class="control" id="need" name="need" rows="1" maxlength="1500"></textarea>
-          </div>
+          <!-- "Virksomhed" and "Hvad søger du hjælp til?" were removed to make the
+               form quicker; submit.php still accepts company/need if they come back. -->
 
           <div class="hp" aria-hidden="true">
             <label for="website">Lad dette felt være tomt</label>
@@ -751,12 +745,6 @@
       var formError = document.getElementById('formError');
       var card = document.getElementById('card');
 
-      // "Hvad søger du hjælp til?" starts one line tall, like the other fields, and grows as people type
-      var need = f.need;
-      function fitNeed() { need.style.height = 'auto'; need.style.height = need.scrollHeight + 'px'; }
-      need.addEventListener('input', fitNeed);
-      fitNeed();
-
       // Autofill (iPhone, Chrome, Instagram/Facebook's in-app browser) often puts the
       // whole international number in the phone field, e.g. "+45 12 34 56 78" or
       // "0046701234567". Move the country code into the picker and keep the rest.
@@ -780,8 +768,7 @@
           normalizePhone();
           var digits = f.phone.value.replace(/\D/g, '');
           return f.cc.value === '+45' ? digits.length === 8 || (digits.length === 10 && digits.indexOf('45') === 0) : digits.length >= 6;
-        },
-        company: function (v) { return v.trim().length >= 1; }
+        }
       };
 
       function validate(name) {
@@ -828,8 +815,6 @@
           name: f.name.value.trim(),
           email: f.email.value.trim(),
           phone: f.cc.value + ' ' + digits,
-          company: f.company.value.trim(),
-          need: f.need.value.trim(),
           website: f.website.value,
           page: location.pathname,
           utm: adParams()
