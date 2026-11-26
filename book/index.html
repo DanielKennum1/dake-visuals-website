@@ -534,14 +534,14 @@
   </div>
 
   <script>
-    // 2 seconds after the page opens, glide down to the booking form, unless the
+    // 1.2 seconds after the page opens, glide down to the booking form, unless the
     // visitor has already scrolled, tapped or typed. Eased (slow-fast-slow) over
-    // about 1.3 s; stops at once if they touch the page while it moves.
+    // about 1 s; stops at once if they touch the page while it moves.
     (function () {
       var section = document.getElementById('book');
       if (!section || location.hash) return;
       var target = section.querySelector('.intro') || section;
-      var DELAY = 2000, DURATION = 1300, GAP = 20;
+      var DELAY = 1200, DURATION = 1000, GAP = 20;
       var cancelled = false;
       var startY = window.scrollY;
 
