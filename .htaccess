@@ -24,3 +24,9 @@ AddType video/quicktime .mov
     Header set Cache-Control "public, max-age=86400"
   </FilesMatch>
 </IfModule>
+
+# Short ad link: dakevisuals.com/annonce goes to the /annoncer landing page.
+# The ad's UTM parameters (?utm_source=…) are carried over automatically.
+<IfModule mod_alias.c>
+  RedirectMatch 301 ^/annonce/?$ /annoncer/
+</IfModule>
