@@ -384,13 +384,13 @@
         <form id="leadForm" novalidate>
           <div class="field">
             <label for="name">Dit navn <span class="req" aria-hidden="true">*</span></label>
-            <input class="control" id="name" name="name" type="text" autocomplete="name" required />
+            <input class="control" id="name" name="name" type="text" autocomplete="name" autocapitalize="words" enterkeyhint="next" required />
             <span class="err">Skriv venligst dit navn.</span>
           </div>
 
           <div class="field">
             <label for="email">E-mail <span class="req" aria-hidden="true">*</span></label>
-            <input class="control" id="email" name="email" type="email" inputmode="email" autocomplete="email" required />
+            <input class="control" id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" enterkeyhint="next" required />
             <span class="err">Skriv venligst en gyldig e-mailadresse.</span>
           </div>
 
@@ -403,21 +403,21 @@
               </button>
             </div>
             <div class="phone">
-              <select id="cc" name="cc" aria-label="Landekode">
+              <select id="cc" name="cc" aria-label="Landekode" autocomplete="tel-country-code">
                 <option value="+45" selected>🇩🇰 +45</option>
                 <option value="+46">🇸🇪 +46</option>
                 <option value="+47">🇳🇴 +47</option>
                 <option value="+49">🇩🇪 +49</option>
                 <option value="+44">🇬🇧 +44</option>
               </select>
-              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="12 34 56 78" required />
+              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="12 34 56 78" enterkeyhint="next" required />
             </div>
             <span class="err">Skriv venligst et gyldigt telefonnummer.</span>
           </div>
 
           <div class="field">
             <label for="company">Virksomhed <span class="req" aria-hidden="true">*</span></label>
-            <input class="control" id="company" name="company" type="text" autocomplete="organization" required />
+            <input class="control" id="company" name="company" type="text" autocomplete="organization" autocapitalize="words" enterkeyhint="next" required />
             <span class="err">Skriv venligst navnet på din virksomhed.</span>
           </div>
 
@@ -757,11 +757,28 @@
       need.addEventListener('input', fitNeed);
       fitNeed();
 
+      // Autofill (iPhone, Chrome, Instagram/Facebook's in-app browser) often puts the
+      // whole international number in the phone field, e.g. "+45 12 34 56 78" or
+      // "0046701234567". Move the country code into the picker and keep the rest.
+      function normalizePhone() {
+        var compact = f.phone.value.replace(/[\s().-]/g, '');
+        var m = compact.match(/^(?:\+|00)(45|46|47|49|44)(\d{6,})$/);
+        if (!m) return;
+        f.cc.value = '+' + m[1];
+        f.phone.value = m[2].replace(/^0/, '');
+      }
+      f.phone.addEventListener('change', normalizePhone);
+      f.phone.addEventListener('input', function (e) {
+        // Only when a whole value arrives at once (autofill or paste), not while typing
+        if (!e.inputType || e.inputType === 'insertReplacementText' || e.inputType === 'insertFromPaste') normalizePhone();
+      });
+
       var checks = {
         name: function (v) { return v.trim().length >= 2; },
         email: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); },
-        phone: function (v) {
-          var digits = v.replace(/\D/g, '');
+        phone: function () {
+          normalizePhone();
+          var digits = f.phone.value.replace(/\D/g, '');
           return f.cc.value === '+45' ? digits.length === 8 || (digits.length === 10 && digits.indexOf('45') === 0) : digits.length >= 6;
         },
         company: function (v) { return v.trim().length >= 1; }
