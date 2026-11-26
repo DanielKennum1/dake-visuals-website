@@ -792,6 +792,18 @@
         });
       });
 
+      // Meta ad tracking: the ad's URL parameters (utm_*, ad/adset/campaign IDs)
+      // are read straight from the address bar and sent with the lead.
+      function adParams() {
+        var keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'ad_id', 'adset_id', 'campaign_id'];
+        var out = {};
+        try {
+          var q = new URLSearchParams(location.search);
+          keys.forEach(function (k) { var v = q.get(k); if (v) out[k] = v.slice(0, 200); });
+        } catch (err) {}
+        return out;
+      }
+
       form.addEventListener('submit', async function (e) {
         e.preventDefault();
         formError.classList.remove('show');
@@ -810,7 +822,8 @@
           company: f.company.value.trim(),
           need: f.need.value.trim(),
           website: f.website.value,
-          page: location.pathname
+          page: location.pathname,
+          utm: adParams()
         };
 
         btn.disabled = true;

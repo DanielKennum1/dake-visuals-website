@@ -61,6 +61,22 @@ $pagePath  = $fromAds ? '/annoncer' : '/book';
 $pageLabel = 'dakevisuals.com' . $pagePath;
 $source    = $fromAds ? 'Annoncer (/annoncer)' : 'Booking (/book)';
 
+// Meta ad tracking: the landing page passes on the ad URL's parameters
+// (utm_source={{site_source_name}}, utm_campaign={{campaign.name}}, …).
+// Only known keys are kept, and Meta macros that weren't filled in are dropped.
+$utm    = [];
+$rawUtm = (isset($input['utm']) && is_array($input['utm'])) ? $input['utm'] : [];
+foreach (['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'ad_id', 'adset_id', 'campaign_id'] as $k) {
+    $v = isset($rawUtm[$k]) && is_scalar($rawUtm[$k]) ? trim((string)$rawUtm[$k]) : '';
+    if ($v === '' || strpos($v, '{{') !== false) continue;
+    $utm[$k] = function_exists('mb_substr') ? mb_substr($v, 0, 200) : substr($v, 0, 200);
+}
+$platforms = ['fb' => 'Facebook', 'ig' => 'Instagram', 'an' => 'Audience Network', 'msg' => 'Messenger', 'threads' => 'Threads'];
+$platform  = isset($utm['utm_source']) ? ($platforms[strtolower($utm['utm_source'])] ?? $utm['utm_source']) : '';
+$campaign  = $utm['utm_campaign'] ?? '';
+$adSet     = $utm['utm_term'] ?? '';
+$ad        = $utm['utm_content'] ?? '';
+
 $properties = [
     'Name'    => ['title' => rt($company)],
     'Email'   => ['email' => $email],
@@ -70,6 +86,9 @@ $properties = [
     'Person'  => ['rich_text' => rt($name)],
     'Company' => ['rich_text' => rt($company)],
 ];
+foreach (['Platform' => $platform, 'Campaign' => $campaign, 'Ad set' => $adSet, 'Ad' => $ad] as $prop => $val) {
+    if ($val !== '') $properties[$prop] = ['rich_text' => rt($val)];
+}
 // Safety net if the CRM's properties are ever renamed: save the lead with the
 // title and email only, and put the marker in the title so it still stands out.
 $fallback = [
@@ -90,6 +109,20 @@ $children = [
     heading('Hvad søger de hjælp til?'),
     para($need !== '' ? $need : 'Ikke udfyldt.'),
 ];
+if ($utm) {
+    $labels = [
+        'utm_source' => 'Platform', 'utm_campaign' => 'Kampagne', 'utm_term' => 'Annoncesæt',
+        'utm_content' => 'Annonce', 'utm_medium' => 'Medium', 'campaign_id' => 'Kampagne-ID',
+        'adset_id' => 'Annoncesæt-ID', 'ad_id' => 'Annonce-ID',
+    ];
+    $rows = [];
+    foreach ($labels as $k => $label) {
+        if (!isset($utm[$k])) continue;
+        $rows[] = $label . ': ' . ($k === 'utm_source' ? $platform : $utm[$k]);
+    }
+    $children[] = heading('Fra annonce');
+    $children[] = para(implode("\n", $rows));
+}
 
 function create_page($properties, $children, $token, $dbId) {
     $ch = curl_init('https://api.notion.com/v1/pages');
@@ -130,7 +163,7 @@ function slack_escape($text) {
     return str_replace(['&', '<', '>'], ['&amp;', '&lt;', '&gt;'], $text);
 }
 
-function notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notionOk, $pageLabel) {
+function notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notionOk, $pageLabel, $adLine) {
     $cfg = file_exists(__DIR__ . '/slack-config.php')
         ? __DIR__ . '/slack-config.php'
         : __DIR__ . '/../slack-config.php';
@@ -151,6 +184,9 @@ function notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notio
     ];
     if ($need !== '') {
         $lines[] = '*Søger hjælp til:* ' . $e($need);
+    }
+    if ($adLine !== '') {
+        $lines[] = '*Annonce:* ' . $e($adLine);
     }
     $blocks = [
         ['type' => 'header', 'text' => ['type' => 'plain_text', 'emoji' => true,
@@ -179,7 +215,10 @@ function notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notio
     return $ok;
 }
 
-$slackOk = notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notionOk, $pageLabel);
+// "Instagram · Kampagne › Annoncesæt › Annonce" (only the parts that are known)
+$adPath = implode(' › ', array_filter([$campaign, $adSet, $ad], 'strlen'));
+$adLine = implode(' · ', array_filter([$platform, $adPath], 'strlen'));
+$slackOk = notify_slack($name, $phone, $email, $company, $need, $notionUrl, $notionOk, $pageLabel, $adLine);
 
 // The lead counts as received if it reached Notion or Slack.
 if ($notionOk || $slackOk) {
